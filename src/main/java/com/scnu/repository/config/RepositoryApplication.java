@@ -1,15 +1,16 @@
 package com.scnu.repository.config;
 
 import ch.qos.logback.classic.Logger;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 @ComponentScan("com.scnu")
 @SpringBootApplication
+@MapperScan("com.scnu.repository.mapper")
 public class RepositoryApplication {
 	private static final Logger LOG = (Logger) LoggerFactory.getLogger(RepositoryApplication.class);
 	public static void main(String[] args) {
