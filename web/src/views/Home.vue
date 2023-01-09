@@ -11,7 +11,7 @@
 <script lang="ts">
 
 import { defineComponent, onMounted,ref} from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+
 import axios from 'axios';
 
 export default defineComponent({
