@@ -46,7 +46,10 @@
       </a-menu>
     </a-layout-sider>
     <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-      Content
+      <pre>
+{{ebooks}}
+{{ebooks2}}
+      </pre>
     </a-layout-content>
   </a-layout>
 
@@ -54,7 +57,7 @@
 
 <script lang="ts">
 
-import { defineComponent, onMounted,ref} from 'vue';
+import { defineComponent, onMounted,ref,reactive,toRef} from 'vue';
 
 import axios from 'axios';
 
@@ -62,15 +65,21 @@ export default defineComponent({
   name: 'Home',
   setup(){
       console.log("setup");
-      const ebooks = ref();
+      const ebooks =ref();
+      const ebooks1 =reactive({books:[]});
       onMounted(()=>{
         console.log("onMounted");
         axios.get("http://localhost:8880/ebook/list?name=Spring").then((response)=>{
-                const  data = response.data;
-                ebooks.value=data.content
-                console.log(response);
-        })
+          const data=response.data;
+          ebooks.value=data.content;
+          ebooks1.books=data.content;
+          console.log(response);
+        });
       })
+    return{
+        ebooks,
+        ebooks2:toRef(ebooks1,"books")
+    }
   }
 })
 </script>
