@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <a-layout class="middle">
     <a-layout-sider width="200" style="background: #fff">
       <a-menu
               v-model:selectedKeys="selectedKeys2"
@@ -45,7 +45,7 @@
         </a-sub-menu>
       </a-menu>
     </a-layout-sider>
-    <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
+    <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
       <a-list item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks">
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
@@ -66,7 +66,6 @@
       </a-list>
     </a-layout-content>
   </a-layout>
-
 </template>
 
 <script lang="ts">
@@ -128,4 +127,7 @@ export default defineComponent({
       border-radius: 8%;
       margin: 5px 0;
     }
+  .middle{
+    display: flex;
+  }
 </style>
