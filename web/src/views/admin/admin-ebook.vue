@@ -1,10 +1,125 @@
 <template>
-
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
-            <div class="about">
-                <h1>电子书管理</h1>
-            </div>
+            <a-table
+                    :columns="columns"
+                    :loading="loading"
+                    :data-source="ebooks"
+                    :pagination="pagination"
+                    @change="handleTableChange"
+                    :row-key="record => record.id"
+            >
+                <template #cover="{ text: cover }">
+                    <img v-if="cover" :src="cover" alt="avatar" />
+                </template>
+                <template v-slot:action="{record}">
+                    <a-space size="small">
+                        <a-button type="primary" @click="edit(record)">
+                            编辑
+                        </a-button>
+                        <a-button type="danger">
+                            删除
+                        </a-button>
+                    </a-space>
+                </template>
+            </a-table>
         </a-layout-content>
     </a-layout>
 </template>
+<script lang="ts">
+    import { defineComponent, onMounted, ref } from 'vue';
+    import axios from 'axios';
+    export default defineComponent({
+        name: 'AdminEbook',
+        setup() {
+            const ebooks = ref();
+            const loading = ref(false);
+            const pagination = ref({
+                current: 1,
+                pageSize: 2,
+                total: 0
+            });
+            const columns = [
+                {
+                    title: '封面',
+                    dataIndex: 'cover',
+                    key:'cover',
+                    slots: { customRender: 'cover' }
+                },
+                {
+                    title: '名称',
+                    dataIndex: 'name',
+                    key:'name'
+                },
+                {
+                    title: '分类1',
+                    dataIndex: 'category1Id',
+                    key:'category1Id',
+                },
+                {
+                    title: '分类2',
+                    dataIndex: 'category2Id',
+                    key:'category2Id',
+                },
+                {
+                    title: '文档数',
+                    dataIndex: 'docCount',
+                    key:'docCount'
+                },
+                {
+                    title: '阅读数',
+                    dataIndex: 'viewCount',
+                    key:'viewCount'
+                },
+                {
+                    title: '点赞数',
+                    dataIndex: 'voteCount',
+                    key:'voteCount'
+                },
+                {
+                    title: 'Action',
+                    key: 'action',
+                    slots: { customRender: 'action' }
+                }
+            ];
+            /** 数据查询**/
+            const handleQuery = (params) => {
+                loading.value = true;
+                axios.get("/ebook/list", params).then((response) => {
+                    loading.value = false;
+                    const data = response.data;
+                    //data.content是数组
+                    ebooks.value = data.content;
+                    console.log(data.content);
+                    // 重置分页按钮
+                    pagination.value.current = params.page;
+                });
+            };
+            /**
+             * 表格点击页码时触发
+             */
+            const handleTableChange = (pagination) => {
+                handleQuery({
+                    page: pagination.current,
+                    size: pagination.pageSize
+                });
+            };
+            onMounted(() => {
+                handleQuery({});
+            });
+            return {
+                columns,
+                loading,
+                ebooks,
+                pagination,
+                handleTableChange
+            }
+        }
+    });
+</script>
+<style scoped>
+    img {
+        width: 50px;
+        height: 50px;
+    }
+</style>
