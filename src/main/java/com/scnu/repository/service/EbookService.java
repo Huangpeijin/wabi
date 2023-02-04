@@ -10,6 +10,7 @@ import com.scnu.repository.req.EbookSaveReq;
 import com.scnu.repository.resp.EbookQueryResp;
 import com.scnu.repository.resp.PageResp;
 import com.scnu.repository.util.CopyUtil;
+import com.scnu.repository.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class EbookService {
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
     @Resource
     private EbookMapper ebookMapper;
+
+    @Resource
+    private SnowFlake snowFlake;
+
     public PageResp<EbookQueryResp> list(EbookQueryReq req){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         EbookExample ebookExample = new EbookExample();
@@ -60,11 +65,11 @@ public class EbookService {
          Ebook ebook=CopyUtil.copy(req,Ebook.class);
          if (ObjectUtils.isEmpty(req.getId())){
              //新增
+             ebook.setId(snowFlake.nextId());
              ebookMapper.insert(ebook);
          }else {
              //更新
              ebookMapper.updateByPrimaryKey(ebook);
          }
-
      }
 }

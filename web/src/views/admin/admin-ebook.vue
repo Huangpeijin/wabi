@@ -1,6 +1,11 @@
 <template>
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
+           <p>
+               <a-button type="primary" @click="add" size="large">
+                   新增
+               </a-button>
+           </p>
             <a-table
                     :columns="columns"
                     :loading="loading"
@@ -165,6 +170,13 @@
                 ebook.value=record
             };
 
+            /**
+             * 新增
+             */
+            const add = () => {
+                modalVisible.value = true;
+                ebook.value={}
+            };
 
             onMounted(() => {
                 handleQuery({
@@ -178,7 +190,10 @@
                 ebooks,
                 pagination,
                 handleTableChange,
+
                 edit,
+                add,
+
                 ebook,
                 modalVisible,
                 modalLoading,
