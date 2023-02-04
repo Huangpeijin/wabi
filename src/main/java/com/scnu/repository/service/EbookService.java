@@ -7,6 +7,7 @@ import com.scnu.repository.domain.EbookExample;
 import com.scnu.repository.mapper.EbookMapper;
 import com.scnu.repository.req.EbookReq;
 import com.scnu.repository.resp.EbookResp;
+import com.scnu.repository.resp.PageResp;
 import com.scnu.repository.util.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +23,14 @@ public class EbookService {
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
     @Resource
     private EbookMapper ebookMapper;
-    public List<EbookResp> list(EbookReq req){
+    public PageResp<EbookResp> list(EbookReq req){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         if(!ObjectUtils.isEmpty(req.getName())){
             criteria.andNameLike("%"+req.getName()+"%");
         }
-        PageHelper.startPage(1,2);
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
         LOG.info("总行数：{}", pageInfo.getTotal());
@@ -42,8 +43,13 @@ public class EbookService {
 //            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
 //            respList.add(ebookResp);
 //        }
+
         //列表复制
         List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
-        return  list;
+
+        PageResp<EbookResp> pageResp =new PageResp();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+        return  pageResp;
     }
 }
