@@ -1,13 +1,12 @@
 package com.scnu.repository.controller;
 
-import com.scnu.repository.req.EbookReq;
+import com.scnu.repository.req.EbookQueryReq;
+import com.scnu.repository.req.EbookSaveReq;
 import com.scnu.repository.resp.CommonResp;
-import com.scnu.repository.resp.EbookResp;
+import com.scnu.repository.resp.EbookQueryResp;
 import com.scnu.repository.resp.PageResp;
 import com.scnu.repository.service.EbookService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,10 +18,16 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookReq req){
-        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
-        PageResp<EbookResp> list =  ebookService.list(req);
+    public CommonResp list(EbookQueryReq req){
+        CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
+        PageResp<EbookQueryResp> list =  ebookService.list(req);
         resp.setContent(list);
+        return resp;
+    }
+    @PostMapping("/save")
+    public CommonResp save(@RequestBody EbookSaveReq req){
+        CommonResp resp = new CommonResp<>();
+        ebookService.save(req);
         return resp;
     }
 

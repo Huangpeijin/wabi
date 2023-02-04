@@ -2,3 +2,10 @@ GET http://localhost:8880/ebook/list
 
 ###
 
+POST http://localhost:8880/ebook/save
+Content-Type: application/json
+
+{}
+
+###
+

@@ -143,6 +143,18 @@
             const modalLoading = ref(false);
             const handleModalOk = () => {
                 modalLoading.value = true;
+                axios.post("/ebook/save", ebook.value).then((response) => {
+                    const data = response.data;//data=commonResp
+                    if (data.success){
+                        modalLoading.value=false;
+                        modalVisible.value=false;
+                        //重新加载列表
+                        handleQuery({
+                            page:pagination.value.current,
+                            size:pagination.value.pageSize
+                        });
+                    }
+                });
             };
 
             /**
