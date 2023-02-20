@@ -66,7 +66,7 @@
             const loading = ref(false);
             const pagination = ref({
                 current: 1,
-                pageSize: 1001,
+                pageSize: 10,
                 total: 0
             });
             const columns = [
@@ -155,16 +155,18 @@
                 console.log(ebook.value);
                 modalLoading.value = true;
                 axios.post("/ebook/save", ebook.value).then((response) => {
+                    modalLoading.value=false;
                     console.log(ebook.value);
                     const data = response.data;//data=commonResp
                     if (data.success){
-                        modalLoading.value=false;
                         modalVisible.value=false;
                         //重新加载列表
                         handleQuery({
                             page:pagination.value.current,
                             size:pagination.value.pageSize
                         });
+                    }else {
+                        message.error(data.message);
                     }
                 });
             };
