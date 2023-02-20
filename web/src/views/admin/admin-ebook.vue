@@ -58,6 +58,7 @@
 <script lang="ts">
     import { defineComponent, onMounted, ref } from 'vue';
     import axios from 'axios';
+    import {message} from 'ant-design-vue';
     export default defineComponent({
         name: 'AdminEbook',
         setup() {
@@ -65,7 +66,7 @@
             const loading = ref(false);
             const pagination = ref({
                 current: 1,
-                pageSize: 4,
+                pageSize: 1001,
                 total: 0
             });
             const columns = [
@@ -122,12 +123,16 @@
                 }).then((response) => {
                     loading.value = false;
                     const data = response.data;
-                    //data.content是数组
+                    if(data.success){
+                    //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
                     ebooks.value = data.content.list;
-                    console.log(data.content);
+                    console.log(ebooks.value);
                     // 重置分页按钮
                     pagination.value.current = params.page;
                     pagination.value.total = data.content.total;
+                    }else{
+                        message.error(data.message)
+                    }
                 });
             };
             /**
@@ -147,8 +152,10 @@
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const handleModalOk = () => {
+                console.log(ebook.value);
                 modalLoading.value = true;
                 axios.post("/ebook/save", ebook.value).then((response) => {
+                    console.log(ebook.value);
                     const data = response.data;//data=commonResp
                     if (data.success){
                         modalLoading.value=false;
@@ -167,7 +174,8 @@
              */
             const edit = (record:any) => {
                 modalVisible.value = true;
-                ebook.value=record
+                ebook.value=record;
+                console.log(record);
             };
 
             /**

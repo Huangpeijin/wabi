@@ -68,7 +68,7 @@ public class EbookService {
              ebook.setId(snowFlake.nextId());
              ebookMapper.insert(ebook);
          }else {
-             //更新
+             //通过键值去更新
              ebookMapper.updateByPrimaryKey(ebook);
          }
      }

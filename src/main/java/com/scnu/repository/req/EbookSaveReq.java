@@ -3,6 +3,7 @@ package com.scnu.repository.req;
 public class EbookSaveReq {
     private Long id;
 
+
     private String name;
 
     private Long category1Id;
