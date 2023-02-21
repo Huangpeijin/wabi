@@ -30,9 +30,21 @@ public class CategoryService {
     @Resource
     private SnowFlake snowFlake;
 
+    public List<CategoryQueryResp> all(){
+        //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
+        CategoryExample categoryExample = new CategoryExample();
+        //给查询加排序
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+
+        //列表复制
+        List<CategoryQueryResp> list = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+        return  list;
+    }
     public PageResp<CategoryQueryResp> list(CategoryQueryReq req){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
 /*        //这里可以根据名称查询分类，后期在实现也行，在请求参数实体类加个getName
         if(!ObjectUtils.isEmpty(req.getName())){
