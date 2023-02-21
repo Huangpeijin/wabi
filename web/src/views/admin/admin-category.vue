@@ -22,7 +22,7 @@
             <a-table
                     :columns="columns"
                     :loading="loading"
-                    :data-source="categorys"
+                    :data-source="level1"
                     :row-key="record => record.id"
                     :pagination="false"
             >
@@ -103,6 +103,18 @@
                     slots: { customRender: 'action' }
                 }
             ];
+            /**
+             * 一级分类树，children属性就是二级分类
+             * [{
+             *   id: "",
+             *   name: "",
+             *   children: [{
+             *     id: "",
+             *     name: "",
+             *   }]
+             * }]
+             */
+            const level1 = ref(); // 一级分类树，children属性就是二级分类
             /** 数据查询**/
             const handleQuery = () => {
                 loading.value = true;
@@ -112,6 +124,11 @@
                     if(data.success){
                         //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
                         categorys.value = data.content;
+                        console.log("原始数组：", categorys.value);
+
+                        level1.value = [];
+                        level1.value = Tool.array2Tree(categorys.value, 0);
+                        console.log("树形结构：", level1);
                     }else{
                         message.error(data.message)
                     }
@@ -176,11 +193,12 @@
             });
             return {
                 param,
-                categorys,
+                // categorys,
                 columns,
                 loading,
                 handleQuery,
                 handleDelete,
+                level1,
 
                 edit,
                 add,
