@@ -26,6 +26,7 @@ public class CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
 
+    //实例化SnowFlake
     @Resource
     private SnowFlake snowFlake;
 
@@ -33,6 +34,10 @@ public class CategoryService {
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
+/*        //这里可以根据名称查询分类，后期在实现也行，在请求参数实体类加个getName
+        if(!ObjectUtils.isEmpty(req.getName())){
+            criteria.andNameLike("%"+req.getName()+"%");
+        }*/
         PageHelper.startPage(req.getPage(),req.getSize());
         List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
         PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
@@ -56,26 +61,26 @@ public class CategoryService {
         return  pageResp;
     }
     /**
-     * 保存
+     * 保存，支持新增和更新，如果id有值说明是更新，如果id没值说明是新增
      **/
      public void save(CategorySaveReq req){
          Category category=CopyUtil.copy(req,Category.class);
          if (ObjectUtils.isEmpty(req.getId())){
-             //新增
+             //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
              category.setId(snowFlake.nextId());
              categoryMapper.insert(category);
          }else {
-             //通过键值去更新
+             //编辑保存（更新）
              categoryMapper.updateByPrimaryKey(category);
          }
      }
+
     /**
      * 删除
      **/
-    public void delete(Long id){
-        System.out.println(id);
-        //操作数据库的时候，我们一般会用到Maapper的方法,这里有根据主键来删除
-        categoryMapper.deleteByPrimaryKey(id);
-    }
-
+     public void delete(Long id){
+         System.out.println(id);
+         //操作数据库的时候，我们一般会用到Maapper的方法,这里有根据主键来删除
+         categoryMapper.deleteByPrimaryKey(id);
+     }
 }

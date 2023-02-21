@@ -122,12 +122,11 @@
                     loading.value = false;
                     const data = response.data;
                     if(data.success){
-                    //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
-                    categorys.value = data.content.list;
-                    console.log(categorys.value);
-                    // 重置分页按钮
-                    pagination.value.current = params.page;
-                    pagination.value.total = data.content.total;
+                        //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
+                        categorys.value = data.content.list;
+                        // 重置分页按钮
+                        pagination.value.current = params.page;
+                        pagination.value.total = data.content.total;
                     }else{
                         message.error(data.message)
                     }
