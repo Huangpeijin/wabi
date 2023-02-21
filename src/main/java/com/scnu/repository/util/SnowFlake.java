@@ -18,9 +18,9 @@ public class SnowFlake {
     /**
      * 每一部分占用的位数
      */
-    private final static long SEQUENCE_BIT = 12; //序列号占用的位数
-    private final static long MACHINE_BIT = 5;   //机器标识占用的位数
-    private final static long DATACENTER_BIT = 5;//数据中心占用的位数
+    private final static long SEQUENCE_BIT = 12; //序列号占用的位数，算法才用位运算，位运算是一个效率很高的一种运算
+    private final static long MACHINE_BIT = 5;   //机器标识占用的位数，占5位，一位就是二进制的零跟一，五位就是二的五次方就是三十二，所以最多可以表示三十二台机器
+    private final static long DATACENTER_BIT = 5;//数据中心占用的位数，比如上海可以叫一个数据中心....
 
     /**
      * 每一部分的最大值
@@ -61,6 +61,7 @@ public class SnowFlake {
      * @return
      */
     public synchronized long nextId() {
+        //取一个时间戳
         long currStmp = getNewstmp();
         if (currStmp < lastStmp) {
             throw new RuntimeException("Clock moved backwards.  Refusing to generate id");
@@ -79,7 +80,7 @@ public class SnowFlake {
         }
 
         lastStmp = currStmp;
-
+        //将数值拼起来，整个数值就变成了雪花id
         return (currStmp - START_STMP) << TIMESTMP_LEFT //时间戳部分
                 | datacenterId << DATACENTER_LEFT       //数据中心部分
                 | machineId << MACHINE_LEFT             //机器标识部分
@@ -99,18 +100,20 @@ public class SnowFlake {
     }
 
     public static void main(String[] args) throws ParseException {
-        // 时间戳
-        // System.out.println(System.currentTimeMillis());
-        // System.out.println(new Date().getTime());
-        //
-        // String dateTime = "2021-01-01 08:00:00";
-        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        // System.out.println(sdf.parse(dateTime).getTime());
+       /* // 时间戳，以下两个是一样的，以毫秒为单位
+         System.out.println(System.currentTimeMillis());
+         System.out.println(new Date().getTime());
+        //以2021为起始时间，打印出来的是现在的时间跟起始时间的一个差值
+         String dateTime = "2021-01-01 08:00:00";
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+         System.out.println(sdf.parse(dateTime).getTime());*/
 
+        //创建一个雪花实例，数据中心和机器中心都是写成了1
         SnowFlake snowFlake = new SnowFlake(1, 1);
 
         long start = System.currentTimeMillis();
         for (int i = 0; i < 10; i++) {
+            //通过nextId去用雪花，它由时间戳、数据中心、机器中心和序列号
             System.out.println(snowFlake.nextId());
             System.out.println(System.currentTimeMillis() - start);
         }

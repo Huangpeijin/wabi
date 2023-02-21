@@ -26,6 +26,7 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
+    //实例化SnowFlake
     @Resource
     private SnowFlake snowFlake;
 
@@ -59,17 +60,23 @@ public class EbookService {
         return  pageResp;
     }
     /**
-     * 保存
+     * 保存，支持新增和更新，如果id有值说明是更新，如果id没值说明是新增
      **/
      public void save(EbookSaveReq req){
          Ebook ebook=CopyUtil.copy(req,Ebook.class);
          if (ObjectUtils.isEmpty(req.getId())){
-             //新增
+             //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
              ebook.setId(snowFlake.nextId());
              ebookMapper.insert(ebook);
          }else {
-             //通过键值去更新
+             //编辑保存（更新）
              ebookMapper.updateByPrimaryKey(ebook);
          }
+     }
+
+
+     public void delete(Long id){
+         //操作数据库的时候，我们一般会用到Maapper的方法,这里有根据主键来删除
+         ebookMapper.deleteByPrimaryKey(id);
      }
 }

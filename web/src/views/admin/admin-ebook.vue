@@ -13,7 +13,7 @@
                        </a-button>
                    </a-form-item>
                    <a-form-item>
-                       <a-button type="primary" @click="add()">
+                       <a-button type="primary" @click="add()" size="large">
                            新增
                        </a-button>
                    </a-form-item>
@@ -35,9 +35,16 @@
                         <a-button type="primary" @click="edit(record)">
                             编辑
                         </a-button>
-                        <a-button type="danger">
-                            删除
-                        </a-button>
+                        <a-popconfirm
+                                title="删除后不可恢复，确认删除?"
+                                ok-text="是"
+                                cancel-text="否"
+                                @confirm="handleDelete(record.id)"
+                        >
+                            <a-button type="danger">
+                                删除
+                            </a-button>
+                        </a-popconfirm>
                     </a-space>
                 </template>
             </a-table>
@@ -144,7 +151,6 @@
                     if(data.success){
                     //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
                     ebooks.value = data.content.list;
-                    console.log(ebooks.value);
                     // 重置分页按钮
                     pagination.value.current = params.page;
                     pagination.value.total = data.content.total;
@@ -163,22 +169,18 @@
                 });
             };
             // -------- 表单 ---------
-            /**
-             * 数组，[100, 101]对应：前端开发 / Vue
-             */
-            const ebook = ref({});
+            const ebook = ref({});//绑定表单的ebook
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const handleModalOk = () => {
-                console.log(ebook.value);
                 modalLoading.value = true;
+                //传入的ebook.value的值是前端数据（表单上的值）
                 axios.post("/ebook/save", ebook.value).then((response) => {
-                    modalLoading.value=false;
-                    console.log(ebook.value);
                     const data = response.data;//data=commonResp
                     if (data.success){
+                        modalLoading.value=false;
                         modalVisible.value=false;
-                        //重新加载列表
+                        //调用handleQuery函数，并传入一个对象参数，重新加载列表
                         handleQuery({
                             page:pagination.value.current,
                             size:pagination.value.pageSize
@@ -195,7 +197,6 @@
             const edit = (record:any) => {
                 modalVisible.value = true;
                 ebook.value=Tool.copy(record);
-                // console.log(record);
             };
 
             /**
@@ -203,7 +204,25 @@
              */
             const add = () => {
                 modalVisible.value = true;
+                //将ebook的值清空并给它赋一个空对象
                 ebook.value={}
+            };
+            /**
+             * 删除
+             */
+            const handleDelete = (id:number) => {
+                axios.delete("/ebook/delete/"+id).then((response) => {
+                    const data = response.data;//data=commonResp
+                    if (data.success){
+                        //调用handleQuery函数，并传入一个对象参数，重新加载列表
+                        handleQuery({
+                            page:pagination.value.current,
+                            size:pagination.value.pageSize
+                        });
+                    }else {
+                        message.error(data.message);
+                    }
+                });
             };
 
             onMounted(() => {
@@ -212,7 +231,9 @@
                     size:pagination.value.pageSize
                 });
             });
+            //这些东西需要给html调用，所以需要return出去
             return {
+                //表格
                 param,
                 ebooks,
                 pagination,
@@ -220,10 +241,12 @@
                 loading,
                 handleTableChange,
                 handleQuery,
+                handleDelete,
 
                 edit,
                 add,
 
+                //表单
                 ebook,
                 modalVisible,
                 modalLoading,
