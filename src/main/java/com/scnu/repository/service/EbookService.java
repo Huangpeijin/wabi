@@ -74,8 +74,11 @@ public class EbookService {
          }
      }
 
-
+    /**
+     * 删除
+     **/
      public void delete(Long id){
+         System.out.println(id);
          //操作数据库的时候，我们一般会用到Maapper的方法,这里有根据主键来删除
          ebookMapper.deleteByPrimaryKey(id);
      }

@@ -35,9 +35,16 @@
                         <a-button type="primary" @click="edit(record)">
                             编辑
                         </a-button>
-                        <a-button type="danger">
-                            删除
-                        </a-button>
+                        <a-popconfirm
+                                title="删除后不可恢复，确认删除?"
+                                ok-text="是"
+                                cancel-text="否"
+                                @confirm="handleDelete(record.id)"
+                        >
+                            <a-button type="danger">
+                                删除
+                            </a-button>
+                        </a-popconfirm>
                     </a-space>
                 </template>
             </a-table>
@@ -178,7 +185,23 @@
                 modalVisible.value = true;
                 category.value={}
             };
-
+            /**
+             * 删除
+             */
+            const handleDelete = (id:number) => {
+                axios.delete("/category/delete/"+id).then((response) => {
+                    const data = response.data;//data=commonResp
+                    if (data.success){
+                        //调用handleQuery函数，并传入一个对象参数，重新加载列表
+                        handleQuery({
+                            page:pagination.value.current,
+                            size:pagination.value.pageSize
+                        });
+                    }else {
+                        message.error(data.message);
+                    }
+                });
+            };
             onMounted(() => {
                 handleQuery({
                     page:1,
@@ -193,6 +216,7 @@
                 loading,
                 handleTableChange,
                 handleQuery,
+                handleDelete,
 
                 edit,
                 add,

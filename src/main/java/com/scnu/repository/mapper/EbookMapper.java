@@ -2,8 +2,9 @@ package com.scnu.repository.mapper;
 
 import com.scnu.repository.domain.Ebook;
 import com.scnu.repository.domain.EbookExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EbookMapper {
     long countByExample(EbookExample example);
