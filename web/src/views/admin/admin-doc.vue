@@ -71,22 +71,12 @@
                 >
                 </a-tree-select>
             </a-form-item>
-<!--            <a-form-item label="父文档">-->
-<!--                <a-select v-model:value="doc.parent">-->
-<!--                    <a-select-option :value="0">-->
-<!--                        无-->
-<!--                    </a-select-option>-->
-<!--                    <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="doc.id === c.id">-->
-<!--                        {{c.name}}-->
-<!--                    </a-select-option>-->
-<!--                </a-select>-->
-<!--            </a-form-item>-->
             <a-form-item label="顺序">
                 <a-input v-model:value="doc.sort" />
             </a-form-item>
-
-
-
+            <a-form-item label="内容">
+                <div id="content"></div>
+            </a-form-item>
         </a-form>
     </a-modal>
 </template>
@@ -97,6 +87,7 @@
     import {Tool} from "@/util/tool";
     import {useRoute} from "vue-router";
     import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
+    import E from 'wangeditor'
 
     export default defineComponent({
         name: 'AdminDoc',
@@ -170,6 +161,8 @@
             const doc = ref({});
             const modalVisible = ref(false);
             const modalLoading = ref(false);
+            const editor = new E('#content');//定义富文本
+
             const handleModalOk = () => {
                 console.log(doc.value);
                 modalLoading.value = true;
@@ -231,6 +224,9 @@
 
                 // 为选择树添加一个"无",在数组的前面添加节点，push是往后面添加元素
                 treeSelectData.value.unshift({id: 0, name: '无'});
+                setTimeout(function () {
+                    editor.create();//创建富文本
+                },100);
             };
 
             /**
@@ -244,6 +240,10 @@
 
                 // 为选择树添加一个"无"
                 treeSelectData.value.unshift({id: 0, name: '无'});
+                setTimeout(function () {
+                    editor.create();//创建富文本
+                },100);
+
             };
 
             /**
