@@ -1,7 +1,7 @@
 <template>
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
-            <a-row>
+            <a-row :gutter="24">
                 <a-col :span="8">
                     <p>
                         <a-form layout="inline" :model="param">
@@ -23,13 +23,14 @@
                             :data-source="level1"
                             :row-key="record => record.id"
                             :pagination="false"
+                            size="small"
                     >
-                        <template #cover="{ text: cover }">
-                            <img v-if="cover" :src="cover" alt="avatar" />
+                        <template #name="{ text, record }">
+                            {{record.sort}} {{text}}
                         </template>
                         <template v-slot:action="{text,record}">
                             <a-space size="small">
-                                <a-button type="primary" @click="edit(record)">
+                                <a-button type="primary" @click="edit(record)" size="small">
                                     编辑
                                 </a-button>
                                 <a-popconfirm
@@ -38,7 +39,7 @@
                                         cancel-text="否"
                                         @confirm="handleDelete(record.id)"
                                 >
-                                    <a-button type="danger">
+                                    <a-button type="danger" size="small">
                                         删除
                                     </a-button>
                                 </a-popconfirm>
@@ -47,11 +48,20 @@
                     </a-table>
                 </a-col>
                 <a-col :span="16">
-                    <a-form :model="doc" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-                        <a-form-item label="名称">
-                            <a-input v-model:value="doc.name" />
+                    <p>
+                        <a-form layout="inline" :model="param">
+                            <a-form-item>
+                                <a-button type="primary" @click="handleSave()">
+                                    保存
+                                </a-button>
+                            </a-form-item>
+                        </a-form>
+                    </p>
+                    <a-form :model="doc" layout="vertical">
+                        <a-form-item>
+                            <a-input v-model:value="doc.name" placeholder="名称"/>
                         </a-form-item>
-                        <a-form-item label="父文档">
+                        <a-form-item>
                             <a-tree-select
                                     v-model:value="doc.parent"
                                     style="width: 100%"
@@ -63,10 +73,10 @@
                             >
                             </a-tree-select>
                         </a-form-item>
-                        <a-form-item label="顺序">
-                            <a-input v-model:value="doc.sort" />
+                        <a-form-item>
+                            <a-input v-model:value="doc.sort" placeholder="顺序"/>
                         </a-form-item>
-                        <a-form-item label="内容">
+                        <a-form-item>
                             <div id="content"></div>
                         </a-form-item>
                     </a-form>
@@ -103,16 +113,8 @@
                 {
                     title: '名称',
                     dataIndex: 'name',
+                    slots: { customRender: 'name' }
                     // key:'name'
-                },
-                {
-                    title: '父文档',
-                    dataIndex: 'parent',
-                    key:'parent',
-                },
-                {
-                    title: '顺序',
-                    dataIndex: 'sort'
                 },
                 {
                     title: 'Action',
@@ -164,8 +166,9 @@
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const editor = new E('#content');//定义富文本
+            editor.config.zIndex=0;//让富文本不要遮住下拉框，因为富文本的Index设置的很高，默认是500，这个z-index就是覆盖的层级的大小
 
-            const handleModalOk = () => {
+            const handleSave = () => {
                 console.log(doc.value);
                 modalLoading.value = true;
                 axios.post("/doc/save", doc.value).then((response) => {
@@ -242,10 +245,6 @@
 
                 // 为选择树添加一个"无"
                 treeSelectData.value.unshift({id: 0, name: '无'});
-                setTimeout(function () {
-                    editor.create();//创建富文本
-                },100);
-
             };
 
             /**
@@ -310,6 +309,7 @@
             };
             onMounted(() => {
                 handleQuery();
+                editor.create();//创建富文本
             });
             return {
                 param,
@@ -326,7 +326,7 @@
                 doc,
                 modalVisible,
                 modalLoading,
-                handleModalOk,
+                handleSave,
 
                 treeSelectData
             }
