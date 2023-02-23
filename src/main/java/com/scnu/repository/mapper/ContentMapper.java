@@ -2,8 +2,9 @@ package com.scnu.repository.mapper;
 
 import com.scnu.repository.domain.Content;
 import com.scnu.repository.domain.ContentExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ContentMapper {
     long countByExample(ContentExample example);

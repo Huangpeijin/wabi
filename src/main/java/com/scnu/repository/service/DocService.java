@@ -2,8 +2,10 @@ package com.scnu.repository.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.scnu.repository.domain.Content;
 import com.scnu.repository.domain.Doc;
 import com.scnu.repository.domain.DocExample;
+import com.scnu.repository.mapper.ContentMapper;
 import com.scnu.repository.mapper.DocMapper;
 import com.scnu.repository.req.DocQueryReq;
 import com.scnu.repository.req.DocSaveReq;
@@ -25,6 +27,9 @@ public class DocService {
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private ContentMapper contentMapper;
 
     //实例化SnowFlake
     @Resource
@@ -77,13 +82,21 @@ public class DocService {
      **/
      public void save(DocSaveReq req){
          Doc doc=CopyUtil.copy(req,Doc.class);
+         Content content=CopyUtil.copy(req, Content.class);
          if (ObjectUtils.isEmpty(req.getId())){
              //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
              doc.setId(snowFlake.nextId());
              docMapper.insert(doc);
+
+             content.setId(doc.getId());
+             contentMapper.insert(content);
          }else {
              //编辑保存（更新）
              docMapper.updateByPrimaryKey(doc);
+             int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+             if (count==0){
+                 contentMapper.insert(content);
+             }
          }
      }
 

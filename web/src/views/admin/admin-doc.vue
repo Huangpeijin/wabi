@@ -165,15 +165,16 @@
             // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
             const treeSelectData =ref();
             treeSelectData.value=[];
-            const doc = ref({});
+            const doc = ref();
+            doc.value={};
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const editor = new E('#content');//定义富文本
             editor.config.zIndex=0;//让富文本不要遮住下拉框，因为富文本的Index设置的很高，默认是500，这个z-index就是覆盖的层级的大小
 
             const handleSave = () => {
-                console.log(doc.value);
                 modalLoading.value = true;
+                doc.value.content = editor.txt.html();//获得富文本的内容
                 axios.post("/doc/save", doc.value).then((response) => {
                     modalLoading.value=false;
                     console.log(doc.value);
