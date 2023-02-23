@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -41,10 +42,12 @@ public class DocController {
     }
 
     //删除一般都是按id来删除的，因为id是主键.请求接口传1，拿到数据id就是1，存在映射关系。
-    @DeleteMapping ("/delete/{id}") //删除接口名字
-    public CommonResp delete(@PathVariable Long id){
+    @DeleteMapping ("/delete/{idsStr}") //删除接口名字
+    public CommonResp delete(@PathVariable String idsStr){
         CommonResp resp = new CommonResp<>();
-        docService.delete(id);//调用delete方法，将id传进去,delete方法在服务层写
+        //将String转成集合，用split根据逗号转成数组,然后再将数组转成一个list列表，转成列表后生成变量
+        List<String> list  =  Arrays.asList(idsStr.split(","));
+        docService.delete(list);
         return resp;
     }
 

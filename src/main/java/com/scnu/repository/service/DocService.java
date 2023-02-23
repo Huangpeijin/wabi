@@ -91,8 +91,18 @@ public class DocService {
      * 删除
      **/
      public void delete(Long id){
-         System.out.println(id);
          //操作数据库的时候，我们一般会用到Maapper的方法,这里有根据主键来删除
          docMapper.deleteByPrimaryKey(id);
+     }
+     /**
+     * 重载删除
+     **/
+     public void delete(List<String> ids){
+         //创建条件
+         DocExample docExample = new DocExample();
+         DocExample.Criteria criteria = docExample.createCriteria();
+         criteria.andIdIn(ids);
+         //根据条件进行删除，这样的话就只需要执行一个SQL就可以实行批量删除
+         docMapper.deleteByExample(docExample);
      }
 }
