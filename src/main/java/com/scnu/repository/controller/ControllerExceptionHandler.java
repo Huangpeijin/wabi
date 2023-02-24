@@ -2,6 +2,7 @@ package com.scnu.repository.controller;
 
 //import com.scnu.repository.exception.BusinessException;
 
+import com.scnu.repository.exception.BusinessException;
 import com.scnu.repository.resp.CommonResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,15 +41,16 @@ public class ControllerExceptionHandler {
      * @param e
      * @return
      */
-//    @ExceptionHandler(value = BusinessException.class)
-//    @ResponseBody
-//    public CommonResp validExceptionHandler(BusinessException e) {
-//        CommonResp commonResp = new CommonResp();
-//        LOG.warn("业务异常：{}", e.getCode().getDesc());
-//        commonResp.setSuccess(false);
-//        commonResp.setMessage(e.getCode().getDesc());
-//        return commonResp;
-//    }
+    @ExceptionHandler(value = BusinessException.class)
+    @ResponseBody
+    public CommonResp validExceptionHandler(BusinessException e) {
+        CommonResp commonResp = new CommonResp();
+        //code就是枚举，去拿它的描述
+        LOG.warn("业务异常：{}", e.getCode().getDesc());
+        commonResp.setSuccess(false);
+        commonResp.setMessage(e.getCode().getDesc());
+        return commonResp;
+    }
 
     /**
      * 校验异常统一处理

@@ -4,16 +4,19 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.scnu.repository.domain.User;
 import com.scnu.repository.domain.UserExample;
+import com.scnu.repository.exception.BusinessException;
+import com.scnu.repository.exception.BusinessExceptionCode;
 import com.scnu.repository.mapper.UserMapper;
 import com.scnu.repository.req.UserQueryReq;
 import com.scnu.repository.req.UserSaveReq;
-import com.scnu.repository.resp.UserQueryResp;
 import com.scnu.repository.resp.PageResp;
+import com.scnu.repository.resp.UserQueryResp;
 import com.scnu.repository.util.CopyUtil;
 import com.scnu.repository.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -65,15 +68,33 @@ public class UserService {
      public void save(UserSaveReq req){
          User user=CopyUtil.copy(req,User.class);
          if (ObjectUtils.isEmpty(req.getId())){
-             //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
-             user.setId(snowFlake.nextId());
-             userMapper.insert(user);
+             User userDB = selectByLoginName(req.getLoginName());
+             if (ObjectUtils.isEmpty(userDB)) {
+                 // 新增
+                 user.setId(snowFlake.nextId());
+                 userMapper.insert(user);
+             } else {
+                 // 用户名已存在
+                 throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+             }
          }else {
              //编辑保存（更新）
              userMapper.updateByPrimaryKey(user);
          }
      }
-
+     //根据用户名去查
+    public User selectByLoginName(String LoginName) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(LoginName);
+        //mybatis只能用list来接收
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(userList)) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
+    }
     /**
      * 删除
      **/
