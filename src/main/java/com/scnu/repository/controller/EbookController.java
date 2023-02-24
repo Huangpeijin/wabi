@@ -35,11 +35,8 @@ public class EbookController {
     //删除一般都是按id来删除的，因为id是主键.请求接口传1，拿到数据id就是1，存在映射关系。
     @DeleteMapping ("/delete/{id}") //删除接口名字
     public CommonResp delete(@PathVariable Long id){
-        CommonResp resp = new CommonResp<>();
         ebookService.delete(id);//调用delete方法，将id传进去,delete方法在服务层写
+        CommonResp resp = new CommonResp<>();
         return resp;
     }
-
-
-
 }
