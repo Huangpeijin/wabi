@@ -1,10 +1,12 @@
 package com.scnu.repository.controller;
 
+import com.scnu.repository.req.UserLoginReq;
 import com.scnu.repository.req.UserQueryReq;
 import com.scnu.repository.req.UserResetPasswordReq;
 import com.scnu.repository.req.UserSaveReq;
 import com.scnu.repository.resp.CommonResp;
 import com.scnu.repository.resp.PageResp;
+import com.scnu.repository.resp.UserLoginResp;
 import com.scnu.repository.resp.UserQueryResp;
 import com.scnu.repository.service.UserService;
 import org.springframework.util.DigestUtils;
@@ -47,6 +49,20 @@ public class UserController {
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.resetPassword(req);
+        return resp;
+    }
+    @PostMapping("/login")
+    public CommonResp login(@Valid @RequestBody UserLoginReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp<UserLoginResp> resp = new CommonResp<>();
+        UserLoginResp userLoginResp = userService.login(req);
+
+//        Long token = snowFlake.nextId();
+//        LOG.info("生成单点登录token：{}，并放入redis中", token);
+//        userLoginResp.setToken(token.toString());
+//        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
+
+        resp.setContent(userLoginResp);
         return resp;
     }
 }

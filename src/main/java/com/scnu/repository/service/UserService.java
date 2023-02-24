@@ -7,10 +7,12 @@ import com.scnu.repository.domain.UserExample;
 import com.scnu.repository.exception.BusinessException;
 import com.scnu.repository.exception.BusinessExceptionCode;
 import com.scnu.repository.mapper.UserMapper;
+import com.scnu.repository.req.UserLoginReq;
 import com.scnu.repository.req.UserQueryReq;
 import com.scnu.repository.req.UserResetPasswordReq;
 import com.scnu.repository.req.UserSaveReq;
 import com.scnu.repository.resp.PageResp;
+import com.scnu.repository.resp.UserLoginResp;
 import com.scnu.repository.resp.UserQueryResp;
 import com.scnu.repository.util.CopyUtil;
 import com.scnu.repository.util.SnowFlake;
@@ -112,5 +114,26 @@ public class UserService {
     public void resetPassword(UserResetPasswordReq req) {
         User user = CopyUtil.copy(req, User.class);//copy成数据库的实体
         userMapper.updateByPrimaryKeySelective(user);
+    }
+    /**
+     * 登录
+     */
+    public UserLoginResp login(UserLoginReq req) {
+        User userDb = selectByLoginName(req.getLoginName());
+        if (ObjectUtils.isEmpty(userDb)) {
+            // 用户名不存在
+            LOG.info("用户名不存在, {}", req.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        } else {
+            if (userDb.getPassword().equals(req.getPassword())) {
+                // 登录成功
+                UserLoginResp userLoginResp = CopyUtil.copy(userDb, UserLoginResp.class);
+                return userLoginResp;
+            } else {
+                // 密码不对
+                LOG.info("密码不对, 输入密码：{}, 数据库密码：{}", req.getPassword(), userDb.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+        }
     }
 }
