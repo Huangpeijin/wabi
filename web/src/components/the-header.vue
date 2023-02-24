@@ -51,6 +51,7 @@
     import { ref, defineComponent } from 'vue';
     import axios from 'axios';
     import {message} from 'ant-design-vue';
+    import store from "../store/index";
     declare let hexMd5: any;
     declare let KEY: any;
 
@@ -84,8 +85,8 @@
                         loginModalVisible.value = false;
                         message.success("登录成功！");
                         user.value=data.content;
-
-                        // store.commit("setUser", data.content);
+                        //触发setUser方法，把用户的信息传递过去
+                        store.commit("setUser", user.value);
                     } else {
                         message.error(data.message);
                     }
