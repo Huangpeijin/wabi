@@ -181,7 +181,7 @@
              * 数组，[100, 101]对应：前端开发 / Vue
              */
             const doc = ref();
-            doc.value={};
+            doc.value={ebookId: route.query.ebookId};
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const editor = new E('#content');//定义富文本
