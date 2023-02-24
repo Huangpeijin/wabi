@@ -8,6 +8,7 @@ import com.scnu.repository.exception.BusinessException;
 import com.scnu.repository.exception.BusinessExceptionCode;
 import com.scnu.repository.mapper.UserMapper;
 import com.scnu.repository.req.UserQueryReq;
+import com.scnu.repository.req.UserResetPasswordReq;
 import com.scnu.repository.req.UserSaveReq;
 import com.scnu.repository.resp.PageResp;
 import com.scnu.repository.resp.UserQueryResp;
@@ -105,4 +106,11 @@ public class UserService {
          //操作数据库的时候，我们一般会用到Maapper的方法,这里有根据主键来删除
          userMapper.deleteByPrimaryKey(id);
      }
+    /**
+     * 修改密码
+     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);//copy成数据库的实体
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 }

@@ -1,6 +1,7 @@
 package com.scnu.repository.controller;
 
 import com.scnu.repository.req.UserQueryReq;
+import com.scnu.repository.req.UserResetPasswordReq;
 import com.scnu.repository.req.UserSaveReq;
 import com.scnu.repository.resp.CommonResp;
 import com.scnu.repository.resp.PageResp;
@@ -39,6 +40,13 @@ public class UserController {
     public CommonResp delete(@PathVariable Long id){
         userService.delete(id);//调用delete方法，将id传进去,delete方法在服务层写
         CommonResp resp = new CommonResp<>();
+        return resp;
+    }
+    @PostMapping("/reset-password")
+    public CommonResp resetPassword(@Valid @RequestBody UserResetPasswordReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        userService.resetPassword(req);
         return resp;
     }
 }
