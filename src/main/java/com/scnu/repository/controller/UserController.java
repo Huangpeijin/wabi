@@ -3,9 +3,10 @@ package com.scnu.repository.controller;
 import com.scnu.repository.req.UserQueryReq;
 import com.scnu.repository.req.UserSaveReq;
 import com.scnu.repository.resp.CommonResp;
-import com.scnu.repository.resp.UserQueryResp;
 import com.scnu.repository.resp.PageResp;
+import com.scnu.repository.resp.UserQueryResp;
 import com.scnu.repository.service.UserService;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,6 +28,7 @@ public class UserController {
     }
     @PostMapping("/save") //保存接口名字
     public CommonResp save(@Valid @RequestBody UserSaveReq req){
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.save(req);//调用save方法
         return resp;
