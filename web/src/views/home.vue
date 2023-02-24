@@ -87,7 +87,7 @@ export default defineComponent({
         const data = response.data;
         if (data.success) {
           categorys = data.content;
-          console.log("原始数组：", categorys);
+          // console.log("原始数组：", categorys);
 
           // // 加载完分类后，将侧边栏全部展开
           // openKeys.value = [];
@@ -97,7 +97,7 @@ export default defineComponent({
 
           level1.value = [];
           level1.value = Tool.array2Tree(categorys, 0);
-          console.log("树形结构：", level1.value);
+          // console.log("树形结构：", level1.value);
         } else {
           message.error(data.message);
         }

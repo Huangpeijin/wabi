@@ -1,12 +1,16 @@
 package com.scnu.repository.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class UserLoginResp {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     private String loginName;
 
     private String name;
 
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String token;
 
     public Long getId() {
