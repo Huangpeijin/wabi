@@ -8,7 +8,9 @@
                             :tree-data="level1"
                             @select="onSelect"
                             :replaceFields="{title: 'name', key: 'id', value:'id'}"
-                            :defaultExpandAll="true">
+                            :defaultExpandAll="true"
+                            :defaultSelectedKeys="defaultSelectedKeys"
+                    >
                     </a-tree>
                 </a-col>
                 <a-col :span="18">
@@ -32,8 +34,8 @@
             const route = useRoute();
             const docs = ref();
             const html = ref();
-            // const defaultSelectedKeys = ref();
-            // defaultSelectedKeys.value = [];
+            const defaultSelectedKeys = ref();
+            defaultSelectedKeys.value = [];
             // // 当前选中的文档
             // const doc = ref();
             // doc.value = {};
@@ -77,12 +79,14 @@
                         level1.value = [];
                         level1.value = Tool.array2Tree(docs.value, 0);
 
-                        // if (Tool.isNotEmpty(level1)) {
-                        //     defaultSelectedKeys.value = [level1.value[0].id];
-                        //     handleQueryContent(level1.value[0].id);
-                        //     // 初始显示文档信息
-                        //     doc.value = level1.value[0];
-                        // }
+                        if (Tool.isNotEmpty(level1)) {
+                            //将该节点设置成选中状态
+                            defaultSelectedKeys.value = [level1.value[0].id];
+                            //根据这个节点去查内容
+                            handleQueryContent(level1.value[0].id);
+                            // // 初始显示文档信息
+                            // doc.value = level1.value[0];
+                        }
                     } else {
                         message.error(data.message);
                     }
@@ -119,7 +123,7 @@
                 level1,
                 html,
                 onSelect,
-                // defaultSelectedKeys,
+                defaultSelectedKeys,
                 // doc,
                 // vote
             }
