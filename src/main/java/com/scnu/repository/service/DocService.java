@@ -35,9 +35,10 @@ public class DocService {
     @Resource
     private SnowFlake snowFlake;
 
-    public List<DocQueryResp> all(){
+    public List<DocQueryResp> all(Long ebookId){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         DocExample docExample = new DocExample();
+        docExample.createCriteria().andEbookIdEqualTo(ebookId);
         //给查询加排序
         docExample.setOrderByClause("sort asc");
         List<Doc> docList = docMapper.selectByExample(docExample);
