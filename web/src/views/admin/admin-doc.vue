@@ -171,7 +171,9 @@
             const modalLoading = ref(false);
             const editor = new E('#content');//定义富文本
             editor.config.zIndex=0;//让富文本不要遮住下拉框，因为富文本的Index设置的很高，默认是500，这个z-index就是覆盖的层级的大小
-
+            /**
+             * 富文档保存
+             */
             const handleSave = () => {
                 modalLoading.value = true;
                 doc.value.content = editor.txt.html();//获得富文本的内容
@@ -180,7 +182,7 @@
                     console.log(doc.value);
                     const data = response.data;//data=commonResp
                     if (data.success){
-                        modalVisible.value=false;
+                        message.success("保存成功！");
                         //重新加载列表
                         handleQuery();
                     }else {
@@ -221,12 +223,28 @@
 
 
             /**
+             * 内容查询
+             **/
+            const handleQueryContent = () => {
+                axios.get("/doc/find-content/" + doc.value.id).then((response) => {
+                    const data = response.data;
+                    if (data.success) {
+                        editor.txt.html(data.content)
+                    } else {
+                        message.error(data.message);
+                    }
+                });
+            };
+            /**
              * 编辑
              */
             const edit = (record:any) => {
+                // 清空富文本框
+                editor.txt.html("");
                 modalVisible.value = true;
                 doc.value=Tool.copy(record);
-                // console.log(record);
+                handleQueryContent();
+
                 // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
                 treeSelectData.value = Tool.copy(level1.value);
                 setDisable(treeSelectData.value, record.id);
@@ -242,8 +260,12 @@
              * 新增
              */
             const add = () => {
+                // 清空富文本框
+                editor.txt.html("");
                 modalVisible.value = true;
                 doc.value={ebookId: route.query.ebookId};
+
+                handleQueryContent();
 
                 treeSelectData.value = Tool.copy(level1.value) || [];
 

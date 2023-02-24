@@ -82,7 +82,7 @@ public class DocService {
      **/
      public void save(DocSaveReq req){
          Doc doc=CopyUtil.copy(req,Doc.class);
-         Content content=CopyUtil.copy(req, Content.class);
+         Content content=CopyUtil.copy(req, Content.class);//复制前端传来的内容
          if (ObjectUtils.isEmpty(req.getId())){
              //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
              doc.setId(snowFlake.nextId());
@@ -94,6 +94,7 @@ public class DocService {
              //编辑保存（更新）
              docMapper.updateByPrimaryKey(doc);
              int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+             //如果在数据库没有这个条数，则插入一条。
              if (count==0){
                  contentMapper.insert(content);
              }
@@ -118,4 +119,17 @@ public class DocService {
          //根据条件进行删除，这样的话就只需要执行一个SQL就可以实行批量删除
          docMapper.deleteByExample(docExample);
      }
+
+    /**
+     * 富文本内容查询
+     **/
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if (ObjectUtils.isEmpty(content)) {
+            return "";
+        } else {
+            return content.getContent();
+        }
+    }
+
 }
