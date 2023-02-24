@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-    import { ref, defineComponent } from 'vue';
+    import { ref, defineComponent,computed } from 'vue';
     import axios from 'axios';
     import {message} from 'ant-design-vue';
     import store from "../store/index";
@@ -59,9 +59,7 @@
         name: 'the-header',
         setup () {
             // // 登录后保存
-            // const user = computed(() => store.state.user);
-            const user =ref();
-            user.value={};
+            const user = computed(() => store.state.user);
             // 用来登录
             const loginUser = ref({
                 loginName: "test",
@@ -84,7 +82,6 @@
                     if (data.success) {
                         loginModalVisible.value = false;
                         message.success("登录成功！");
-                        user.value=data.content;
                         //触发setUser方法，把用户的信息传递过去
                         store.commit("setUser", user.value);
                     } else {

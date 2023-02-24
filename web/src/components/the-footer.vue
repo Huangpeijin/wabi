@@ -1,6 +1,6 @@
 <template>
     <a-layout-footer style="text-align: center">
-        加瓦电子书：欢迎{{user.name}}
+        甲蛙电子书<span v-show="user.id">，欢迎：{{user.name}}</span>
     </a-layout-footer>
 </template>
 <script lang="ts">
