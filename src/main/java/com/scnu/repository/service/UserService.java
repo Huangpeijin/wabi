@@ -78,8 +78,10 @@ public class UserService {
                  throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
              }
          }else {
-             //编辑保存（更新）
-             userMapper.updateByPrimaryKey(user);
+             // 更新
+             user.setLoginName(null);
+//             user.setPassword(null);
+             userMapper.updateByPrimaryKeySelective(user);
          }
      }
      //根据用户名去查
