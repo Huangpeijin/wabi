@@ -160,11 +160,11 @@
                     if(data.success){
                         //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
                         docs.value = data.content;
-                        console.log("原始数组：", docs.value);
+                        // console.log("原始数组：", docs.value);
 
                         level1.value = [];
                         level1.value = Tool.array2Tree(docs.value, 0);
-                        console.log("树形结构：", level1);
+                        // console.log("树形结构：", level1);
 
                         // 父文档下拉框初始化，相当于点击新增
                         treeSelectData.value = Tool.copy(level1.value) || [];

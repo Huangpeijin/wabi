@@ -3,6 +3,8 @@ package com.scnu.repository.req;
 import javax.validation.constraints.NotNull;
 
 public class DocSaveReq {
+
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     @NotNull(message = "【电子书】不能为空")

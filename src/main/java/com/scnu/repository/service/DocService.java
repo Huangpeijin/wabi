@@ -86,11 +86,11 @@ public class DocService {
          Content content=CopyUtil.copy(req, Content.class);//复制前端传来的内容
          if (ObjectUtils.isEmpty(req.getId())){
              //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
-             doc.setId(snowFlake.nextId());
-             docMapper.insert(doc);
-
-             content.setId(doc.getId());
-             contentMapper.insert(content);
+             doc.setId(snowFlake.nextId());//在domain里的doc用雪花算法生成一个id
+             docMapper.insert(doc);//在文档数据库插入文档的内容，这时的id是long类型，就是这里丢失的精度。
+//             System.out.println(doc.getId());
+             content.setId(doc.getId());//设置content的id跟doc的id一样
+             contentMapper.insert(content);//在文档内容数据库插入文档内容的内容
          }else {
              //编辑保存（更新）
              docMapper.updateByPrimaryKey(doc);

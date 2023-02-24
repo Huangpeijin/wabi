@@ -83,7 +83,7 @@ values (503, 500, '热门服务端语言', 503);
 drop table if exists `doc`;
 create table `doc`
 (
-    `id`         bigint      not null comment 'id',
+    `id`         bigint(20)      not null comment 'id',
     `ebook_id`   bigint      not null default 0 comment '电子书id',
     `parent`     bigint      not null default 0 comment '父id',
     `name`       varchar(50) not null comment '名称',
@@ -105,7 +105,7 @@ insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count) val
 drop table if exists `content`;
 create table `content`
 (
-    `id`      bigint     not null comment '文档id',
+    `id`      bigint(20)     not null comment '文档id',
     `content` mediumtext not null comment '内容',
     primary key (`id`)
 ) engine = innodb

@@ -1,6 +1,10 @@
 package com.scnu.repository.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class DocQueryResp {
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     private Long ebookId;
