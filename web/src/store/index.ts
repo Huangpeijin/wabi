@@ -6,7 +6,9 @@ const store = createStore({
   //定义全局变量
   state: {
     //刷新的时候，会加载store，就会去缓存里获取值
+    //如果获取不到，就返回一个空对象
     user: SessionStorage.get(USER) || {}
+    // user: {}
   },
   //对变量进行同步操作
   mutations: {

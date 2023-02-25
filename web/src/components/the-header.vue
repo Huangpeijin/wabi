@@ -51,7 +51,7 @@
     import { ref, defineComponent,computed } from 'vue';
     import axios from 'axios';
     import {message} from 'ant-design-vue';
-    import store from "../store/index";
+    import store from "../store";
     declare let hexMd5: any;
     declare let KEY: any;
 
@@ -59,6 +59,11 @@
         name: 'the-header',
         setup () {
             // // 登录后保存
+            //这里要返回一个对象
+            // const user = computed(() => store.state.user);
+            // const user1 = ref({});
+            //初始的时候加一个空对象，避免初始判断的时候为空指针导致报错。
+            // const user = ref({});
             const user = computed(() => store.state.user);
             // 用来登录
             const loginUser = ref({
@@ -83,7 +88,10 @@
                         loginModalVisible.value = false;
                         message.success("登录成功！");
                         //触发setUser方法，把用户的信息传递过去
-                        store.commit("setUser", user.value);
+                        console.log("登录后:"+data.content.id);
+                        // user1.value = data.content;
+                        // user.value = data.content;
+                        store.commit("setUser", data.content);
                     } else {
                         message.error(data.message);
                     }
@@ -111,6 +119,7 @@
                 loginUser,
                 login,
                 user,
+                // user1,
                 // logout
             }
         }
