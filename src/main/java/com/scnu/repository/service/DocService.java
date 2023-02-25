@@ -141,5 +141,24 @@ public class DocService {
             return content.getContent();
         }
     }
+    /**
+     * 点赞
+     */
+    public void vote(Long id) {
+         docMapperCust.increaseVoteCount(id);
+//        // 远程IP+doc.id作为key，24小时内不能重复
+//        String ip = RequestContext.getRemoteAddr();
+//        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 5000)) {
+//            docMapperCust.increaseVoteCount(id);
+//        } else {
+//            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+//        }
+//
+//        // 推送消息
+//        Doc docDb = docMapper.selectByPrimaryKey(id);
+//        String logId = MDC.get("LOG_ID");
+//        wsService.sendInfo("【" + docDb.getName() + "】被点赞！", logId);
+//        // rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
+    }
 
 }
