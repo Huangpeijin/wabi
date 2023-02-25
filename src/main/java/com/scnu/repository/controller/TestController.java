@@ -20,13 +20,23 @@ public class TestController {
     @Resource
     private TestService testService;
 
+    //从容器中取出redisTemplate
     @Resource
     private RedisTemplate redisTemplate;
 
-    @GetMapping("/hello")
-    public String hello(){
-        return  "hello world!"+testhello;
-    }
+    @GetMapping("/hello/{key}")
+//    public Object get(@PathVariable String key){
+//
+//            Object object = redisTemplate.opsForValue().get(key);
+////            object.get();
+////            LOG.info("key: {}, value: {}", key, object);
+//            return object;
+////             return  "hello world!"+object;
+//
+////        ValueOperations value = redisTemplate.opsForValue();
+//////        System.out.println(value.get("284542528508792832"));
+////        return  "hello world!"+testhello+value.get("284540995650064384");
+//    }
     @PostMapping ("/hello/post")
     public String helloPost(String name){
         return  "hello world! Post,"+name;
@@ -44,9 +54,10 @@ public class TestController {
     }
 
     @RequestMapping("/redis/get/{key}")
-    public Object get(@PathVariable Long key) {
+    public Object get(@PathVariable String key) {
         Object object = redisTemplate.opsForValue().get(key);
         LOG.info("key: {}, value: {}", key, object);
         return object;
     }
+
 }
