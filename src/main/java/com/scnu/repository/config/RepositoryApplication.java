@@ -7,10 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @ComponentScan("com.scnu")
 @SpringBootApplication
 @MapperScan("com.scnu.repository.mapper")
+@EnableScheduling
 public class RepositoryApplication {
 	private static final Logger LOG = (Logger) LoggerFactory.getLogger(RepositoryApplication.class);
 	public static void main(String[] args) {
