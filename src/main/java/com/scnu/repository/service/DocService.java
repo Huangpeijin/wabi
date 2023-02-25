@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.scnu.repository.domain.Content;
 import com.scnu.repository.domain.Doc;
 import com.scnu.repository.domain.DocExample;
+import com.scnu.repository.exception.BusinessException;
+import com.scnu.repository.exception.BusinessExceptionCode;
 import com.scnu.repository.mapper.ContentMapper;
 import com.scnu.repository.mapper.DocMapper;
 import com.scnu.repository.mapper.DocMapperCust;
@@ -13,6 +15,8 @@ import com.scnu.repository.req.DocSaveReq;
 import com.scnu.repository.resp.DocQueryResp;
 import com.scnu.repository.resp.PageResp;
 import com.scnu.repository.util.CopyUtil;
+import com.scnu.repository.util.RedisUtil;
+import com.scnu.repository.util.RequestContext;
 import com.scnu.repository.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +42,9 @@ public class DocService {
     //实例化SnowFlake
     @Resource
     private SnowFlake snowFlake;
+
+    @Resource
+    public RedisUtil redisUtil;
 
     public List<DocQueryResp> all(Long ebookId){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
@@ -145,14 +152,16 @@ public class DocService {
      * 点赞
      */
     public void vote(Long id) {
-         docMapperCust.increaseVoteCount(id);
-//        // 远程IP+doc.id作为key，24小时内不能重复
-//        String ip = RequestContext.getRemoteAddr();
-//        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 5000)) {
-//            docMapperCust.increaseVoteCount(id);
-//        } else {
-//            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
-//        }
+//         docMapperCust.increaseVoteCount(id);
+        //如果项目有会员体系，远程IP可以替换为会员ID
+        // 远程IP+doc.id作为key，24小时内不能重复
+        String ip = RequestContext.getRemoteAddr();
+        //第一次点赞就会校验key是否存在，根据doc.id和IP，第一次校验肯定不存在，不存在就会把key放入redis里去
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 5000)) {
+            docMapperCust.increaseVoteCount(id);
+        } else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
 //
 //        // 推送消息
 //        Doc docDb = docMapper.selectByPrimaryKey(id);
