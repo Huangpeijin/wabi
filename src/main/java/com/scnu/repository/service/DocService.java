@@ -7,6 +7,7 @@ import com.scnu.repository.domain.Doc;
 import com.scnu.repository.domain.DocExample;
 import com.scnu.repository.mapper.ContentMapper;
 import com.scnu.repository.mapper.DocMapper;
+import com.scnu.repository.mapper.DocMapperCust;
 import com.scnu.repository.req.DocQueryReq;
 import com.scnu.repository.req.DocSaveReq;
 import com.scnu.repository.resp.DocQueryResp;
@@ -30,6 +31,9 @@ public class DocService {
 
     @Resource
     private ContentMapper contentMapper;
+
+    @Resource
+    private DocMapperCust docMapperCust;
 
     //实例化SnowFlake
     @Resource
@@ -87,6 +91,9 @@ public class DocService {
          if (ObjectUtils.isEmpty(req.getId())){
              //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
              doc.setId(snowFlake.nextId());//在domain里的doc用雪花算法生成一个id
+             //初始的时候，阅读数和点赞数都为0
+             doc.setViewCount(0);
+             doc.setVoteCount(0);
              docMapper.insert(doc);//在文档数据库插入文档的内容，这时的id是long类型，就是这里丢失的精度。
 //             System.out.println(doc.getId());
              content.setId(doc.getId());//设置content的id跟doc的id一样
@@ -126,6 +133,8 @@ public class DocService {
      **/
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
+        // 文档阅读数+1
+        docMapperCust.increaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";
         } else {
