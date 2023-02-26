@@ -73,6 +73,7 @@
             </a-form-item>
             <a-form-item label="分类">
                 <a-cascader
+                        placeholder="请选择分类"
                         v-model:value="categoryIds"
                         :field-names="{ label: 'name', value: 'id', children: 'children' }"
                         :options="level1"
@@ -208,8 +209,11 @@
              */
             const edit = (record:any) => {
                 modalVisible.value = true;
+                console.log(categoryIds.value);
                 ebook.value=Tool.copy(record);
                 categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
+                console.log(categoryIds.value);
+
             };
 
             /**
@@ -267,16 +271,12 @@
                 });
             };
             const getCategoryName = (cid: number) => {
-                console.log(cid)
                 let result = "";
                //它自己就调用10次
-                console.log(categorys);//有值的,还是一个数组
                 categorys.forEach((item: any) => {
                     if (item.id == cid) {
                         // return item.name; // 注意，这里直接return不起作用
                         result = item.name;
-                        console.log(item.name);
-
                     }
 
                 });
@@ -303,7 +303,7 @@
 
                 edit,
                 add,
-
+                // value: ref<string[]>(['zhejiang', 'hangzhou', 'xihu']),
                 //表单
                 ebook,
                 modalVisible,
