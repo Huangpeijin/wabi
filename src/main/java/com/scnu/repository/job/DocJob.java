@@ -28,9 +28,9 @@ public class DocJob {
         // 增加日志流水号
 //        MDC.put("LOG_ID", String.valueOf(snowFlake.nextId()));
         LOG.info("更新电子书下的文档数据开始");
-//        long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         docService.updateEbookInfo();
-//        LOG.info("更新电子书下的文档数据结束，耗时：{}毫秒", System.currentTimeMillis() - start);
+        LOG.info("更新电子书下的文档数据结束，耗时：{}毫秒", System.currentTimeMillis() - start);
     }
 
 }
