@@ -136,7 +136,7 @@
             //退出登录
             const logout = () => {
                 console.log("退出登录开始");
-                axios.get('/user/logout/' + user.value.token).then((response) => {
+                axios.get('/user/logout/' + user.value.tokenAdmin).then((response) => {
                     const data = response.data;
                     if (data.success) {
                         message.success("退出登录成功！");

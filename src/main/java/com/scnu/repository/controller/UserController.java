@@ -79,11 +79,11 @@ public class UserController {
         resp.setContent(userLoginResp);
         return resp;
     }
-    @GetMapping("/logout/{token}")
-    public CommonResp logout(@PathVariable String token) {
+    @GetMapping("/logout/{tokenAdmin}")
+    public CommonResp logout(@PathVariable String tokenAdmin) {
         CommonResp resp = new CommonResp<>();
-        redisTemplate.delete(token);
-        LOG.info("从redis中删除token: {}", token);
+        redisTemplate.delete(tokenAdmin);
+        LOG.info("从redis中删除tokenAdmin: {}", tokenAdmin);
         return resp;
     }
 }
