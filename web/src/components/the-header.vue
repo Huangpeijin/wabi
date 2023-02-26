@@ -58,7 +58,7 @@
                                 label="登录名"
                                 :rules="[{ required: true, message: 'Please input your password!' }]"
                         >
-                            <a-input v-model:value="loginUser.loginName"  placeholder="请输入用户名">
+                            <a-input v-model:value="loginUser.loginName"  placeholder="请输入管理员用户名">
                                 <template #prefix>
                                     <user-outlined type="user" />
                                 </template>
@@ -68,10 +68,34 @@
                                 label="密码"
                                 :rules="[{ required: true, message: 'Please input your password!' }]"
                         >
-                            <a-input-password v-model:value="loginUser.password" type="password" placeholder="请输入密码">
+                            <a-input-password v-model:value="loginUser.password" type="password" placeholder="请输入管理员密码">
                                  <template #prefix>
                                      <LockOutlined class="site-form-item-icon" />
                                  </template>
+                            </a-input-password>
+                        </a-form-item>
+
+
+                        <a-form-item
+                                label="登录名"
+                                :rules="[{ required: true, message: 'Please input your password!' }]"
+                                :style="isShowTeacherLogin? {} : {display:'none'}"
+                        >
+                            <a-input v-model:value="loginUser.loginName"  placeholder="请输入教师用户名">
+                                <template #prefix>
+                                    <user-outlined type="user" />
+                                </template>
+                            </a-input>
+                        </a-form-item>
+                        <a-form-item
+                                label="密码"
+                                :rules="[{ required: true, message: 'Please input your password!' }]"
+                                :style="isShowTeacherLogin? {} : {display:'none'}"
+                        >
+                            <a-input-password v-model:value="loginUser.password" type="password" placeholder="请输入教师密码">
+                                <template #prefix>
+                                    <LockOutlined class="site-form-item-icon" />
+                                </template>
                             </a-input-password>
                         </a-form-item>
                         <a-form-item
@@ -80,7 +104,7 @@
                         >
                             <a-radio-group v-model:value="loginType">
                                 <a-radio value="1">管理员</a-radio>
-                                <a-radio value="2">教师端</a-radio>
+                                <a-radio value="2" @change="select_teacher">教师端</a-radio>
                                 <a-radio value="3">学生端</a-radio>
                             </a-radio-group>
                         </a-form-item>
@@ -118,12 +142,32 @@
             };
             const loginType = ref<number>(1);
 
-            // 登录
+            // 管理员登录
             const login = () => {
                 // console.log("开始登录");
                 loginModalLoading.value = true;
                 loginUser.value.password = hexMd5(loginUser.value.password + KEY);
                 axios.post('/user/login', loginUser.value).then((response) => {
+                    loginModalLoading.value = false;
+                    const data = response.data;
+                    if (data.success) {
+                        loginModalVisible.value = false;
+                        message.success("登录成功！");
+                        //触发setUser方法，把用户的信息传递过去
+                        console.log("登录后:"+data.content.id);
+                        // user1.value = data.content;
+                        // user.value = data.content;
+                        store.commit("setUser", data.content);
+                    } else {
+                        message.error(data.message);
+                    }
+                });
+            };
+            // 教师登陆登录
+            const loginTeacher = () => {
+                loginModalLoading.value = true;
+                loginUser.value.password = hexMd5(loginUser.value.password + KEY);
+                axios.post('/user/loginTeacher', loginUser.value).then((response) => {
                     loginModalLoading.value = false;
                     const data = response.data;
                     if (data.success) {
@@ -153,7 +197,12 @@
                     }
                 });
             };
-
+            //选择教师端
+            const isShowTeacherLogin = ref(false);
+            const  select_teacher= () => {
+                isShowTeacherLogin.value = true;
+                message.success("选择教师端成功！");
+            };
             return {
                 loginModalVisible,
                 loginModalLoading,
@@ -163,7 +212,10 @@
                 user,
                 loginType,
                 // user1,
-                logout
+                logout,
+
+                select_teacher,
+                isShowTeacherLogin,
             }
         }
     });
