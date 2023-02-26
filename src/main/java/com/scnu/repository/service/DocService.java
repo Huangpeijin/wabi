@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -96,6 +97,7 @@ public class DocService {
     /**
      * 保存，支持新增和更新，如果id有值说明是更新，如果id没值说明是新增
      **/
+    @Transactional
      public void save(DocSaveReq req){
          Doc doc=CopyUtil.copy(req,Doc.class);
          Content content=CopyUtil.copy(req, Content.class);//复制前端传来的内容
