@@ -18,9 +18,9 @@ import com.scnu.repository.util.CopyUtil;
 import com.scnu.repository.util.RedisUtil;
 import com.scnu.repository.util.RequestContext;
 import com.scnu.repository.util.SnowFlake;
-import com.scnu.repository.websocket.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -48,7 +48,7 @@ public class DocService {
     public RedisUtil redisUtil;
 
     @Resource
-    public WebSocketServer webSocketServer;
+    public WsService wsService;
 
     public List<DocQueryResp> all(Long ebookId){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
@@ -168,11 +168,12 @@ public class DocService {
         }
         // 推送消息
        Doc docDb = docMapper.selectByPrimaryKey(id);
-        webSocketServer.sendInfo("【" + docDb.getName() + "】被点赞！");
-//       String logId = MDC.get("LOG_ID");
-//        wsService.sendInfo("【" + docDb.getName() + "】被点赞！", logId);
+//        webSocketServer.sendInfo("【" + docDb.getName() + "】被点赞！");
+       String logId = MDC.get("LOG_ID");
+        wsService.sendInfo("【" + docDb.getName() + "】被点赞！",logId);
         // rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
     }
+
         public void updateEbookInfo(){
             docMapperCust.updateEbookInfo();
     }
