@@ -191,25 +191,25 @@
                             store.commit("setUser", data.content);
                         } else {
                             message.error(data.message);
-                            // axios.post('/user/loginTeacher', loginUser.value).then((response) => {
-                            //     loginModalLoading.value = false;
-                            //     const data = response.data;
-                            //     if (data.success) {
-                            //         loginModalVisible.value = false;
-                            //         message.success("登录成功！");
-                            //         //触发setUser方法，把用户的信息传递过去
-                            //         console.log("登录后:"+data.content.id);
-                            //         // user1.value = data.content;
-                            //         // user.value = data.content;
-                            //         store.commit("setUser", data.content);
-                            //     } else {
-                            //         message.error(data.message);
-                            //     }
-                            // });
                         }
                     });
                 }else {
-                    message.success("选择管理端后再进行登陆！");
+                    message.success("选择教师端进行登陆！");
+                    axios.post('/user/loginTeacher', loginUser.value).then((response) => {
+                        loginModalLoading.value = false;
+                        const data = response.data;
+                        if (data.success) {
+                            loginModalVisible.value = false;
+                            message.success("登录成功！");
+                            //触发setUser方法，把用户的信息传递过去
+                            console.log("登录后:"+data.content.id);
+                            // user1.value = data.content;
+                            // user.value = data.content;
+                            store.commit("setUser", data.content);
+                        } else {
+                            message.error(data.message);
+                        }
+                    });
                 }
             };
             // 教师登陆登录

@@ -13,6 +13,16 @@ public class UserLoginResp {
 //    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String tokenAdmin;
 
+    private String tokenTeacher;
+
+    public String getTokenTeacher() {
+        return tokenTeacher;
+    }
+
+    public void setTokenTeacher(String tokenTeacher) {
+        this.tokenTeacher = tokenTeacher;
+    }
+
     public String getTokenAdmin() {
         return tokenAdmin;
     }
@@ -52,6 +62,7 @@ public class UserLoginResp {
                 ", loginName='" + loginName + '\'' +
                 ", name='" + name + '\'' +
                 ", tokenAdmin='" + tokenAdmin + '\'' +
+                ", tokenTeacher='" + tokenTeacher + '\'' +
                 '}';
     }
 }
