@@ -103,4 +103,12 @@ public class UserController {
         LOG.info("从redis中删除tokenAdmin: {}", tokenAdmin);
         return resp;
     }
+    //教师端退出
+    @GetMapping("/logoutTeacher/{tokenTeacher}")
+    public CommonResp logoutTeacher(@PathVariable String tokenTeacher) {
+        CommonResp resp = new CommonResp<>();
+        redisTemplate.delete(tokenTeacher);
+        LOG.info("从redis中删除tokenAdmin: {}", tokenTeacher);
+        return resp;
+    }
 }

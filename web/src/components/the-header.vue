@@ -145,20 +145,6 @@
             const loginType = ref<number>(1);
 
 
-            //退出登录
-            const logout = () => {
-                console.log("退出登录开始");
-                axios.get('/user/logout/' + user.value.tokenAdmin).then((response) => {
-                    const data = response.data;
-                    if (data.success) {
-                        message.success("退出登录成功！");
-                        store.commit("setUser", {});
-                    } else {
-                        message.error(data.message);
-                    }
-                });
-            };
-
             const isShowAdminLogin = ref(true);
             const isShowTeacherLogin = ref(false);
             //选择管理端
@@ -212,11 +198,30 @@
                     });
                 }
             };
-            // 教师登陆登录
-            const loginTeacher = () => {
-                loginModalLoading.value = true;
-                loginUser.value.password = hexMd5(loginUser.value.password + KEY);
 
+            //退出登录
+            const logout = () => {
+                if(user.value.tokenAdmin){
+                    axios.get('/user/logout/' + user.value.tokenAdmin).then((response) => {
+                        const data = response.data;
+                        if (data.success) {
+                            message.success("退出登录成功！");
+                            store.commit("setUser", {});
+                        } else {
+                            message.error(data.message);
+                        }
+                    });
+                }else {
+                    axios.get('/user/logoutTeacher/' + user.value.tokenTeacher).then((response) => {
+                        const data = response.data;
+                        if (data.success) {
+                            message.success("退出登录成功！");
+                            store.commit("setUser", {});
+                        } else {
+                            message.error(data.message);
+                        }
+                    });
+                }
             };
 
             return {
