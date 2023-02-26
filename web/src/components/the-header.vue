@@ -57,6 +57,7 @@
                         <a-form-item
                                 label="登录名"
                                 :rules="[{ required: true, message: 'Please input your password!' }]"
+                                :style="isShowAdminLogin? {} : {display:'none'}"
                         >
                             <a-input v-model:value="loginUser.loginName"  placeholder="请输入管理员用户名">
                                 <template #prefix>
@@ -67,6 +68,7 @@
                         <a-form-item
                                 label="密码"
                                 :rules="[{ required: true, message: 'Please input your password!' }]"
+                                :style="isShowAdminLogin? {} : {display:'none'}"
                         >
                             <a-input-password v-model:value="loginUser.password" type="password" placeholder="请输入管理员密码">
                                  <template #prefix>
@@ -103,8 +105,8 @@
                                 :rules="[{ required: true, message: 'Please input your password!' }]"
                         >
                             <a-radio-group v-model:value="loginType">
-                                <a-radio value="1">管理员</a-radio>
-                                <a-radio value="2" @change="select_teacher">教师端</a-radio>
+                                <a-radio value="1" @change="selectAdmin">管理员</a-radio>
+                                <a-radio value="2" @change="selectTeacher">教师端</a-radio>
                                 <a-radio value="3">学生端</a-radio>
                             </a-radio-group>
                         </a-form-item>
@@ -199,9 +201,17 @@
             };
             //选择教师端
             const isShowTeacherLogin = ref(false);
-            const  select_teacher= () => {
+            const  selectTeacher= () => {
                 isShowTeacherLogin.value = true;
-                message.success("选择教师端成功！");
+                isShowAdminLogin.value = false;
+                // message.success("选择教师端成功！");
+            };
+            //选择管理端
+            const isShowAdminLogin = ref(true);
+            const  selectAdmin= () => {
+                isShowTeacherLogin.value = false;
+                isShowAdminLogin.value = true;
+                // message.success("选择管理端成功！");
             };
             return {
                 loginModalVisible,
@@ -214,8 +224,10 @@
                 // user1,
                 logout,
 
-                select_teacher,
+                selectTeacher,
                 isShowTeacherLogin,
+                selectAdmin,
+                isShowAdminLogin
             }
         }
     });
