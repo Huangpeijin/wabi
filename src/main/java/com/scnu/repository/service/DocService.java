@@ -169,5 +169,8 @@ public class DocService {
 //        wsService.sendInfo("【" + docDb.getName() + "】被点赞！", logId);
 //        // rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
     }
+        public void updateEbookInfo(){
+            docMapperCust.updateEbookInfo();
+        }
 
 }
