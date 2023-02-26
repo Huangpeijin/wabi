@@ -211,7 +211,8 @@
                 modalVisible.value = true;
                 console.log(categoryIds.value);
                 ebook.value=Tool.copy(record);
-                categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
+                // getCategoryName(ebook.value.category1Id)
+                categoryIds.value = [getCategoryName(ebook.value.category1Id), getCategoryName(ebook.value.category2Id)]
                 console.log(categoryIds.value);
 
             };
