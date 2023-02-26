@@ -144,47 +144,6 @@
             };
             const loginType = ref<number>(1);
 
-            // 管理员登录
-            const login = () => {
-                // console.log("开始登录");
-                loginModalLoading.value = true;
-                loginUser.value.password = hexMd5(loginUser.value.password + KEY);
-                axios.post('/user/login', loginUser.value).then((response) => {
-                    loginModalLoading.value = false;
-                    const data = response.data;
-                    if (data.success) {
-                        loginModalVisible.value = false;
-                        message.success("登录成功！");
-                        //触发setUser方法，把用户的信息传递过去
-                        console.log("登录后:"+data.content.id);
-                        // user1.value = data.content;
-                        // user.value = data.content;
-                        store.commit("setUser", data.content);
-                    } else {
-                        message.error(data.message);
-                    }
-                });
-            };
-            // 教师登陆登录
-            const loginTeacher = () => {
-                loginModalLoading.value = true;
-                loginUser.value.password = hexMd5(loginUser.value.password + KEY);
-                axios.post('/user/loginTeacher', loginUser.value).then((response) => {
-                    loginModalLoading.value = false;
-                    const data = response.data;
-                    if (data.success) {
-                        loginModalVisible.value = false;
-                        message.success("登录成功！");
-                        //触发setUser方法，把用户的信息传递过去
-                        console.log("登录后:"+data.content.id);
-                        // user1.value = data.content;
-                        // user.value = data.content;
-                        store.commit("setUser", data.content);
-                    } else {
-                        message.error(data.message);
-                    }
-                });
-            };
 
             //退出登录
             const logout = () => {
@@ -199,20 +158,67 @@
                     }
                 });
             };
-            //选择教师端
-            const isShowTeacherLogin = ref(false);
-            const  selectTeacher= () => {
-                isShowTeacherLogin.value = true;
-                isShowAdminLogin.value = false;
-                // message.success("选择教师端成功！");
-            };
-            //选择管理端
+
             const isShowAdminLogin = ref(true);
+            const isShowTeacherLogin = ref(false);
+            //选择管理端
             const  selectAdmin= () => {
                 isShowTeacherLogin.value = false;
                 isShowAdminLogin.value = true;
                 // message.success("选择管理端成功！");
             };
+            //选择教师端
+            const  selectTeacher= () => {
+                isShowTeacherLogin.value = true;
+                isShowAdminLogin.value = false;
+                // message.success("选择教师端成功！");
+            };
+            // 管理员登录
+            const login = () => {
+                    loginModalLoading.value = true;
+                    loginUser.value.password = hexMd5(loginUser.value.password + KEY);
+                if(isShowAdminLogin.value){
+                    axios.post('/user/login', loginUser.value).then((response) => {
+                        loginModalLoading.value = false;
+                        const data = response.data;
+                        if (data.success) {
+                            loginModalVisible.value = false;
+                            message.success("登录成功！");
+                            //触发setUser方法，把用户的信息传递过去
+                            console.log("登录后:"+data.content.id);
+                            // user1.value = data.content;
+                            // user.value = data.content;
+                            store.commit("setUser", data.content);
+                        } else {
+                            message.error(data.message);
+                            // axios.post('/user/loginTeacher', loginUser.value).then((response) => {
+                            //     loginModalLoading.value = false;
+                            //     const data = response.data;
+                            //     if (data.success) {
+                            //         loginModalVisible.value = false;
+                            //         message.success("登录成功！");
+                            //         //触发setUser方法，把用户的信息传递过去
+                            //         console.log("登录后:"+data.content.id);
+                            //         // user1.value = data.content;
+                            //         // user.value = data.content;
+                            //         store.commit("setUser", data.content);
+                            //     } else {
+                            //         message.error(data.message);
+                            //     }
+                            // });
+                        }
+                    });
+                }else {
+                    message.success("选择管理端后再进行登陆！");
+                }
+            };
+            // 教师登陆登录
+            const loginTeacher = () => {
+                loginModalLoading.value = true;
+                loginUser.value.password = hexMd5(loginUser.value.password + KEY);
+
+            };
+
             return {
                 loginModalVisible,
                 loginModalLoading,
