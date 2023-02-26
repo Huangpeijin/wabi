@@ -71,10 +71,10 @@ public class UserController {
         CommonResp<UserLoginResp> resp = new CommonResp<>();
         UserLoginResp userLoginResp = userService.login(req);
 
-        Long token = snowFlake.nextId();//token随着用户信息需要返回给前端，所以需要在resp去定义token变量
-        LOG.info("生成单点登录token：{}，并放入redis中", token);
-        userLoginResp.setToken(token.toString());
-        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
+        Long tokenAdmin = snowFlake.nextId();//token随着用户信息需要返回给前端，所以需要在resp去定义token变量
+        LOG.info("生成单点登录tokenAdmin：{}，并放入redis中", tokenAdmin);
+        userLoginResp.setTokenAdmin(tokenAdmin.toString());
+        redisTemplate.opsForValue().set(tokenAdmin.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
 
         resp.setContent(userLoginResp);
         return resp;

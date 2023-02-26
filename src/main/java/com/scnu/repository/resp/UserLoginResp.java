@@ -11,7 +11,15 @@ public class UserLoginResp {
     private String name;
 
 //    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private String token;
+    private String tokenAdmin;
+
+    public String getTokenAdmin() {
+        return tokenAdmin;
+    }
+
+    public void setTokenAdmin(String tokenAdmin) {
+        this.tokenAdmin = tokenAdmin;
+    }
 
     public Long getId() {
         return id;
@@ -37,21 +45,13 @@ public class UserLoginResp {
         this.name = name;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     @Override
     public String toString() {
         return "UserLoginResp{" +
                 "id=" + id +
                 ", loginName='" + loginName + '\'' +
                 ", name='" + name + '\'' +
-                ", token='" + token + '\'' +
+                ", tokenAdmin='" + tokenAdmin + '\'' +
                 '}';
     }
 }
