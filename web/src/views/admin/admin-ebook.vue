@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
            <p>
@@ -139,7 +139,7 @@
                     slots: { customRender: 'action' }
                 }
             ];
-            /** 数据查询**/
+            /** 刚开始数据查询的时候**/
             const handleQuery = (params:any) => {
                 loading.value = true;
                 // // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
@@ -250,11 +250,11 @@
                     const data = response.data;
                     if (data.success) {
                         categorys = data.content;
-                        console.log("原始数组：", categorys);
+                        // console.log("原始数组：", categorys);
 
                         level1.value = [];
                         level1.value = Tool.array2Tree(categorys, 0);
-                        console.log("树形结构：", level1.value);
+                        // console.log("树形结构：", level1.value);
 
                         // 加载完分类后，再加载电子书，否则如果分类树加载很慢，则电子书渲染会报错
                         handleQuery({
@@ -267,13 +267,18 @@
                 });
             };
             const getCategoryName = (cid: number) => {
-                // console.log(cid)
+                console.log(cid)
                 let result = "";
+               //它自己就调用10次
+                console.log(categorys);//有值的,还是一个数组
                 categorys.forEach((item: any) => {
-                    if (item.id === cid) {
+                    if (item.id == cid) {
                         // return item.name; // 注意，这里直接return不起作用
                         result = item.name;
+                        console.log(item.name);
+
                     }
+
                 });
                 return result;
             };

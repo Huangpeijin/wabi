@@ -180,7 +180,6 @@
                         }
                     });
                 }else {
-                    message.success("选择教师端进行登陆！");
                     axios.post('/user/loginTeacher', loginUser.value).then((response) => {
                         loginModalLoading.value = false;
                         const data = response.data;
