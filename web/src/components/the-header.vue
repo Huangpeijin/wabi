@@ -105,9 +105,9 @@
                                 :rules="[{ required: true, message: 'Please input your password!' }]"
                         >
                             <a-radio-group v-model:value="loginType">
-                                <a-radio value="1" @change="selectAdmin">管理员</a-radio>
-                                <a-radio value="2" @change="selectTeacher">教师端</a-radio>
-                                <a-radio value="3">学生端</a-radio>
+                                <a-radio :value="1" @change="selectAdmin">管理员</a-radio>
+                                <a-radio :value="2" @change="selectTeacher">教师端</a-radio>
+                                <a-radio :value="3">学生端</a-radio>
                             </a-radio-group>
                         </a-form-item>
                     </a-form>
