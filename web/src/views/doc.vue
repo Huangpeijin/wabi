@@ -218,4 +218,8 @@
         width: 100%;
         height: 400px;
     }
+    .ant-btn-icon-only > .anticon{
+        display: inline-flex !important;
+        justify-content: center;
+    }
 </style>
