@@ -71,7 +71,7 @@
                                     :tree-data="treeSelectData"
                                     placeholder="请选择父文档"
                                     tree-default-expand-all
-                                    :replaceFields="{title: 'name', key: 'id', value: 'id'}"
+                                    :field-names="{label: 'name', key: 'id', value: 'id'}"
                             >
                             </a-tree-select>
                         </a-form-item>
@@ -170,6 +170,7 @@
                         treeSelectData.value = Tool.copy(level1.value) || [];
                         // 为选择树添加一个"无"
                         treeSelectData.value.unshift({id: 0, name: '无'});
+                        console.log("treeSelectData.value：", treeSelectData.value);
 
                     }else{
                         message.error(data.message)
