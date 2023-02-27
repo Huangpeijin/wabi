@@ -1,6 +1,23 @@
 <template>
     <a-layout-header class="header">
         <div class="logo" />
+        <a class="login-menu" @click="showLoginModal" v-if="!user.id">
+            <span>登录</span>
+        </a>
+        <a-popconfirm
+                title="确认退出登录?"
+                ok-text="是"
+                cancel-text="否"
+                @confirm="logout()"
+                class="login-menu"
+        >
+            <a  class="login-menu" v-show="user.id">
+                <span>退出登录</span>
+            </a>
+            <a class="login-menu" v-if="user.id">
+                <span>您好:{{user.name}}</span>
+            </a>
+        </a-popconfirm>
         <a-menu
                 v-model:selectedKeys="selectedKeys1"
                 theme="dark"
@@ -28,23 +45,7 @@
             <a-menu-item key="/about">
                 <router-link to="/about">关于我们</router-link>
             </a-menu-item>
-            <a-popconfirm
-                    title="确认退出登录?"
-                    ok-text="是"
-                    cancel-text="否"
-                    @confirm="logout()"
-            >
-                <a class="login-menu" v-show="user.id">
-                    <span>退出登录</span>
-                </a>
-            </a-popconfirm>
-            <a class="login-menu" v-show="user.id">
-                <span>您好:{{user.name}}</span>
-            </a>
 
-            <a class="login-menu" @click="showLoginModal" v-show="!user.id">
-                <span>登录</span>
-            </a>
         </a-menu>
                 <a-modal
                         title="登录"
