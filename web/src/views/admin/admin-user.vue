@@ -15,8 +15,13 @@
             </a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="add()">
+            <a-button type="primary" @click="add">
               新增
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="addAdminAccount">
+              新增管理员账号
             </a-button>
           </a-form-item>
         </a-form>
@@ -67,6 +72,9 @@
         <a-input v-model:value="user.name" />
       </a-form-item>
       <a-form-item label="密码" v-show="!user.id">
+        <a-input v-model:value="user.password" type="password"/>
+      </a-form-item>
+      <a-form-item label="权限码" v-show="!user.id&&isShowLimitCode" >
         <a-input v-model:value="user.password" type="password"/>
       </a-form-item>
     </a-form>
@@ -202,6 +210,16 @@
        * 新增
        */
       const add = () => {
+        isShowLimitCode.value=false;
+        modalVisible.value = true;
+        user.value = {};
+      };
+      /**
+       * 新增管理员账号
+       */
+      const isShowLimitCode =ref(false);
+      const addAdminAccount = () => {
+        isShowLimitCode.value=true;
         modalVisible.value = true;
         user.value = {};
       };
@@ -273,6 +291,8 @@
 
         edit,
         add,
+        addAdminAccount,
+        isShowLimitCode,
 
         user,
         modalVisible,
