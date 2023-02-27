@@ -10,20 +10,19 @@
             <a-menu-item key="/">
                 <router-link to="/">首页</router-link>
             </a-menu-item>
-            <a-menu-item key="/admin/user"  :style="user.tokenAdmin? {} : {display:'none'}">
+            <a-menu-item key="/admin/user"  v-if="user.tokenAdmin">
                 <router-link to="/admin/user">用户管理</router-link>
             </a-menu-item>
-            <a-menu-item key="/admin/ebook" :style="user.tokenAdmin? {} : {display:'none'}">
+            <a-menu-item key="/admin/ebook" v-if="user.tokenAdmin">
                 <router-link to="/admin/ebook">电子书管理</router-link>
             </a-menu-item>
-            <a-menu-item key="/admin/category" :style="user.tokenAdmin? {} : {display:'none'}">
+            <a-menu-item key="/admin/category" v-if="user.tokenAdmin">
                 <router-link to="/admin/category">分类管理</router-link>
             </a-menu-item>
-
-            <a-menu-item key="/admin/ebook" :style="user.tokenTeacher? {} : {display:'none'}">
+            <a-menu-item key="/admin/ebook" v-if="user.tokenTeacher">
                 <router-link to="/admin/ebook">电子书管理</router-link>
             </a-menu-item>
-            <a-menu-item key="/admin/category" :style="user.tokenTeacher? {} : {display:'none'}">
+            <a-menu-item key="/admin/category"  v-if="user.tokenTeacher">
                 <router-link to="/admin/category">分类管理</router-link>
             </a-menu-item>
             <a-menu-item key="/about">
