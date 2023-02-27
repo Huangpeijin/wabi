@@ -68,19 +68,6 @@
             const level1 = ref(); // 一级文档树，children属性就是二级文档
             level1.value = [];
 
-            /**
-             * 内容查询,跟文档管理是一样的
-             **/
-            const handleQueryContent = (id: number) => {
-                axios.get("/doc/find-content/" + id).then((response) => {
-                    const data = response.data;
-                    if (data.success) {
-                        html.value = data.content;
-                    } else {
-                        message.error(data.message);
-                    }
-                });
-            };
 
             /**
              * 数据查询
@@ -106,17 +93,30 @@
                     }
                 });
             };
-
+            /**
+             * 内容查询,跟文档管理是一样的
+             **/
+            const handleQueryContent = (id: number) => {
+                axios.get("/doc/find-content/" + id).then((response) => {
+                    const data = response.data;
+                    if (data.success) {
+                        // console.log(data.content);
+                        html.value = data.content;
+                        // test.value=doc.value.name;
+                        // console.log(html.value);
+                    } else {
+                        message.error(data.message);
+                    }
+                });
+            };
             const onSelect = (selectedKeys: any, info: any) => {
-                console.log('selected', selectedKeys, info);
                 if (Tool.isNotEmpty(selectedKeys)) {
                     // 选中某一节点时，加载该节点的文档信息
-                    doc.value = info.selectedNodes[0].props;
+                    doc.value = info.selectedNodes[0];
                     // 加载内容
                     handleQueryContent(selectedKeys[0]);
                 }
             };
-
             // 点赞
             const vote = () => {
                 axios.get('/doc/vote/' + doc.value.id).then((response) => {
@@ -132,14 +132,13 @@
             onMounted(() => {
                 handleQuery();
             });
-
             return {
                 level1,
                 html,
                 onSelect,
                 defaultSelectedKeys,
                 doc,
-                vote
+                vote,
             }
         }
     });
