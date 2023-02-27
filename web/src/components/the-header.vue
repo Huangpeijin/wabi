@@ -185,7 +185,7 @@
                         const data = response.data;
                         if (data.success) {
                             loginModalVisible.value = false;
-                            message.success("登录成功！");
+                            message.success("登录成功！",1);
                             //触发setUser方法，把用户的信息传递过去
                             console.log("登录后:"+data.content.id);
                             // user1.value = data.content;
@@ -204,7 +204,7 @@
                     axios.get('/user/logout/' + user.value.tokenAdmin).then((response) => {
                         const data = response.data;
                         if (data.success) {
-                            message.success("退出登录成功！");
+                            message.success("退出登录成功！",1);
                             store.commit("setUser", {});
                         } else {
                             message.error(data.message);

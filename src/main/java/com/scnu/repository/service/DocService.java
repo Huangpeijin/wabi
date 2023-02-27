@@ -20,7 +20,6 @@ import com.scnu.repository.util.RequestContext;
 import com.scnu.repository.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -169,10 +168,10 @@ public class DocService {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
         // 推送消息
-       Doc docDb = docMapper.selectByPrimaryKey(id);
+//       Doc docDb = docMapper.selectByPrimaryKey(id);
 //        webSocketServer.sendInfo("【" + docDb.getName() + "】被点赞！");
-       String logId = MDC.get("LOG_ID");
-        wsService.sendInfo("【" + docDb.getName() + "】被点赞！",logId);
+//       String logId = MDC.get("LOG_ID");
+//        wsService.sendInfo("【" + docDb.getName() + "】被点赞！",logId);
         // rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
     }
 

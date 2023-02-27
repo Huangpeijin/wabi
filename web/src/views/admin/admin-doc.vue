@@ -27,9 +27,9 @@
                             size="small"
                             :defaultExpandAllRows="true"
                     >
-                        <template #name="{ text, record }">
-                            {{record.sort}} {{text}}
-                        </template>
+<!--                        <template #name="{ text, record }">-->
+<!--                            {{record.sort}} {{text}}-->
+<!--                        </template>-->
                         <template v-slot:action="{text,record}">
                             <a-space size="small">
                                 <a-button type="primary" @click="edit(record)" size="small">
