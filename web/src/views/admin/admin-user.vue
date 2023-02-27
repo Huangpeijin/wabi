@@ -75,7 +75,7 @@
         <a-input v-model:value="user.password" type="password"/>
       </a-form-item>
       <a-form-item label="权限码" v-show="!user.id&&isShowLimitCode" >
-        <a-input v-model:value="user.password" type="password"/>
+        <a-input v-model:value="user.limitCode" type="password"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -174,29 +174,6 @@
         });
       };
 
-      // -------- 表单 ---------
-      const user = ref();
-      const modalVisible = ref(false);
-      const modalLoading = ref(false);
-      const handleModalOk = () => {
-        modalLoading.value = true;
-        user.value.password = hexMd5(user.value.password + KEY);
-        axios.post("/user/save", user.value).then((response) => {
-          modalLoading.value = false;
-          const data = response.data; // data = commonResp
-          if (data.success) {
-            modalVisible.value = false;
-
-            // 重新加载列表
-            handleQuery({
-              page: pagination.value.current,
-              size: pagination.value.pageSize,
-            });
-          } else {
-            message.error(data.message);
-          }
-        });
-      };
 
       /**
        * 编辑
@@ -222,6 +199,32 @@
         isShowLimitCode.value=true;
         modalVisible.value = true;
         user.value = {};
+      };
+      /**
+       * 点击新增的"ok"按钮，会调用该函数
+       */
+      const user = ref();
+      const modalVisible = ref(false);
+      const modalLoading = ref(false);
+      const handleModalOk = () => {
+        modalLoading.value = true;
+        user.value.password = hexMd5(user.value.password + KEY);
+        console.log(user.value.limitCode)
+        axios.post("/user/save", user.value).then((response) => {
+          modalLoading.value = false;
+          const data = response.data; // data = commonResp
+          if (data.success) {
+            modalVisible.value = false;
+
+            // 重新加载列表
+            handleQuery({
+              page: pagination.value.current,
+              size: pagination.value.pageSize,
+            });
+          } else {
+            message.error(data.message);
+          }
+        });
       };
 
       const handleDelete = (id: number) => {

@@ -69,12 +69,14 @@ public class UserService {
      * 保存，支持新增和更新，如果id有值说明是更新，如果id没值说明是新增
      **/
      public void save(UserSaveReq req){
+         LOG.info("权限码:{}", req.getLimitCode());
          User user=CopyUtil.copy(req,User.class);
          if (ObjectUtils.isEmpty(req.getId())){
              User userDB = selectByLoginName(req.getLoginName());
              if (ObjectUtils.isEmpty(userDB)) {
                  // 新增
                  user.setId(snowFlake.nextId());
+//                 LOG.info("输出limitCode：{}",user.getLimitcode());
                  userMapper.insert(user);
              } else {
                  // 用户名已存在

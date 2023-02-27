@@ -9,6 +9,8 @@ public class User {
 
     private String password;
 
+    private String limitCode;
+
     public Long getId() {
         return id;
     }
@@ -41,6 +43,14 @@ public class User {
         this.password = password;
     }
 
+    public String getLimitCode() {
+        return limitCode;
+    }
+
+    public void setLimitCode(String limitCode) {
+        this.limitCode = limitCode;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -51,6 +61,7 @@ public class User {
         sb.append(", loginName=").append(loginName);
         sb.append(", name=").append(name);
         sb.append(", password=").append(password);
+        sb.append(", limitCode=").append(limitCode);
         sb.append("]");
         return sb.toString();
     }

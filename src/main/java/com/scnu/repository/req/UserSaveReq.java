@@ -17,6 +17,16 @@ public class UserSaveReq {
     @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,32}$", message = "【密码】至少包含 数字和英文，长度6-32")
     private String password;
 
+    private String limitCode;
+
+    public String getLimitCode() {
+        return limitCode;
+    }
+
+    public void setLimitCode(String limitCode) {
+        this.limitCode = limitCode;
+    }
+
     public Long getId() {
         return id;
     }
@@ -51,15 +61,12 @@ public class UserSaveReq {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", loginName=").append(loginName);
-        sb.append(", name=").append(name);
-        sb.append(", password=").append(password);
-        sb.append("]");
-        return sb.toString();
+        return "UserSaveReq{" +
+                "id=" + id +
+                ", loginName='" + loginName + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", limitCode='" + limitCode + '\'' +
+                '}';
     }
 }

@@ -373,6 +373,76 @@ public class UserExample {
             addCriterion("`password` not between", value1, value2, "password");
             return (Criteria) this;
         }
+
+        public Criteria andLimitCodeIsNull() {
+            addCriterion("limit_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeIsNotNull() {
+            addCriterion("limit_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeEqualTo(String value) {
+            addCriterion("limit_code =", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeNotEqualTo(String value) {
+            addCriterion("limit_code <>", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeGreaterThan(String value) {
+            addCriterion("limit_code >", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("limit_code >=", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeLessThan(String value) {
+            addCriterion("limit_code <", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeLessThanOrEqualTo(String value) {
+            addCriterion("limit_code <=", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeLike(String value) {
+            addCriterion("limit_code like", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeNotLike(String value) {
+            addCriterion("limit_code not like", value, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeIn(List<String> values) {
+            addCriterion("limit_code in", values, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeNotIn(List<String> values) {
+            addCriterion("limit_code not in", values, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeBetween(String value1, String value2) {
+            addCriterion("limit_code between", value1, value2, "limitCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitCodeNotBetween(String value1, String value2) {
+            addCriterion("limit_code not between", value1, value2, "limitCode");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
