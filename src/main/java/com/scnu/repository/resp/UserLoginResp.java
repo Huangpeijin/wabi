@@ -15,6 +15,16 @@ public class UserLoginResp {
 
     private String tokenTeacher;
 
+    private String tokenStudent;
+
+    public String getTokenStudent() {
+        return tokenStudent;
+    }
+
+    public void setTokenStudent(String tokenStudent) {
+        this.tokenStudent = tokenStudent;
+    }
+
     public String getTokenTeacher() {
         return tokenTeacher;
     }
@@ -63,6 +73,7 @@ public class UserLoginResp {
                 ", name='" + name + '\'' +
                 ", tokenAdmin='" + tokenAdmin + '\'' +
                 ", tokenTeacher='" + tokenTeacher + '\'' +
+                ", tokenStudent='" + tokenStudent + '\'' +
                 '}';
     }
 }
