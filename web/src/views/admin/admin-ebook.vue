@@ -72,8 +72,8 @@
                         list-type="picture-card"
                         class="avatar-uploader"
                         :show-upload-list="false"
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                         @change="handleChange"
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 >
                     <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
                     <div v-else>
@@ -108,9 +108,21 @@
     import axios from 'axios';
     import {message} from 'ant-design-vue';
     import {Tool} from "@/util/tool";
+    import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+    import type { UploadChangeParam, UploadProps } from 'ant-design-vue';
+
+    function getBase64(img:any, callback: (base64Url: string) => void) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result as string));
+        reader.readAsDataURL(img);
+    }
 
     export default defineComponent({
         name: 'AdminEbook',
+        components: {
+            LoadingOutlined,
+            PlusOutlined,
+        },
         setup() {
             const param =ref();
             param.value={};
@@ -301,6 +313,31 @@
                 });
                 return result;
             };
+            /**
+             * 图片上传
+             **/
+            const imageUrl = ref<string>('');
+            const fileList = ref([]);
+            const handleChange = (info: UploadChangeParam) => {
+                console.log(info);
+                console.log(fileList.value);
+                if (info.file.status === 'uploading') {
+                    loading.value = true;
+                    return;
+                }
+                if (info.file.status === 'done') {
+                    // Get this url from response in real world.
+                    getBase64(info.file.originFileObj, (base64Url: string) => {
+                        imageUrl.value = base64Url;
+                        console.log(imageUrl.value);
+                        loading.value = false;
+                    });
+                }
+                if (info.file.status === 'error') {
+                    loading.value = false;
+                    message.error('upload error');
+                }
+            };
             onMounted(() => {
                 handleQueryCategory();
             });
@@ -327,7 +364,11 @@
                 ebook,
                 modalVisible,
                 modalLoading,
-                handleModalOk
+                handleModalOk,
+                handleChange,
+                fileList,
+                imageUrl,
+
             }
         }
     });
