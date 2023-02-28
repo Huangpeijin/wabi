@@ -6,7 +6,7 @@ create table `ebook`(
                        `category1_id` bigint comment '分类1',
                        `category2_id` bigint comment '分类2',
                        `description` varchar(200) comment '描述',
-                       `cover` varchar(200) comment '封面',
+                       `cover` text comment '封面',
                        `doc_count` int comment '文档数',
                        `view_count` int comment '阅读数',
                        `vote_count` int comment '点赞数',

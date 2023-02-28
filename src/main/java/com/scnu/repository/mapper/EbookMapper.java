@@ -2,9 +2,8 @@ package com.scnu.repository.mapper;
 
 import com.scnu.repository.domain.Ebook;
 import com.scnu.repository.domain.EbookExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface EbookMapper {
     long countByExample(EbookExample example);
@@ -17,15 +16,21 @@ public interface EbookMapper {
 
     int insertSelective(Ebook record);
 
+    List<Ebook> selectByExampleWithBLOBs(EbookExample example);
+
     List<Ebook> selectByExample(EbookExample example);
 
     Ebook selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Ebook record, @Param("example") EbookExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") Ebook record, @Param("example") EbookExample example);
+
     int updateByExample(@Param("record") Ebook record, @Param("example") EbookExample example);
 
     int updateByPrimaryKeySelective(Ebook record);
+
+    int updateByPrimaryKeyWithBLOBs(Ebook record);
 
     int updateByPrimaryKey(Ebook record);
 }

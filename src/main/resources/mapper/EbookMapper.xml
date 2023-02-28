@@ -7,10 +7,12 @@
     <result column="category1_id" jdbcType="BIGINT" property="category1Id" />
     <result column="category2_id" jdbcType="BIGINT" property="category2Id" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="cover" jdbcType="VARCHAR" property="cover" />
     <result column="doc_count" jdbcType="INTEGER" property="docCount" />
     <result column="view_count" jdbcType="INTEGER" property="viewCount" />
     <result column="vote_count" jdbcType="INTEGER" property="voteCount" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.scnu.repository.domain.Ebook">
+    <result column="cover" jdbcType="LONGVARCHAR" property="cover" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,9 +73,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, category1_id, category2_id, description, cover, doc_count, view_count, 
-    vote_count
+    id, `name`, category1_id, category2_id, description, doc_count, view_count, vote_count
   </sql>
+  <sql id="Blob_Column_List">
+    cover
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.scnu.repository.domain.EbookExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ebook
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.scnu.repository.domain.EbookExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -88,9 +108,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from ebook
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -106,12 +128,12 @@
   </delete>
   <insert id="insert" parameterType="com.scnu.repository.domain.Ebook">
     insert into ebook (id, `name`, category1_id, 
-      category2_id, description, cover, 
-      doc_count, view_count, vote_count
+      category2_id, description, doc_count, 
+      view_count, vote_count, cover
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{category1Id,jdbcType=BIGINT}, 
-      #{category2Id,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
-      #{docCount,jdbcType=INTEGER}, #{viewCount,jdbcType=INTEGER}, #{voteCount,jdbcType=INTEGER}
+      #{category2Id,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{docCount,jdbcType=INTEGER}, 
+      #{viewCount,jdbcType=INTEGER}, #{voteCount,jdbcType=INTEGER}, #{cover,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.scnu.repository.domain.Ebook">
@@ -132,9 +154,6 @@
       <if test="description != null">
         description,
       </if>
-      <if test="cover != null">
-        cover,
-      </if>
       <if test="docCount != null">
         doc_count,
       </if>
@@ -143,6 +162,9 @@
       </if>
       <if test="voteCount != null">
         vote_count,
+      </if>
+      <if test="cover != null">
+        cover,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -161,9 +183,6 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="cover != null">
-        #{cover,jdbcType=VARCHAR},
-      </if>
       <if test="docCount != null">
         #{docCount,jdbcType=INTEGER},
       </if>
@@ -172,6 +191,9 @@
       </if>
       <if test="voteCount != null">
         #{voteCount,jdbcType=INTEGER},
+      </if>
+      <if test="cover != null">
+        #{cover,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -199,9 +221,6 @@
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.cover != null">
-        cover = #{record.cover,jdbcType=VARCHAR},
-      </if>
       <if test="record.docCount != null">
         doc_count = #{record.docCount,jdbcType=INTEGER},
       </if>
@@ -211,7 +230,25 @@
       <if test="record.voteCount != null">
         vote_count = #{record.voteCount,jdbcType=INTEGER},
       </if>
+      <if test="record.cover != null">
+        cover = #{record.cover,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update ebook
+    set id = #{record.id,jdbcType=BIGINT},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      category1_id = #{record.category1Id,jdbcType=BIGINT},
+      category2_id = #{record.category2Id,jdbcType=BIGINT},
+      description = #{record.description,jdbcType=VARCHAR},
+      doc_count = #{record.docCount,jdbcType=INTEGER},
+      view_count = #{record.viewCount,jdbcType=INTEGER},
+      vote_count = #{record.voteCount,jdbcType=INTEGER},
+      cover = #{record.cover,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -223,7 +260,6 @@
       category1_id = #{record.category1Id,jdbcType=BIGINT},
       category2_id = #{record.category2Id,jdbcType=BIGINT},
       description = #{record.description,jdbcType=VARCHAR},
-      cover = #{record.cover,jdbcType=VARCHAR},
       doc_count = #{record.docCount,jdbcType=INTEGER},
       view_count = #{record.viewCount,jdbcType=INTEGER},
       vote_count = #{record.voteCount,jdbcType=INTEGER}
@@ -246,9 +282,6 @@
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
       </if>
-      <if test="cover != null">
-        cover = #{cover,jdbcType=VARCHAR},
-      </if>
       <if test="docCount != null">
         doc_count = #{docCount,jdbcType=INTEGER},
       </if>
@@ -258,7 +291,22 @@
       <if test="voteCount != null">
         vote_count = #{voteCount,jdbcType=INTEGER},
       </if>
+      <if test="cover != null">
+        cover = #{cover,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.scnu.repository.domain.Ebook">
+    update ebook
+    set `name` = #{name,jdbcType=VARCHAR},
+      category1_id = #{category1Id,jdbcType=BIGINT},
+      category2_id = #{category2Id,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      doc_count = #{docCount,jdbcType=INTEGER},
+      view_count = #{viewCount,jdbcType=INTEGER},
+      vote_count = #{voteCount,jdbcType=INTEGER},
+      cover = #{cover,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.scnu.repository.domain.Ebook">
@@ -267,7 +315,6 @@
       category1_id = #{category1Id,jdbcType=BIGINT},
       category2_id = #{category2Id,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
-      cover = #{cover,jdbcType=VARCHAR},
       doc_count = #{docCount,jdbcType=INTEGER},
       view_count = #{viewCount,jdbcType=INTEGER},
       vote_count = #{voteCount,jdbcType=INTEGER}

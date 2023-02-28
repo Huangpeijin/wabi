@@ -65,24 +65,24 @@
             @ok="handleModalOk"
     >
         <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-<!--            <a-form-item label="封面">-->
-<!--                <a-upload-->
-<!--                        v-model:value="ebook.cover"-->
-<!--                        name="avatar"-->
-<!--                        list-type="picture-card"-->
-<!--                        class="avatar-uploader"-->
-<!--                        :show-upload-list="false"-->
-<!--                        @change="handleChange"-->
-<!--                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"-->
-<!--                >-->
-<!--                    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />-->
-<!--                    <div v-else>-->
-<!--                        <loading-outlined v-if="loading"></loading-outlined>-->
-<!--                        <plus-outlined v-else></plus-outlined>-->
-<!--                        <div class="ant-upload-text">Upload</div>-->
-<!--                    </div>-->
-<!--                </a-upload>-->
-<!--            </a-form-item>-->
+            <a-form-item label="封面">
+                <a-upload
+                        v-model:value="ebook.cover"
+                        name="avatar"
+                        list-type="picture-card"
+                        class="avatar-uploader"
+                        :show-upload-list="false"
+                        @change="handleChange"
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                >
+                    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+                    <div v-else>
+                        <loading-outlined v-if="loading"></loading-outlined>
+                        <plus-outlined v-else></plus-outlined>
+                        <div class="ant-upload-text">Upload</div>
+                    </div>
+                </a-upload>
+            </a-form-item>
             <a-form-item label="封面">
                 <a-input v-model:value="ebook.cover" />
             </a-form-item>
@@ -188,11 +188,39 @@
             const ebook = ref();//绑定表单的ebook
             const modalVisible = ref(false);
             const modalLoading = ref(false);
+
+            /**
+             * 编辑
+             */
+            const edit = (record:any) => {
+                modalVisible.value = true;
+
+                console.log(categoryIds.value);
+                ebook.value=Tool.copy(record);
+                // getCategoryName(ebook.value.category1Id)
+                categoryIds.value = [getCategoryName(ebook.value.category1Id), getCategoryName(ebook.value.category2Id)]
+                console.log(categoryIds.value);
+                console.log(categoryIds.value[0]);
+
+            };
+            /**
+             * 编辑完，点击ok的时候
+             */
             const handleModalOk = () => {
                 modalLoading.value = true;
-                console.log("categoryIds.value[0]的值："+categoryIds.value[0]);
-                // ebook.value.category1Id = categoryIds.value[0];
-                // ebook.value.category2Id = categoryIds.value[1];
+                console.log(categoryIds.value[0]);
+                console.log(getCategoryName(ebook.value.category1Id));
+                //待优化
+                if (getCategoryName(ebook.value.category1Id)!=categoryIds.value[0]){
+                    ebook.value.category1Id = categoryIds.value[0];
+                    ebook.value.category2Id = categoryIds.value[1];
+                }
+                // if (getCategoryName(ebook.value.category1Id)==categoryIds.value[0]){
+                //     console.log(ebook.value.category1Id);
+                // }else {
+                //     ebook.value.category1Id = categoryIds.value[0];
+                //     ebook.value.category2Id = categoryIds.value[1];
+                // }
                 //传入的ebook.value的值是前端数据（表单上的值）
                 axios.post("/ebook/save", ebook.value).then((response) => {
                     const data = response.data;//data=commonResp
@@ -208,19 +236,6 @@
                         message.error(data.message);
                     }
                 });
-            };
-
-            /**
-             * 编辑
-             */
-            const edit = (record:any) => {
-                modalVisible.value = true;
-                console.log(categoryIds.value);
-                ebook.value=Tool.copy(record);
-                // getCategoryName(ebook.value.category1Id)
-                categoryIds.value = [getCategoryName(ebook.value.category1Id), getCategoryName(ebook.value.category2Id)]
-                console.log(categoryIds.value);
-
             };
 
             /**
@@ -248,6 +263,7 @@
                     }
                 });
             };
+
 
             const level1 =  ref();
             let categorys:any;
@@ -367,7 +383,6 @@
                 modalLoading,
                 handleModalOk,
                 handleChange,
-                fileList,
                 imageUrl,
 
             }
