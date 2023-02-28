@@ -272,15 +272,28 @@
                         }
                     });
                 }else {
-                    axios.get('/user/logoutTeacher/' + user.value.tokenTeacher).then((response) => {
-                        const data = response.data;
-                        if (data.success) {
-                            message.success("退出登录成功！");
-                            store.commit("setUser", {});
-                        } else {
-                            message.error(data.message);
-                        }
-                    });
+                    if(user.value.tokenTeacher){
+                        axios.get('/user/logoutTeacher/' + user.value.tokenTeacher).then((response) => {
+                            const data = response.data;
+                            if (data.success) {
+                                message.success("退出登录成功！");
+                                store.commit("setUser", {});
+                            } else {
+                                message.error(data.message);
+                            }
+                        });
+                    }else {
+                        axios.get('/user/logoutStudent/' + user.value.tokenStudent).then((response) => {
+                            const data = response.data;
+                            if (data.success) {
+                                message.success("退出登录成功！");
+                                store.commit("setUser", {});
+                            } else {
+                                message.error(data.message);
+                            }
+                        });
+                    }
+
                 }
             };
 

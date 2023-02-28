@@ -124,7 +124,15 @@ public class UserController {
     public CommonResp logoutTeacher(@PathVariable String tokenTeacher) {
         CommonResp resp = new CommonResp<>();
         redisTemplate.delete(tokenTeacher);
-        LOG.info("从redis中删除tokenAdmin: {}", tokenTeacher);
+        LOG.info("从redis中删除tokenTeacher: {}", tokenTeacher);
+        return resp;
+    }
+    //学生端退出
+    @GetMapping("/logoutStudent/{tokenStudent}")
+    public CommonResp logoutStudent(@PathVariable String tokenStudent) {
+        CommonResp resp = new CommonResp<>();
+        redisTemplate.delete(tokenStudent);
+        LOG.info("从redis中删除tokenStudent: {}", tokenStudent);
         return resp;
     }
 }
