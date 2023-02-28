@@ -67,7 +67,7 @@
         <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
             <a-form-item label="封面">
                 <a-upload
-                        v-model:value="ebook.cover"
+                        v-model:file-list="fileList"
                         name="avatar"
                         list-type="picture-card"
                         class="avatar-uploader"
@@ -210,6 +210,7 @@
                 modalLoading.value = true;
                 console.log(categoryIds.value[0]);
                 console.log(getCategoryName(ebook.value.category1Id));
+                ebook.value.cover=imageUrl.value;
                 //待优化
                 if (getCategoryName(ebook.value.category1Id)!=categoryIds.value[0]){
                     ebook.value.category1Id = categoryIds.value[0];
@@ -384,6 +385,7 @@
                 handleModalOk,
                 handleChange,
                 imageUrl,
+                fileList,
 
             }
         }
