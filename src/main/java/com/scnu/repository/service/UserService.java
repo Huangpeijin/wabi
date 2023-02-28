@@ -127,7 +127,7 @@ public class UserService {
             LOG.info("用户名不存在, {}", req.getLoginName());
             throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
         } else {
-            if (userDb.getPassword().equals(req.getPassword())) {
+            if (userDb.getPassword().equals(req.getPassword())&&userDb.getLimitCode().equals(req.getLimitCode())) {
                 // 登录成功
                 UserLoginResp userLoginResp = CopyUtil.copy(userDb, UserLoginResp.class);
                 return userLoginResp;

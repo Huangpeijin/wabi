@@ -76,17 +76,17 @@
                                  </template>
                             </a-input-password>
                         </a-form-item>
-<!--                        <a-form-item-->
-<!--                                label="权限码"-->
-<!--                                :rules="[{ required: true, message: '请输入管理员权限码' }]"-->
-<!--                                :style="isShowAdminLogin? {} : {display:'none'}"-->
-<!--                        >-->
-<!--                            <a-input-password v-model:value="loginUser.loginAdminCode" type="password" placeholder="请输入管理员权限码">-->
-<!--                                <template #prefix>-->
-<!--                                    <LockOutlined class="site-form-item-icon" />-->
-<!--                                </template>-->
-<!--                            </a-input-password>-->
-<!--                        </a-form-item>-->
+                        <a-form-item
+                                label="权限码"
+                                :rules="[{ required: true, message: '请输入管理员权限码' }]"
+                                :style="isShowAdminLogin? {} : {display:'none'}"
+                        >
+                            <a-input-password v-model:value="loginUser.limitCode" type="password" placeholder="请输入管理员权限码">
+                                <template #prefix>
+                                    <LockOutlined class="site-form-item-icon" />
+                                </template>
+                            </a-input-password>
+                        </a-form-item>
 
                         <a-form-item
                                 label="登录名"
