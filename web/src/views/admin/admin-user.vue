@@ -16,7 +16,7 @@
           </a-form-item>
           <a-form-item>
             <a-button type="primary" @click="add">
-              新增
+              新增教师账号
             </a-button>
           </a-form-item>
           <a-form-item>
