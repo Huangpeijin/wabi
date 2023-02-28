@@ -11,13 +11,13 @@ public class Ebook {
 
     private String description;
 
+    private String cover;
+
     private Integer docCount;
 
     private Integer viewCount;
 
     private Integer voteCount;
-
-    private String cover;
 
     public Long getId() {
         return id;
@@ -59,6 +59,14 @@ public class Ebook {
         this.description = description;
     }
 
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
     public Integer getDocCount() {
         return docCount;
     }
@@ -83,14 +91,6 @@ public class Ebook {
         this.voteCount = voteCount;
     }
 
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -102,10 +102,10 @@ public class Ebook {
         sb.append(", category1Id=").append(category1Id);
         sb.append(", category2Id=").append(category2Id);
         sb.append(", description=").append(description);
+        sb.append(", cover=").append(cover);
         sb.append(", docCount=").append(docCount);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", voteCount=").append(voteCount);
-        sb.append(", cover=").append(cover);
         sb.append("]");
         return sb.toString();
     }
