@@ -65,24 +65,24 @@
             @ok="handleModalOk"
     >
         <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-            <a-form-item label="封面">
-                <a-upload
-                        v-model:file-list="fileList"
-                        name="avatar"
-                        list-type="picture-card"
-                        class="avatar-uploader"
-                        :show-upload-list="false"
-                        @change="handleChange"
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                >
-                    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-                    <div v-else>
-                        <loading-outlined v-if="loading"></loading-outlined>
-                        <plus-outlined v-else></plus-outlined>
-                        <div class="ant-upload-text">Upload</div>
-                    </div>
-                </a-upload>
-            </a-form-item>
+<!--            <a-form-item label="封面">-->
+<!--                <a-upload-->
+<!--                        v-model:value="ebook.cover"-->
+<!--                        name="avatar"-->
+<!--                        list-type="picture-card"-->
+<!--                        class="avatar-uploader"-->
+<!--                        :show-upload-list="false"-->
+<!--                        @change="handleChange"-->
+<!--                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"-->
+<!--                >-->
+<!--                    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />-->
+<!--                    <div v-else>-->
+<!--                        <loading-outlined v-if="loading"></loading-outlined>-->
+<!--                        <plus-outlined v-else></plus-outlined>-->
+<!--                        <div class="ant-upload-text">Upload</div>-->
+<!--                    </div>-->
+<!--                </a-upload>-->
+<!--            </a-form-item>-->
             <a-form-item label="封面">
                 <a-input v-model:value="ebook.cover" />
             </a-form-item>
@@ -170,31 +170,7 @@
                     slots: { customRender: 'action' }
                 }
             ];
-            /** 刚开始数据查询的时候**/
-            const handleQuery = (params:any) => {
-                loading.value = true;
-                // // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-                // ebooks.value = [];
-                axios.get("/ebook/list", {
-                    params:{
-                        page:params.page,
-                        size:params.size,
-                        name:param.value.name
-                    }
-                }).then((response) => {
-                    loading.value = false;
-                    const data = response.data;
-                    if(data.success){
-                    //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
-                    ebooks.value = data.content.list;
-                    // 重置分页按钮
-                    pagination.value.current = params.page;
-                    pagination.value.total = data.content.total;
-                    }else{
-                        message.error(data.message)
-                    }
-                });
-            };
+
             /**
              * 表格点击页码时触发
              */
@@ -214,9 +190,9 @@
             const modalLoading = ref(false);
             const handleModalOk = () => {
                 modalLoading.value = true;
-                console.log(ebook.value);
-                ebook.value.category1Id = categoryIds.value[0];
-                ebook.value.category2Id = categoryIds.value[1];
+                console.log("categoryIds.value[0]的值："+categoryIds.value[0]);
+                // ebook.value.category1Id = categoryIds.value[0];
+                // ebook.value.category2Id = categoryIds.value[1];
                 //传入的ebook.value的值是前端数据（表单上的值）
                 axios.post("/ebook/save", ebook.value).then((response) => {
                     const data = response.data;//data=commonResp
@@ -298,6 +274,31 @@
                         });
                     } else {
                         message.error(data.message);
+                    }
+                });
+            };
+            /** 刚开始数据查询的时候**/
+            const handleQuery = (params:any) => {
+                loading.value = true;
+                // // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+                // ebooks.value = [];
+                axios.get("/ebook/list", {
+                    params:{
+                        page:params.page,
+                        size:params.size,
+                        name:param.value.name
+                    }
+                }).then((response) => {
+                    loading.value = false;
+                    const data = response.data;
+                    if(data.success){
+                        //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
+                        ebooks.value = data.content.list;
+                        // 重置分页按钮
+                        pagination.value.current = params.page;
+                        pagination.value.total = data.content.total;
+                    }else{
+                        message.error(data.message)
                     }
                 });
             };
