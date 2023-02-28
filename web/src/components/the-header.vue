@@ -110,6 +110,29 @@
                                 </template>
                             </a-input-password>
                         </a-form-item>
+
+                        <a-form-item
+                                label="登录名"
+                                :rules="[{ required: true, message: 'Please input your password!' }]"
+                                :style="isShowStudentLogin? {} : {display:'none'}"
+                        >
+                            <a-input v-model:value="loginUser.loginName"  placeholder="请输入学号">
+                                <template #prefix>
+                                    <user-outlined type="user" />
+                                </template>
+                            </a-input>
+                        </a-form-item>
+                        <a-form-item
+                                label="密码"
+                                :rules="[{ required: true, message: 'Please input your password!' }]"
+                                :style="isShowStudentLogin? {} : {display:'none'}"
+                        >
+                            <a-input-password v-model:value="loginUser.password" type="password" placeholder="请输入密码">
+                                <template #prefix>
+                                    <LockOutlined class="site-form-item-icon" />
+                                </template>
+                            </a-input-password>
+                        </a-form-item>
                         <a-form-item
                                 label="账号类型"
                                 :rules="[{ required: true, message: 'Please input your password!' }]"
@@ -117,7 +140,7 @@
                             <a-radio-group v-model:value="loginType">
                                 <a-radio :value="1" @change="selectAdmin">管理员</a-radio>
                                 <a-radio :value="2" @change="selectTeacher">教师端</a-radio>
-                                <a-radio :value="3">学生端</a-radio>
+                                <a-radio :value="3" @change="selectStudent">学生端</a-radio>
                             </a-radio-group>
                         </a-form-item>
                     </a-form>
@@ -157,15 +180,25 @@
 
             const isShowAdminLogin = ref(true);
             const isShowTeacherLogin = ref(false);
+            const isShowStudentLogin = ref(false);
             //选择管理端
             const  selectAdmin= () => {
-                isShowTeacherLogin.value = false;
                 isShowAdminLogin.value = true;
+                isShowTeacherLogin.value = false;
+                isShowStudentLogin.value = false;
                 // message.success("选择管理端成功！");
             };
             //选择教师端
             const  selectTeacher= () => {
                 isShowTeacherLogin.value = true;
+                isShowAdminLogin.value = false;
+                isShowStudentLogin.value = false;
+                // message.success("选择教师端成功！");
+            };
+            //选择学生端
+            const  selectStudent= () => {
+                isShowStudentLogin.value = true;
+                isShowTeacherLogin.value = false;
                 isShowAdminLogin.value = false;
                 // message.success("选择教师端成功！");
             };
@@ -247,7 +280,10 @@
                 selectTeacher,
                 isShowTeacherLogin,
                 selectAdmin,
-                isShowAdminLogin
+                isShowAdminLogin,
+                selectStudent,
+                isShowStudentLogin,
+
             }
         }
     });
