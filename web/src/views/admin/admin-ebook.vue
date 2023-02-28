@@ -210,7 +210,9 @@
                 modalLoading.value = true;
                 console.log(categoryIds.value[0]);
                 console.log(getCategoryName(ebook.value.category1Id));
-                ebook.value.cover=imageUrl.value;
+                if(imageUrl.value){
+                    ebook.value.cover=imageUrl.value;
+                }
                 //待优化
                 if (getCategoryName(ebook.value.category1Id)!=categoryIds.value[0]){
                     ebook.value.category1Id = categoryIds.value[0];
