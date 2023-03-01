@@ -76,6 +76,18 @@
                             </a-tree-select>
                         </a-form-item>
                         <a-form-item>
+                            <a-select
+                                    ref="select"
+                                    v-model:value="value1"
+                                    @focus="focus"
+                                    @change="handleChange"
+                                    placeholder="请选择文档权限"
+                            >
+                                <a-select-option value="jack">公开</a-select-option>
+                                <a-select-option value="lucy">仅学生</a-select-option>
+                            </a-select>
+                        </a-form-item>
+                        <a-form-item>
                             <a-input v-model:value="doc.sort" placeholder="顺序"/>
                         </a-form-item>
                         <a-form-item>
