@@ -1,38 +1,15 @@
 <template>
   <a-layout>
     <a-layout-content
-      :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+            :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <p>
-        <a-form layout="inline" :model="param">
-          <a-form-item>
-            <a-input v-model:value="param.loginName" placeholder="登陆名">
-            </a-input>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
-              查询
-            </a-button>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" @click="add">
-              新增
-            </a-button>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" @click="add">
-              新增
-            </a-button>
-          </a-form-item>
-        </a-form>
-      </p>
       <a-table
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="teachers"
-        :pagination="pagination"
-        :loading="loading"
-        @change="handleTableChange"
+              :columns="columns"
+              :row-key="record => record.id"
+              :data-source="teachers"
+              :pagination="pagination"
+              :loading="loading"
+              @change="handleTableChange"
       >
         <template v-slot:action="{ text, record }">
           <a-space size="small">
@@ -42,16 +19,6 @@
             <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
-            <a-popconfirm
-              title="删除后不可恢复，确认删除?"
-              ok-text="是"
-              cancel-text="否"
-              @confirm="handleDelete(record.id)"
-            >
-              <a-button type="danger">
-                删除
-              </a-button>
-            </a-popconfirm>
           </a-space>
         </template>
       </a-table>
@@ -59,10 +26,10 @@
   </a-layout>
 
   <a-modal
-    title="用户表单"
-    v-model:visible="modalVisible"
-    :confirm-loading="modalLoading"
-    @ok="handleModalOk"
+          title="用户表单"
+          v-model:visible="modalVisible"
+          :confirm-loading="modalLoading"
+          @ok="handleModalOk"
   >
     <a-form :model="teacher" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="登陆名">
@@ -78,10 +45,10 @@
   </a-modal>
 
   <a-modal
-    title="重置密码"
-    v-model:visible="resetModalVisible"
-    :confirm-loading="resetModalLoading"
-    @ok="handleResetModalOk"
+          title="重置密码"
+          v-model:visible="resetModalVisible"
+          :confirm-loading="resetModalLoading"
+          @ok="handleResetModalOk"
   >
     <a-form :model="teacher" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="新密码">
@@ -92,12 +59,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
+  import { defineComponent, onMounted, ref,computed} from 'vue';
   import axios from 'axios';
   import { message } from 'ant-design-vue';
   import {Tool} from "@/util/tool";
   declare let hexMd5: any;
   declare let KEY: any;
+  import store from "../../store";
 
   export default defineComponent({
     name: 'TeacherAdmin',
@@ -111,6 +79,8 @@
         total: 0
       });
       const loading = ref(false);
+      //user会监听store里的user
+      const user = computed(() => store.state.user);
 
       const columns = [
         {
@@ -139,21 +109,11 @@
         loading.value = true;
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
         teachers.value = [];
-        axios.get("/teacher/list", {
-          params: {
-            page: params.page,
-            size: params.size,
-            loginName: param.value.loginName
-          }
-        }).then((response) => {
+        axios.get("/teacher/list/"+user.value.loginName).then((response) => {
           loading.value = false;
           const data = response.data;
           if (data.success) {
             teachers.value = data.content.list;
-
-            // 重置分页按钮
-            pagination.value.current = params.page;
-            pagination.value.total = data.content.total;
           } else {
             message.error(data.message);
           }
@@ -181,13 +141,6 @@
       };
 
       /**
-       * 新增
-       */
-      const add = () => {
-        modalVisible.value = true;
-        teacher.value = {};
-      };
-      /**
        * 点击新增的"ok"按钮，会调用该函数
        */
       const teacher = ref();
@@ -196,28 +149,12 @@
       const handleModalOk = () => {
         modalLoading.value = true;
         teacher.value.password = hexMd5(teacher.value.password + KEY);
-        console.log(teacher.value.limitCode)
         axios.post("/teacher/save", teacher.value).then((response) => {
           modalLoading.value = false;
           const data = response.data; // data = commonResp
           if (data.success) {
             modalVisible.value = false;
 
-            // 重新加载列表
-            handleQuery({
-              page: pagination.value.current,
-              size: pagination.value.pageSize,
-            });
-          } else {
-            message.error(data.message);
-          }
-        });
-      };
-
-      const handleDelete = (id: number) => {
-        axios.delete("/teacher/delete/" + id).then((response) => {
-          const data = response.data; // data = commonResp
-          if (data.success) {
             // 重新加载列表
             handleQuery({
               page: pagination.value.current,
@@ -242,6 +179,8 @@
           const data = response.data; // data = commonResp
           if (data.success) {
             resetModalVisible.value = false;
+
+
 
             // 重新加载列表
             handleQuery({
@@ -280,19 +219,18 @@
         handleQuery,
 
         edit,
-        add,
 
         teacher,
         modalVisible,
         modalLoading,
         handleModalOk,
 
-        handleDelete,
-
         resetModalVisible,
         resetModalLoading,
         handleResetModalOk,
-        resetPassword
+        resetPassword,
+
+        user
       }
     }
   });

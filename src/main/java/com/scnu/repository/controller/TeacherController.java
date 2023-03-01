@@ -36,10 +36,10 @@ public class TeacherController {
     @Resource
     private SnowFlake snowFlake;
 
-    @GetMapping("/list")
-    public CommonResp list(@Valid TeacherQueryReq req){
+    @GetMapping("/list/{login_name}")
+    public CommonResp list(@Valid TeacherQueryReq req, @PathVariable String login_name){
         CommonResp<PageResp<TeacherQueryResp>> resp = new CommonResp<>();
-        PageResp<TeacherQueryResp> list =  teacherService.list(req);
+        PageResp<TeacherQueryResp> list =  teacherService.list(req,login_name);
         resp.setContent(list);
         return resp;
     }
