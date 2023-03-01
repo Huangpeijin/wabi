@@ -50,9 +50,15 @@
                     <setting-outlined />
                 </template>
                 <template #title>账号管理</template>
-                    <a-menu-item key="setting:1">Option 1</a-menu-item>
-                    <a-menu-item key="setting:2">Option 2</a-menu-item>
-                    <a-menu-item key="setting:3">Option 3</a-menu-item>
+                    <a-menu-item key="setting:1">
+                        <router-link to="/admin/user">管理员</router-link>
+                    </a-menu-item>
+                    <a-menu-item key="setting:2">
+                        <router-link to="/admin/teacher">教师</router-link>
+                    </a-menu-item>
+                    <a-menu-item key="setting:3">
+                        <router-link to="/admin/student">学生</router-link>
+                    </a-menu-item>
                     <a-menu-item key="setting:4">Option 4</a-menu-item>
             </a-sub-menu>
 
