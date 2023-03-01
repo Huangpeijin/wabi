@@ -224,7 +224,7 @@
                     });
                 }else {
                     if (isShowTeacherLogin.value){
-                        axios.post('/user/loginTeacher', loginUser.value).then((response) => {
+                        axios.post('/teacher/login', loginUser.value).then((response) => {
                             loginModalLoading.value = false;
                             const data = response.data;
                             if (data.success) {

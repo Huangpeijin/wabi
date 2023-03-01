@@ -126,3 +126,18 @@ create table `user`
 
 insert into user(id,login_name,name,password) values (1, 'test', ' 测试','123456');
 insert into user(id,login_name,name,password,limit_code) values (2, 'testLimitCode', ' 测试','123456','1234' );
+
+# 教师表 unique是唯一键,登录名不能重复
+drop table if exists `teacher`;
+create table `teacher`
+(
+    `id`       bigint      not null comment 'ID',
+    `login_name` varchar(50) not null Comment '登陆名',
+    `name`     varchar(50) Comment '昵称',
+    `password` char(32)    not null comment '密码',
+    primary key (id),
+    unique key login_name_unique (login_name)
+) engine = innodb default charset = utf8mb4 comment =' 教师';
+
+insert into teacher(id,login_name,name,password) values (1, 'teacher', '教师','123456');
+
