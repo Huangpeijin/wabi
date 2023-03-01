@@ -30,6 +30,12 @@
             <a-menu-item key="2"  v-if="user.tokenAdmin">
                 <router-link to="/admin/user">用户管理</router-link>
             </a-menu-item>
+            <a-menu-item key="2"  v-if="user.tokenTeacher">
+                <router-link to="/teacher/admin">账号管理</router-link>
+            </a-menu-item>
+            <a-menu-item key="2"  v-if="user.tokenStudent">
+                <router-link to="/student/admin">账号管理</router-link>
+            </a-menu-item>
             <a-menu-item key="3" v-if="user.tokenAdmin">
                 <router-link to="/admin/ebook">电子书管理</router-link>
             </a-menu-item>
@@ -45,7 +51,7 @@
             <a-menu-item key="5">
                 <router-link to="/about">关于我们</router-link>
             </a-menu-item>
-            <a-sub-menu key="sub1">
+            <a-sub-menu key="sub1" v-if="user.tokenAdmin">
                 <template #icon>
                     <setting-outlined />
                 </template>

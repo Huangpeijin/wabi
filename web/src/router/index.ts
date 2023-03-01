@@ -5,6 +5,8 @@ import Doc from '../views/doc.vue'
 import AdminUser from '../views/admin/admin-user.vue'
 import AdminTeacher from '../views/admin/admin-teacher.vue'
 import AdminStudent from '../views/admin/admin-student.vue'
+import StudentAdmin from '../views/admin/student-admin.vue'
+import TeacherAdmin from '../views/admin/teacher-admin.vue'
 import AdminEbook from '../views/admin/admin-ebook.vue'
 import AdminCategory from '../views/admin/admin-category.vue'
 import AdminDoc from '../views/admin/admin-doc.vue'
@@ -49,6 +51,22 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin/student',
     name: 'AdminStudent',
     component: AdminStudent,
+    meta: {
+      loginRequire: true
+    }
+  },
+  {
+    path: '/student/admin',
+    name: 'StudentAdmin',
+    component: StudentAdmin,
+    meta: {
+      loginRequire: true
+    }
+  },
+  {
+    path: '/teacher/admin',
+    name: 'TeacherAdmin',
+    component: TeacherAdmin,
     meta: {
       loginRequire: true
     }
