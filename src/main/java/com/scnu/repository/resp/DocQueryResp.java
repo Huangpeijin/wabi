@@ -19,13 +19,13 @@ public class DocQueryResp {
 
     private Integer voteCount;
 
-    private boolean disabled;
+    private Boolean disabled;
 
-    public boolean isDisabled() {
+    public Boolean getDisabled() {
         return disabled;
     }
 
-    public void setDisabled(boolean disabled) {
+    public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
 
