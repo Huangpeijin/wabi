@@ -41,8 +41,10 @@ public class StudentService {
         StudentExample studentExample = new StudentExample();
         StudentExample.Criteria criteria = studentExample.createCriteria();
         if(!ObjectUtils.isEmpty(req.getLoginName())){
-            criteria.andLoginNameEqualTo(req.getLoginName());
+//            criteria.andLoginNameEqualTo("%"+req.getLoginName()+"%");
+            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
         }
+
         PageHelper.startPage(req.getPage(),req.getSize());
         List<Student> studentList = studentMapper.selectByExample(studentExample);
         PageInfo<Student> pageInfo = new PageInfo<>(studentList);

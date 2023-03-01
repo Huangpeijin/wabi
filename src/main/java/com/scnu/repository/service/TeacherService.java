@@ -41,8 +41,10 @@ public class TeacherService {
         TeacherExample teacherExample = new TeacherExample();
         TeacherExample.Criteria criteria = teacherExample.createCriteria();
         if(!ObjectUtils.isEmpty(req.getLoginName())){
-            criteria.andLoginNameEqualTo(req.getLoginName());
+//            criteria.andLoginNameEqualTo(req.getLoginName());
+            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
         }
+
         PageHelper.startPage(req.getPage(),req.getSize());
         List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
         PageInfo<Teacher> pageInfo = new PageInfo<>(teacherList);

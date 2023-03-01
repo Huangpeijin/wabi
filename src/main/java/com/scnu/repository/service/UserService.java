@@ -41,7 +41,8 @@ public class UserService {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         if(!ObjectUtils.isEmpty(req.getLoginName())){
-            criteria.andLoginNameEqualTo(req.getLoginName());
+//            criteria.andLoginNameEqualTo("%"+req.getLoginName()+"%");
+            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
         }
         PageHelper.startPage(req.getPage(),req.getSize());
         List<User> userList = userMapper.selectByExample(userExample);
