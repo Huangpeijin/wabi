@@ -36,10 +36,10 @@ public class StudentController {
     @Resource
     private SnowFlake snowFlake;
 
-    @GetMapping("/list")
-    public CommonResp list(@Valid StudentQueryReq req){
+    @GetMapping("/list/{login_name}")
+    public CommonResp list(@Valid StudentQueryReq req, @PathVariable String login_name){
         CommonResp<PageResp<StudentQueryResp>> resp = new CommonResp<>();
-        PageResp<StudentQueryResp> list =  studentService.list(req);
+        PageResp<StudentQueryResp> list =  studentService.liststu(req,login_name);
         resp.setContent(list);
         return resp;
     }

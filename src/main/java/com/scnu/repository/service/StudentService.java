@@ -36,13 +36,35 @@ public class StudentService {
     @Resource
     private SnowFlake snowFlake;
 
-    public PageResp<StudentQueryResp> list(StudentQueryReq req){
+//    public PageResp<StudentQueryResp> list(StudentQueryReq req){
+//        //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
+//        StudentExample studentExample = new StudentExample();
+//        StudentExample.Criteria criteria = studentExample.createCriteria();
+//        if(!ObjectUtils.isEmpty(req.getLoginName())){
+////            criteria.andLoginNameEqualTo("%"+req.getLoginName()+"%");
+//            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
+//        }
+//
+//        PageHelper.startPage(req.getPage(),req.getSize());
+//        List<Student> studentList = studentMapper.selectByExample(studentExample);
+//        PageInfo<Student> pageInfo = new PageInfo<>(studentList);
+//        LOG.info("总行数：{}", pageInfo.getTotal());
+//        LOG.info("总页数：{}", pageInfo.getPages());
+//        //列表复制
+//        List<StudentQueryResp> list = CopyUtil.copyList(studentList, StudentQueryResp.class);
+//
+//        PageResp<StudentQueryResp> pageResp =new PageResp();
+//        pageResp.setTotal(pageInfo.getTotal());
+//        pageResp.setList(list);
+//        return  pageResp;
+//    }
+    public PageResp<StudentQueryResp> liststu(StudentQueryReq req,String login_name){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         StudentExample studentExample = new StudentExample();
         StudentExample.Criteria criteria = studentExample.createCriteria();
-        if(!ObjectUtils.isEmpty(req.getLoginName())){
-//            criteria.andLoginNameEqualTo("%"+req.getLoginName()+"%");
-            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
+        if(!ObjectUtils.isEmpty(login_name)){
+            criteria.andLoginNameEqualTo(login_name);
+//            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
         }
 
         PageHelper.startPage(req.getPage(),req.getSize());
@@ -50,18 +72,8 @@ public class StudentService {
         PageInfo<Student> pageInfo = new PageInfo<>(studentList);
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数：{}", pageInfo.getPages());
-//        List<StudentResp> respList = new ArrayList<>();
-//        for (Student student : studentList) {
-////            StudentResp studentResp = new StudentResp();
-////            BeanUtils.copyProperties(student,studentResp);
-        //对象复制
-//            StudentResp studentResp = CopyUtil.copy(student, StudentResp.class);
-//            respList.add(studentResp);
-//        }
-
         //列表复制
         List<StudentQueryResp> list = CopyUtil.copyList(studentList, StudentQueryResp.class);
-
         PageResp<StudentQueryResp> pageResp =new PageResp();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(list);

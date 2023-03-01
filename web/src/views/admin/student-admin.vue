@@ -59,12 +59,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
+  import { defineComponent, onMounted, ref,computed} from 'vue';
   import axios from 'axios';
   import { message } from 'ant-design-vue';
   import {Tool} from "@/util/tool";
   declare let hexMd5: any;
   declare let KEY: any;
+  import store from "../../store";
 
   export default defineComponent({
     name: 'StudentAdmin',
@@ -78,6 +79,8 @@
         total: 0
       });
       const loading = ref(false);
+      //user会监听store里的user
+      const user = computed(() => store.state.user);
 
       const columns = [
         {
@@ -106,21 +109,11 @@
         loading.value = true;
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
         students.value = [];
-        axios.get("/student/list", {
-          params: {
-            page: params.page,
-            size: params.size,
-            loginName: param.value.loginName
-          }
-        }).then((response) => {
+        axios.get("/student/list/"+user.value.loginName).then((response) => {
           loading.value = false;
           const data = response.data;
           if (data.success) {
             students.value = data.content.list;
-
-            // 重置分页按钮
-            pagination.value.current = params.page;
-            pagination.value.total = data.content.total;
           } else {
             message.error(data.message);
           }
@@ -156,7 +149,6 @@
       const handleModalOk = () => {
         modalLoading.value = true;
         student.value.password = hexMd5(student.value.password + KEY);
-        console.log(student.value.limitCode)
         axios.post("/student/save", student.value).then((response) => {
           modalLoading.value = false;
           const data = response.data; // data = commonResp
@@ -187,6 +179,8 @@
           const data = response.data; // data = commonResp
           if (data.success) {
             resetModalVisible.value = false;
+
+
 
             // 重新加载列表
             handleQuery({
@@ -234,7 +228,9 @@
         resetModalVisible,
         resetModalLoading,
         handleResetModalOk,
-        resetPassword
+        resetPassword,
+
+        user
       }
     }
   });
