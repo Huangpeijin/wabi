@@ -23,6 +23,16 @@ public class DocSaveReq {
 
     private Integer voteCount;
 
+    private Boolean disabled;
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+    }
+
     @NotNull(message = "【内容】不能为空")
     private String content;
 
@@ -100,6 +110,7 @@ public class DocSaveReq {
                 ", sort=" + sort +
                 ", viewCount=" + viewCount +
                 ", voteCount=" + voteCount +
+                ", disabled=" + disabled +
                 ", content='" + content + '\'' +
                 '}';
     }
