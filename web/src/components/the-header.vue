@@ -45,6 +45,16 @@
             <a-menu-item key="5">
                 <router-link to="/about">关于我们</router-link>
             </a-menu-item>
+            <a-sub-menu key="sub1">
+                <template #icon>
+                    <setting-outlined />
+                </template>
+                <template #title>账号管理</template>
+                    <a-menu-item key="setting:1">Option 1</a-menu-item>
+                    <a-menu-item key="setting:2">Option 2</a-menu-item>
+                    <a-menu-item key="setting:3">Option 3</a-menu-item>
+                    <a-menu-item key="setting:4">Option 4</a-menu-item>
+            </a-sub-menu>
 
         </a-menu>
                 <a-modal
@@ -315,7 +325,7 @@
                 selectStudent,
                 isShowStudentLogin,
 
-                selectedKeys: ref<string[]>(['1']),
+                selectedKeys: ref<string[]>(['']),
 
             }
         }
