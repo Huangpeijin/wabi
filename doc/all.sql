@@ -141,3 +141,17 @@ create table `teacher`
 
 insert into teacher(id,login_name,name,password) values (1, 'teacher', '教师','123456');
 
+# 学生表 unique是唯一键,登录名不能重复
+drop table if exists `student`;
+create table `student`
+(
+    `id`       bigint      not null comment 'ID',
+    `login_name` varchar(50) not null Comment '登陆名',
+    `name`     varchar(50) Comment '昵称',
+    `password` char(32)    not null comment '密码',
+    primary key (id),
+    unique key login_name_unique (login_name)
+) engine = innodb default charset = utf8mb4 comment =' 教师';
+
+insert into student(id,login_name,name,password) values (1, 'student', '学生','123456');
+

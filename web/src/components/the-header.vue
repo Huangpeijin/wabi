@@ -240,7 +240,7 @@
                             }
                         });
                     }else{
-                        axios.post('/user/loginStudent', loginUser.value).then((response) => {
+                        axios.post('/student/login', loginUser.value).then((response) => {
                             loginModalLoading.value = false;
                             const data = response.data;
                             if (data.success) {
