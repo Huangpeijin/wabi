@@ -3,26 +3,6 @@
     <a-layout-content
       :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <p>
-        <a-form layout="inline" :model="param">
-          <a-form-item>
-            <a-input v-model:value="param.loginName" placeholder="登陆名">
-            </a-input>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
-              查询
-            </a-button>            <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
-              查询
-            </a-button>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" @click="add">
-              新增
-            </a-button>
-          </a-form-item>
-        </a-form>
-      </p>
       <a-table
         :columns="columns"
         :row-key="record => record.id"
@@ -39,16 +19,6 @@
             <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
-            <a-popconfirm
-              title="删除后不可恢复，确认删除?"
-              ok-text="是"
-              cancel-text="否"
-              @confirm="handleDelete(record.id)"
-            >
-              <a-button type="danger">
-                删除
-              </a-button>
-            </a-popconfirm>
           </a-space>
         </template>
       </a-table>
@@ -178,13 +148,6 @@
       };
 
       /**
-       * 新增
-       */
-      const add = () => {
-        modalVisible.value = true;
-        student.value = {};
-      };
-      /**
        * 点击新增的"ok"按钮，会调用该函数
        */
       const student = ref();
@@ -200,21 +163,6 @@
           if (data.success) {
             modalVisible.value = false;
 
-            // 重新加载列表
-            handleQuery({
-              page: pagination.value.current,
-              size: pagination.value.pageSize,
-            });
-          } else {
-            message.error(data.message);
-          }
-        });
-      };
-
-      const handleDelete = (id: number) => {
-        axios.delete("/student/delete/" + id).then((response) => {
-          const data = response.data; // data = commonResp
-          if (data.success) {
             // 重新加载列表
             handleQuery({
               page: pagination.value.current,
@@ -277,14 +225,11 @@
         handleQuery,
 
         edit,
-        add,
 
         student,
         modalVisible,
         modalLoading,
         handleModalOk,
-
-        handleDelete,
 
         resetModalVisible,
         resetModalLoading,
