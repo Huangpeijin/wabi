@@ -77,8 +77,12 @@
                     const data = response.data;
                     if (data.success) {
                         docs.value = data.content;
+                        // console.log("未转换后的扁平数组"+docs.value);
+                        console.log("原始数组：", docs.value);
                         level1.value = [];
                         level1.value = Tool.array2Tree(docs.value, 0);
+                        // console.log("转换后的树结构"+level1.value);
+                        console.log("树形结构：", level1);
 
                         if (Tool.isNotEmpty(level1)) {
                             //将该节点设置成选中状态

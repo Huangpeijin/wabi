@@ -533,6 +533,66 @@ public class DocExample {
             addCriterion("vote_count not between", value1, value2, "voteCount");
             return (Criteria) this;
         }
+
+        public Criteria andDisabledIsNull() {
+            addCriterion("disabled is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledIsNotNull() {
+            addCriterion("disabled is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledEqualTo(Boolean value) {
+            addCriterion("disabled =", value, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledNotEqualTo(Boolean value) {
+            addCriterion("disabled <>", value, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledGreaterThan(Boolean value) {
+            addCriterion("disabled >", value, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("disabled >=", value, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledLessThan(Boolean value) {
+            addCriterion("disabled <", value, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledLessThanOrEqualTo(Boolean value) {
+            addCriterion("disabled <=", value, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledIn(List<Boolean> values) {
+            addCriterion("disabled in", values, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledNotIn(List<Boolean> values) {
+            addCriterion("disabled not in", values, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledBetween(Boolean value1, Boolean value2) {
+            addCriterion("disabled between", value1, value2, "disabled");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisabledNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("disabled not between", value1, value2, "disabled");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

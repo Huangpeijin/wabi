@@ -15,6 +15,8 @@ public class Doc {
 
     private Integer voteCount;
 
+    private Boolean disabled;
+
     public Long getId() {
         return id;
     }
@@ -71,6 +73,14 @@ public class Doc {
         this.voteCount = voteCount;
     }
 
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -84,6 +94,7 @@ public class Doc {
         sb.append(", sort=").append(sort);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", voteCount=").append(voteCount);
+        sb.append(", disabled=").append(disabled);
         sb.append("]");
         return sb.toString();
     }
