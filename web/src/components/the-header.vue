@@ -59,7 +59,6 @@
                     <a-menu-item key="setting:3">
                         <router-link to="/admin/student">学生</router-link>
                     </a-menu-item>
-                    <a-menu-item key="setting:4">Option 4</a-menu-item>
             </a-sub-menu>
 
         </a-menu>

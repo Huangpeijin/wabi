@@ -16,12 +16,7 @@
           </a-form-item>
           <a-form-item>
             <a-button type="primary" @click="add">
-              新增教师账号
-            </a-button>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" @click="addAdminAccount">
-              新增管理员账号
+              新增
             </a-button>
           </a-form-item>
         </a-form>
@@ -29,7 +24,7 @@
       <a-table
         :columns="columns"
         :row-key="record => record.id"
-        :data-source="users"
+        :data-source="teachers"
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
@@ -64,18 +59,15 @@
     :confirm-loading="modalLoading"
     @ok="handleModalOk"
   >
-    <a-form :model="user" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+    <a-form :model="teacher" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="登陆名">
-        <a-input v-model:value="user.loginName" :disabled="!!user.id"/>
+        <a-input v-model:value="teacher.loginName" :disabled="!!teacher.id"/>
       </a-form-item>
       <a-form-item label="昵称">
-        <a-input v-model:value="user.name" />
+        <a-input v-model:value="teacher.name" />
       </a-form-item>
-      <a-form-item label="密码" v-show="!user.id">
-        <a-input v-model:value="user.password" type="password"/>
-      </a-form-item>
-      <a-form-item label="权限码" v-show="!user.id&&isShowLimitCode" >
-        <a-input v-model:value="user.limitCode" type="password"/>
+      <a-form-item label="密码" v-show="!teacher.id">
+        <a-input v-model:value="teacher.password" type="password"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -86,9 +78,9 @@
     :confirm-loading="resetModalLoading"
     @ok="handleResetModalOk"
   >
-    <a-form :model="user" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+    <a-form :model="teacher" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="新密码">
-        <a-input v-model:value="user.password" type="password"/>
+        <a-input v-model:value="teacher.password" type="password"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -107,7 +99,7 @@
     setup() {
       const param = ref();
       param.value = {};
-      const users = ref();
+      const teachers = ref();
       const pagination = ref({
         current: 1,
         pageSize: 10,
@@ -141,8 +133,8 @@
       const handleQuery = (params: any) => {
         loading.value = true;
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-        users.value = [];
-        axios.get("/user/list", {
+        teachers.value = [];
+        axios.get("/teacher/list", {
           params: {
             page: params.page,
             size: params.size,
@@ -152,7 +144,7 @@
           loading.value = false;
           const data = response.data;
           if (data.success) {
-            users.value = data.content.list;
+            teachers.value = data.content.list;
 
             // 重置分页按钮
             pagination.value.current = params.page;
@@ -180,37 +172,27 @@
        */
       const edit = (record: any) => {
         modalVisible.value = true;
-        user.value = Tool.copy(record);
+        teacher.value = Tool.copy(record);
       };
 
       /**
        * 新增
        */
       const add = () => {
-        isShowLimitCode.value=false;
         modalVisible.value = true;
-        user.value = {};
-      };
-      /**
-       * 新增管理员账号
-       */
-      const isShowLimitCode =ref(false);
-      const addAdminAccount = () => {
-        isShowLimitCode.value=true;
-        modalVisible.value = true;
-        user.value = {};
+        teacher.value = {};
       };
       /**
        * 点击新增的"ok"按钮，会调用该函数
        */
-      const user = ref();
+      const teacher = ref();
       const modalVisible = ref(false);
       const modalLoading = ref(false);
       const handleModalOk = () => {
         modalLoading.value = true;
-        user.value.password = hexMd5(user.value.password + KEY);
-        console.log(user.value.limitCode)
-        axios.post("/user/save", user.value).then((response) => {
+        teacher.value.password = hexMd5(teacher.value.password + KEY);
+        console.log(teacher.value.limitCode)
+        axios.post("/teacher/save", teacher.value).then((response) => {
           modalLoading.value = false;
           const data = response.data; // data = commonResp
           if (data.success) {
@@ -228,7 +210,7 @@
       };
 
       const handleDelete = (id: number) => {
-        axios.delete("/user/delete/" + id).then((response) => {
+        axios.delete("/teacher/delete/" + id).then((response) => {
           const data = response.data; // data = commonResp
           if (data.success) {
             // 重新加载列表
@@ -248,9 +230,9 @@
       const handleResetModalOk = () => {
         resetModalLoading.value = true;
 
-        user.value.password = hexMd5(user.value.password + KEY);
+        teacher.value.password = hexMd5(teacher.value.password + KEY);
 
-        axios.post("/user/reset-password", user.value).then((response) => {
+        axios.post("/teacher/reset-password", teacher.value).then((response) => {
           resetModalLoading.value = false;
           const data = response.data; // data = commonResp
           if (data.success) {
@@ -272,8 +254,8 @@
        */
       const resetPassword = (record: any) => {
         resetModalVisible.value = true;
-        user.value = Tool.copy(record);
-        user.value.password = null;
+        teacher.value = Tool.copy(record);
+        teacher.value.password = null;
       };
 
       onMounted(() => {
@@ -285,7 +267,7 @@
 
       return {
         param,
-        users,
+        teachers,
         pagination,
         columns,
         loading,
@@ -294,10 +276,8 @@
 
         edit,
         add,
-        addAdminAccount,
-        isShowLimitCode,
 
-        user,
+        teacher,
         modalVisible,
         modalLoading,
         handleModalOk,
