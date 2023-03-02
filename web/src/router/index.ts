@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/home.vue'
+import PreHome from '../views/prehome.vue'
 import About from '../views/about.vue'
 import Doc from '../views/doc.vue'
 import AdminUser from '../views/admin/admin-user.vue'
@@ -15,6 +16,11 @@ import store from "@/store";
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
+    name: 'PreHome',
+    component: PreHome
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home
   },

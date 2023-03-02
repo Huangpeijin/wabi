@@ -168,7 +168,7 @@ export default defineComponent({
 })
 </script>
 //scoped表示这里的样式只在当前组件起作用
-<style scoped>
+<style lang="scss" scoped>
     .ant-avatar{
       width: 50px;
       height: 50px;
