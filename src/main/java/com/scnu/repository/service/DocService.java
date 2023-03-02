@@ -3,6 +3,7 @@ package com.scnu.repository.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.scnu.repository.domain.Content;
+import com.scnu.repository.domain.ContentExample;
 import com.scnu.repository.domain.Doc;
 import com.scnu.repository.domain.DocExample;
 import com.scnu.repository.exception.BusinessException;
@@ -134,10 +135,14 @@ public class DocService {
      public void delete(List<String> ids){
          //创建条件
          DocExample docExample = new DocExample();
+         ContentExample contentExample =new ContentExample();
          DocExample.Criteria criteria = docExample.createCriteria();
+         ContentExample.Criteria content =contentExample.createCriteria();
          criteria.andIdIn(ids);
+         content.andIdIn(ids);
          //根据条件进行删除，这样的话就只需要执行一个SQL就可以实行批量删除
          docMapper.deleteByExample(docExample);
+         contentMapper.deleteByExample(contentExample);
      }
 
     /**

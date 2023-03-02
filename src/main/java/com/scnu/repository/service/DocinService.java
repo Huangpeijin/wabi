@@ -2,9 +2,7 @@ package com.scnu.repository.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.scnu.repository.domain.Content;
-import com.scnu.repository.domain.Docin;
-import com.scnu.repository.domain.DocinExample;
+import com.scnu.repository.domain.*;
 import com.scnu.repository.exception.BusinessException;
 import com.scnu.repository.exception.BusinessExceptionCode;
 import com.scnu.repository.mapper.ContentMapper;
@@ -134,12 +132,15 @@ public class DocinService {
      public void delete(List<String> ids){
          //创建条件
          DocinExample docinExample = new DocinExample();
+         ContentExample contentExample =new ContentExample();
          DocinExample.Criteria criteria = docinExample.createCriteria();
+         ContentExample.Criteria content =contentExample.createCriteria();
          criteria.andIdIn(ids);
+         content.andIdIn(ids);
          //根据条件进行删除，这样的话就只需要执行一个SQL就可以实行批量删除
          docinMapper.deleteByExample(docinExample);
+         contentMapper.deleteByExample(contentExample);
      }
-
     /**
      * 富文本内容查询
      **/
