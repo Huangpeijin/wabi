@@ -115,13 +115,14 @@
     </a-modal>-->
 </template>
 <script lang="ts">
-    import {createVNode, defineComponent, onMounted, ref} from 'vue';
+    import {createVNode, defineComponent, onMounted, ref,computed} from 'vue';
     import axios from 'axios';
     import {message, Modal} from "ant-design-vue";
     import {Tool} from "@/util/tool";
     import {useRoute} from "vue-router";
     import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
     import E from 'wangeditor'
+    import store from "../../store";
 
 
     export default defineComponent({
@@ -134,6 +135,7 @@
             const loading = ref(false);
             // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
             const treeSelectData = ref();
+            const user = computed(() => store.state.user);
             treeSelectData.value = [];
             const columns = [
                 {
@@ -400,6 +402,8 @@
                 previewHtml,
                 handlePreviewContent,
                 onDrawerClose,
+
+                user
             }
         }
     });

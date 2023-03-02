@@ -42,7 +42,8 @@
 
         <!--<table tableName="demo" domainObjectName="Demo"/>-->
 
-        <table tableName="doc"/>
+<!--        <table tableName="doc"/>-->
+        <table tableName="docin"/>
 <!--        <table tableName="content"/>-->
 <!--        <table tableName="user"/>-->
 <!--        <table tableName="teacher"/>-->

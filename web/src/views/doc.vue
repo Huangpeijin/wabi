@@ -36,11 +36,12 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, onMounted, ref, createVNode } from 'vue';
+    import { defineComponent, onMounted, ref, createVNode ,computed} from 'vue';
     import axios from 'axios';
     import {message} from 'ant-design-vue';
     import {Tool} from "../util/tool";
     import {useRoute} from "vue-router";
+    import store from "../store"
 
     export default defineComponent({
         name: 'Doc',
@@ -48,6 +49,7 @@
             const route = useRoute();
             const docs = ref();
             const html = ref();
+            const user = computed(() => store.state.user);
             const defaultSelectedKeys = ref();
             defaultSelectedKeys.value = [];
             // 当前选中的文档
@@ -73,29 +75,56 @@
              * 数据查询
              **/
             const handleQuery = () => {
-                axios.get("/doc/all/" + route.query.ebookId).then((response) => {
-                    const data = response.data;
-                    if (data.success) {
-                        docs.value = data.content;
-                        // console.log("未转换后的扁平数组"+docs.value);
-                        console.log("原始数组：", docs.value);
-                        level1.value = [];
-                        level1.value = Tool.array2Tree(docs.value, 0);
-                        // console.log("转换后的树结构"+level1.value);
-                        console.log("树形结构：", level1);
+                if(user.value.id){
+                    axios.get("/docin/all/" + route.query.ebookId).then((response) => {
+                        const data = response.data;
+                        if (data.success) {
+                            docs.value = data.content;
+                            // console.log("未转换后的扁平数组"+docs.value);
+                            console.log("原始数组：", docs.value);
+                            level1.value = [];
+                            level1.value = Tool.array2Tree(docs.value, 0);
+                            // console.log("转换后的树结构"+level1.value);
+                            console.log("树形结构：", level1);
 
-                        if (Tool.isNotEmpty(level1)) {
-                            //将该节点设置成选中状态
-                            defaultSelectedKeys.value = [level1.value[0].id];
-                            //根据这个节点去查内容
-                            handleQueryContent(level1.value[0].id);
-                            // 初始显示文档信息
-                            doc.value = level1.value[0];
+                            if (Tool.isNotEmpty(level1)) {
+                                //将该节点设置成选中状态
+                                defaultSelectedKeys.value = [level1.value[0].id];
+                                //根据这个节点去查内容
+                                handleQueryContent(level1.value[0].id);
+                                // 初始显示文档信息
+                                doc.value = level1.value[0];
+                            }
+                        } else {
+                            message.error(data.message);
                         }
-                    } else {
-                        message.error(data.message);
-                    }
-                });
+                    });
+                }else {
+                    axios.get("/doc/all/" + route.query.ebookId).then((response) => {
+                        const data = response.data;
+                        if (data.success) {
+                            docs.value = data.content;
+                            // console.log("未转换后的扁平数组"+docs.value);
+                            console.log("原始数组：", docs.value);
+                            level1.value = [];
+                            level1.value = Tool.array2Tree(docs.value, 0);
+                            // console.log("转换后的树结构"+level1.value);
+                            console.log("树形结构：", level1);
+
+                            if (Tool.isNotEmpty(level1)) {
+                                //将该节点设置成选中状态
+                                defaultSelectedKeys.value = [level1.value[0].id];
+                                //根据这个节点去查内容
+                                handleQueryContent(level1.value[0].id);
+                                // 初始显示文档信息
+                                doc.value = level1.value[0];
+                            }
+                        } else {
+                            message.error(data.message);
+                        }
+                    });
+                }
+
             };
             /**
              * 内容查询,跟文档管理是一样的
@@ -143,6 +172,8 @@
                 defaultSelectedKeys,
                 doc,
                 vote,
+
+                user
             }
         }
     });
