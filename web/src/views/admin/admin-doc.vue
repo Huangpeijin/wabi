@@ -206,6 +206,8 @@
              */
             const handleSave = () => {
                 modalLoading.value = true;
+                // doc.value={ebookId: route.query.ebookId};
+                console.log(doc.value.ebookId)
                 doc.value.content = editor.txt.html();//获得富文本的内容
                 axios.post("/doc/save", doc.value).then((response) => {
                     modalLoading.value=false;
@@ -219,6 +221,18 @@
                         message.error(data.message);
                     }
                 });
+                // axios.post("/docin/save", doc.value).then((response) => {
+                //     modalLoading.value=false;
+                //     console.log(doc.value);
+                //     const data = response.data;//data=commonResp
+                //     if (data.success){
+                //         message.success("保存成功！");
+                //         //重新加载列表
+                //         handleQuery();
+                //     }else {
+                //         message.error(data.message);
+                //     }
+                // });
             };
             /**
              * 将某节点及其子孙节点全部置为disabled
@@ -292,9 +306,8 @@
             const add = () => {
                 // 清空富文本框
                 editor.txt.html("");
-                modalVisible.value = true;
                 doc.value={ebookId: route.query.ebookId};
-
+                modalVisible.value = true;
                 // handleQueryContent();
 
                 treeSelectData.value = Tool.copy(level1.value) || [];
