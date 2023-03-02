@@ -131,6 +131,7 @@
             const route =useRoute()
             const param =ref();
             param.value={};
+            const docins = ref();
             const docs = ref();
             const loading = ref(false);
             // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
@@ -173,11 +174,9 @@
                     const data = response.data;
                     if(data.success){
                         //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
-                        docs.value = data.content;
-                        // console.log("原始数组：", docs.value);
-
+                        docins.value = data.content;
                         level1.value = [];
-                        level1.value = Tool.array2Tree(docs.value, 0);
+                        level1.value = Tool.array2Tree(docins.value, 0);
                         // console.log("树形结构：", level1);
 
                         // 父文档下拉框初始化，相当于点击新增
@@ -190,6 +189,26 @@
                         message.error(data.message)
                     }
                 });
+                axios.get("/doc/all/"+ route.query.ebookId).then((response) => {
+                    const data = response.data;
+                    if(data.success){
+                        docs.value = data.content;
+                        // // console.log("原始数组：", docs.value);
+                        //
+                        // level1.value = [];
+                        // level1.value = Tool.array2Tree(docs.value, 0);
+                        // // console.log("树形结构：", level1);
+                        //
+                        // // 父文档下拉框初始化，相当于点击新增
+                        // treeSelectData.value = Tool.copy(level1.value) || [];
+                        // // 为选择树添加一个"无"
+                        // treeSelectData.value.unshift({id: 0, name: '无'});
+                        // console.log("treeSelectData.value：", treeSelectData.value);
+
+                    }else{
+                        message.error(data.message)
+                    }
+                });
             };
             // -------- 表单 ---------
             /**
@@ -197,6 +216,7 @@
              */
             const doc = ref();
             doc.value={};
+            doc.value={ebookId: route.query.ebookId};
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const editor = new E('#content');//定义富文本
@@ -213,6 +233,17 @@
                     modalLoading.value=false;
                     console.log(doc.value);
                     const data = response.data;//data=commonResp
+                    if (!data.success){
+                        // message.success("保存成功！");
+                        //重新加载列表
+                        // handleQuery();
+                        // message.error(data.message);
+                    }
+                });
+                axios.post("/docin/save", doc.value).then((response) => {
+                    modalLoading.value=false;
+                    console.log(doc.value);
+                    const data = response.data;//data=commonResp
                     if (data.success){
                         message.success("保存成功！");
                         //重新加载列表
@@ -221,18 +252,6 @@
                         message.error(data.message);
                     }
                 });
-                // axios.post("/docin/save", doc.value).then((response) => {
-                //     modalLoading.value=false;
-                //     console.log(doc.value);
-                //     const data = response.data;//data=commonResp
-                //     if (data.success){
-                //         message.success("保存成功！");
-                //         //重新加载列表
-                //         handleQuery();
-                //     }else {
-                //         message.error(data.message);
-                //     }
-                // });
             };
             /**
              * 将某节点及其子孙节点全部置为disabled
@@ -306,7 +325,6 @@
             const add = () => {
                 // 清空富文本框
                 editor.txt.html("");
-                doc.value={ebookId: route.query.ebookId};
                 modalVisible.value = true;
                 // handleQueryContent();
 
@@ -393,7 +411,6 @@
             });
             return {
                 param,
-                // docs,
                 columns,
                 loading,
                 handleQuery,
