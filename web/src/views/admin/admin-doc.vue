@@ -27,9 +27,9 @@
                             size="small"
                             :defaultExpandAllRows="true"
                     >
-<!--                        <template #name="{ text, record }">-->
-<!--                            {{record.sort}} {{text}}-->
-<!--                        </template>-->
+                        <!--                        <template #name="{ text, record }">-->
+                        <!--                            {{record.sort}} {{text}}-->
+                        <!--                        </template>-->
                         <template v-slot:action="{text,record}">
                             <a-space size="small">
                                 <a-button type="primary" @click="edit(record)" size="small">
@@ -106,13 +106,13 @@
             </a-drawer>
         </a-layout-content>
     </a-layout>
-<!--    <a-modal
-            title="文档表单"
-            v-model:visible="modalVisible"
-            :confirm-loading="modalLoading"
-            @ok="handleModalOk"
-    >
-    </a-modal>-->
+    <!--    <a-modal
+                title="文档表单"
+                v-model:visible="modalVisible"
+                :confirm-loading="modalLoading"
+                @ok="handleModalOk"
+        >
+        </a-modal>-->
 </template>
 <script lang="ts">
     import {createVNode, defineComponent, onMounted, ref,computed} from 'vue';
@@ -164,11 +164,14 @@
              */
             const level1 = ref(); // 一级文档树，children属性就是二级文档
             level1.value=[]//初始为空
+            const level = ref();
+            level.value=[]
             /** 数据查询**/
             const handleQuery = () => {
                 loading.value = true;
                 // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
                 level1.value = [];
+                level.value = [];
                 axios.get("/docin/all/"+ route.query.ebookId).then((response) => {
                     loading.value = false;
                     const data = response.data;
@@ -176,9 +179,8 @@
                         //data.content.list是一个数组，数组里每个元素都是一个对象，对象里有很多属性包括（id、name等等）。
                         docins.value = data.content;
                         level1.value = [];
+                        //将扁平数组转为树行结构
                         level1.value = Tool.array2Tree(docins.value, 0);
-                        // console.log("树形结构：", level1);
-
                         // 父文档下拉框初始化，相当于点击新增
                         treeSelectData.value = Tool.copy(level1.value) || [];
                         // 为选择树添加一个"无"
@@ -193,10 +195,8 @@
                     const data = response.data;
                     if(data.success){
                         docs.value = data.content;
-                        // // console.log("原始数组：", docs.value);
-                        //
-                        // level1.value = [];
-                        // level1.value = Tool.array2Tree(docs.value, 0);
+                        level.value = [];
+                        level.value = Tool.array2Tree(docs.value, 0);
                         // // console.log("树形结构：", level1);
                         //
                         // // 父文档下拉框初始化，相当于点击新增
@@ -333,13 +333,85 @@
                 // 为选择树添加一个"无"
                 treeSelectData.value.unshift({id: 0, name: '无'});
             };
+            /**
+             * 文档删除按钮
+             */
+            const handleDelete = (idin: number) => {
+                // 清空数组，否则多次删除时，数组会一直增加
+                const idinname =getIdName(docins,idin);
+                console.log(idinname);
+                const id = getNameId(docs,idinname)
+                console.log(id)
+                // ids.length = 0;
+                deleteNames.length = 0;
+                const idins = getDeleteIds(level1.value, idin);
+                const ids = getDeleteIds(level.value, id);
+                getDeleteIds(level1.value, id);
+                //二次确认框
+                Modal.confirm({
+                    title: '重要提醒',
+                    icon: createVNode(ExclamationCircleOutlined),
+                    content: '将删除：【' + deleteNames.join("，") + "】删除后不可恢复，确认删除？",
+                    onOk() {
+                        // console.log(ids)
+                        axios.delete("/docin/delete/" + idins.join(",")).then((response) => {
+                            const data = response.data; // data = commonResp
+                            if (data.success) {
+                                // 重新加载列表
+                                handleQuery();
+                            } else {
+                                message.error(data.message);
+                            }
+                        });
+                        // // console.log(ids)
+                        axios.delete("/doc/delete/" + ids.join(",")).then((response) => {
+                            const data = response.data; // data = commonResp
+                            if (data.success) {
+                                // 重新加载列表
+                                handleQuery();
+                            } else {
+                                message.error(data.message);
+                            }
+                        });
+                    },
+                });
+            };
+            /**
+             * 在文档数组种获取id对应的name值
+             */
+            const getIdName = (source:any,id: number) => {
+                let result = "";
+                //它自己就调用10次
+                source.value.forEach((item: any) => {
+                    if (item.id == id) {
+                        // return item.name; // 注意，这里直接return不起作用
+                        result = item.name;
+                    }
 
+                });
+                return result;
+            };
+            /**
+             * 在文档数组种获取id对应的name值
+             */
+            const getNameId = (source:any,name:string) => {
+                let result = "";
+                //它自己就调用10次
+                source.value.forEach((item: any) => {
+                    if (item.name == name) {
+                        // return item.name; // 注意，这里直接return不起作用
+                        result = item.id;
+                    }
+
+                });
+                return result;
+            };
             /**
              * 查找整根树枝,用来删除整颗树，把文档的id存起来
              */
-            const ids: Array<string> = [];
             const deleteNames: Array<string> = [];//在二次确认框的时候可以显示子文档的名称
             const getDeleteIds = (treeSelectData: any, id: any) => {
+                const ids: Array<string> = [];
                 // 遍历数组，即遍历某一层节点
                 for (let i = 0; i < treeSelectData.length; i++) {
                     const node = treeSelectData[i];
@@ -366,34 +438,9 @@
                         }
                     }
                 }
+                return ids;
             };
-            /**
-             * 文档删除按钮
-             */
-            const handleDelete = (id: number) => {
-                // 清空数组，否则多次删除时，数组会一直增加
-                ids.length = 0;
-                deleteNames.length = 0;
-                getDeleteIds(level1.value, id);
-                //二次确认框
-                Modal.confirm({
-                    title: '重要提醒',
-                    icon: createVNode(ExclamationCircleOutlined),
-                    content: '将删除：【' + deleteNames.join("，") + "】删除后不可恢复，确认删除？",
-                    onOk() {
-                        // console.log(ids)
-                        axios.delete("/doc/delete/" + ids.join(",")).then((response) => {
-                            const data = response.data; // data = commonResp
-                            if (data.success) {
-                                // 重新加载列表
-                                handleQuery();
-                            } else {
-                                message.error(data.message);
-                            }
-                        });
-                    },
-                });
-            };
+
             // ----------------富文本预览--------------
             const drawerVisible = ref(false);
             const previewHtml = ref();
