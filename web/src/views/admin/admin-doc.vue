@@ -1,4 +1,5 @@
 <template>
+    <headers></headers>
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
             <a-row :gutter="24">

@@ -1,4 +1,5 @@
 <template>
+    <headers></headers>
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
            <p>
@@ -23,11 +24,15 @@
                     :columns="columns"
                     :loading="loading"
                     :data-source="level1"
-                    :row-key="record => record.id"
+                    :row-key="record => record.name"
                     :pagination="false"
             >
-                <template #cover="{ text: cover }">
-                    <img v-if="cover" :src="cover" alt="avatar" />
+<!--                <template v-slot:category="{ text, record }">-->
+<!--                    <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>-->
+<!--                </template>-->
+                <template v-slot:parent="{text,record}">
+<!--                    {{record.parent}}-->
+                        {{getParentName(record.parent)}}
                 </template>
                 <template v-slot:action="{text,record}">
                     <a-space size="small">
@@ -99,8 +104,9 @@
                 },
                 {
                     title: '父分类',
-                    dataIndex: 'parent',
-                    key:'parent',
+                    slots: { customRender: 'parent' },
+                    // dataIndex: 'parent',
+                    // key:'parent',
                 },
                 {
                     title: '顺序',
@@ -108,7 +114,7 @@
                 },
                 {
                     title: 'Action',
-                    key: 'action',
+                    // key: 'action',
                     slots: { customRender: 'action' }
                 }
             ];
@@ -199,6 +205,25 @@
                     }
                 });
             };
+            const getParentName = (id:number) => {
+                // console.log("取名字")
+                // console.log(id)
+                let result = "";
+                let result1="无"
+                //它自己就调用10次
+                level1.value.forEach((item: any) => {
+                    if (item.id == id) {
+                        // return item.name; // 注意，这里直接return不起作用
+                            result = item.name;
+                    }
+
+                });
+                if (id==0){
+                    return result1
+                }else {
+                    return result;
+                }
+            };
             onMounted(() => {
                 handleQuery();
             });
@@ -217,7 +242,9 @@
                 category,
                 modalVisible,
                 modalLoading,
-                handleModalOk
+                handleModalOk,
+
+                getParentName
             }
         }
     });

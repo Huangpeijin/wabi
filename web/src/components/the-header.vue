@@ -1,8 +1,12 @@
 <template>
     <a-layout-header class="header">
         <div >
-            <img class="logo" src="../assets/logo.png" alt="mzl-ui" />
+            <img class="logo" src="../assets/logo.png" alt="wabi" />
         </div>
+        <div class="logo_text">
+            WaBi
+        </div>
+
         <a class="login-menu" @click="showLoginModal" v-if="!user.id">
             <span>登录</span>
         </a>
@@ -347,25 +351,56 @@
 <style>
     .logo {
         width: 50px;
-        height: 40px;
+        height: 45px;
         background: rgba(255, 255, 255, 0.2);
-        margin: 16px 28px 16px 28px;
+        margin: 16px 6px 7px 23px;
         float: left;
-        color: white;
-        font-size: 18px;
+    }
+    .logo_text{
+        float: left;
+        color: var(--wabi-font-color);
+        font-size: 15px;
+        font-family: revert;
+        font-weight: 900;
+        margin-right: 100px;
+        line-height: 90px;
     }
     .login-menu {
         float: right;
         color: var(--wabi-font-color);
         padding-right: 10px;
+        height: 45px;
+        font-family: revert;
+        line-height: 80px;
+        font-size: 16px;
     }
     .ant-layout-header {
         background: var(--wabi-domain-color) !important;
     }
     .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
         background: var(--wabi-domain-color) !important;
+        height: 80px !important;
+        line-height: 80px !important;
+        font-size: 17px;
+        font-family: inherit;
     }
     .ant-menu-item > span > a {
         color: var(--wabi-font-color) !important;
+    }
+    .ant-menu-overflow {
+        /*justify-content: end;*/
+    }
+    .ant-layout-header {
+        height: 80px !important;
+    }
+    aside{
+        flex: 0 0 275px !important;
+        max-width: 275px !important ;
+        min-width: 275px !important;
+        width: 275px !important;
+
+    }
+    ul{
+        font-size: 15px !important;
     }
 </style>

@@ -1,4 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+    <headers></headers>
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
            <p>
