@@ -1,25 +1,28 @@
 <template>
   <div class="contentBox"  v-if="router.currentRoute.value.path=='/'">
     <div class="imgLogo">
-<!--      <img src="../assets/Kx-UI-logo.png" alt="mzl-ui" />-->
+      <img src="../assets/logo.png" alt="mzl-ui" />
     </div>
-    <h3>一套适合开发者使用的轻量级UI组件库，完美支持vue3</h3>
+    <h3 class="contentBox_h3">一套适合开发者使用的轻量级UI组件库，完美支持vue3</h3>
     <div class="tiBox">
       <p>
         完美支持vite+vue3版本，更小的体积，更快的响应，更强的拓展性，让我们一起向未来，拥抱这精彩的vue世界！
       </p>
       <div class="buttonGroups">
         <a-button
-                class="btn-intohome"
-                style="padding: 15px 50px; margin-right: 2vw; font-size: 17px"
                 @click="toComponents"
+                shape="round"
+                size="large"
+                class="btn_start"
         >
           立即上手
         </a-button
         >
         <a-button
-                style="padding: 15px 50px; margin-left: 2vw; font-size: 17px"
+                shape="round"
                 @click="goGuthub"
+                size="large"
+                class="btn_github"
         >
           Github
         </a-button
@@ -48,12 +51,6 @@
         </li>
       </div>
       <div class="links">
-        <p class="titles">链接</p>
-        <span @click="goGuthub">Github</span>
-        <span @click="goToNpm">NPM</span>
-        <!-- <span>关于MZL_UI</span> -->
-        <span @click="verSion">更新日志</span>
-        <!-- <span>关于作者</span> -->
         <p class="titles">贡献人员</p>
         <li
                 v-for="(item, index) in devoteList"
@@ -83,50 +80,11 @@
         name: "Huangpeijin",
         github: "https://github.com/Huangpeijin",
         img: "https://avatars.githubusercontent.com/u/116870542?v=4",
-      },
-      {
-        name: "Neajue",
-        github: "https://github.com/Neajue",
-        img: "https://avatars.githubusercontent.com/u/87924593?v=4",
-      },
-      {
-        name: "EnJoy77",
-        github: "https://github.com/EnJoy77",
-        img: "https://avatars.githubusercontent.com/u/108109256?v=4",
-      },
-      {
-        name: "zkeq",
-        github: "https://github.com/zkeq",
-        img: "https://avatars.githubusercontent.com/u/62864752?v=4",
-      },
-      {
-        name: "ColdyNi",
-        github: "https://github.com/ColdyNi",
-        img: "https://avatars.githubusercontent.com/u/104876115?v=4",
-      },
-      {
-        name: "beginnierweb2",
-        github: "https://github.com/beginnierweb2",
-        img: "https://avatars.githubusercontent.com/u/87230594?v=4",
-      },
-      {
-        name: "KeepTheFear",
-        github: "https://github.com/KeepTheFear",
-        img: "https://avatars.githubusercontent.com/u/99188353?v=4",
-      },
+      }
     ],
   });
   const toComponents = () => {
-    router.push("home/install");
-  };
-  const goGuthub = () => {
-    window.open("https://github.com/5th-Youth-Training-OOT/Kxxx-UI");
-  };
-  const goToNpm = () => {
-    window.open("https://www.npmjs.com/package/mzl-ui");
-  };
-  const verSion = () => {
-    router.push("/home/log");
+    router.push("home");
   };
   const toDevoteGithub = (item:any) => {
     window.open(item.github);
@@ -142,6 +100,12 @@
     overflow: hidden;
     min-height: calc(100vh - 64px);
     background: rgba(9, 195, 190, 0.02);
+  .contentBox_h3{
+    text-align: center;
+    font-size: 2vw;
+    color: #4a5264;
+    margin: 50px 0 0 0;
+  }
   .imgLogo {
     margin: 0 auto;
     display: block;
@@ -165,20 +129,30 @@
     height: auto;
     overflow: hidden;
     margin: 0 auto;
-  p {
-    text-align: center;
-    color: #636e86;
-    font-size: 0.9vw;
-  }
+    p {
+      text-align: center;
+      color: #636e86;
+      font-size: 0.9vw;
+    }
   .buttonGroups {
     width: 100%;
     text-align: center;
     height: auto;
     overflow: hidden;
     margin-top: 5vh;
-  .btn-intohome{
-  // background: #636e86;
-  }
+    .ant-btn-round.ant-btn-lg {
+      height: 60px;
+      padding: 6.4px 27px;
+      font-size: 18px;
+      border-radius: 40px;
+      /*margin-right: 90px;*/
+    }
+    .btn_start{
+      margin-right: 45px;
+    }
+    .btn_github{
+      margin-left: 45px;
+   }
   }
   .cardBox {
     width: 100%;
@@ -193,12 +167,13 @@
     float: left;
     list-style: none;
     background: #fff;
-  // border: 1px solid #eaeefb;
     border-radius: 5px;
     box-sizing: border-box;
     transition: all 0.3s ease-in-out;
     margin-right: 1%;
     cursor: pointer;
+    border-radius: 20px;
+    height: 300px;
   &:hover {
      background: rgba(9, 195, 190, 0.1);
    }

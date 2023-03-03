@@ -1,6 +1,8 @@
 <template>
     <a-layout-header class="header">
-        <div class="logo" />
+        <div >
+            <img class="logo" src="../assets/logo.png" alt="mzl-ui" />
+        </div>
         <a class="login-menu" @click="showLoginModal" v-if="!user.id">
             <span>登录</span>
         </a>
@@ -344,8 +346,8 @@
 </script>
 <style>
     .logo {
-        width: 120px;
-        height: 31px;
+        width: 50px;
+        height: 40px;
         background: rgba(255, 255, 255, 0.2);
         margin: 16px 28px 16px 28px;
         float: left;
@@ -354,7 +356,16 @@
     }
     .login-menu {
         float: right;
-        color: white;
+        color: var(--wabi-font-color);
         padding-right: 10px;
+    }
+    .ant-layout-header {
+        background: var(--wabi-domain-color) !important;
+    }
+    .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+        background: var(--wabi-domain-color) !important;
+    }
+    .ant-menu-item > span > a {
+        color: var(--wabi-font-color) !important;
     }
 </style>

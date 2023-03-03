@@ -1,4 +1,5 @@
 <template>
+  <headers></headers>
   <a-layout class="middle">
     <a-layout-sider width="200" style="background: #fff">
       <a-menu
@@ -58,6 +59,7 @@
       </a-list>
     </a-layout-content>
   </a-layout>
+  <footers></footers>
 </template>
 
 <script lang="ts">
@@ -66,6 +68,7 @@ import { defineComponent, onMounted,ref,reactive} from 'vue';
 import axios from 'axios';
 import {message} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
+
 
 // const listData : any = [];
 // for (let i = 0; i < 23; i++) {

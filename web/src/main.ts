@@ -1,13 +1,17 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
+import headers from "./components/the-header.vue"
+import footers from "./components/the-footer.vue"
 //把所有的图标库导入进来
 import * as Icons from '@ant-design/icons-vue';
 import axios from 'axios';
 import {Tool} from "@/util/tool";
+import './style.scss';
+
 axios.defaults.baseURL=process.env.VUE_APP_SERVER;
 /**
  * axios拦截器
@@ -24,6 +28,7 @@ axios.interceptors.request.use(function (config) {
 }, error => {
     return Promise.reject(error);
 });
+
 axios.interceptors.response.use(function (response) {
     console.log('返回结果：', response);
     return response;
@@ -33,6 +38,8 @@ axios.interceptors.response.use(function (response) {
 });
 const app = createApp(App);
 app.use(store).use(router).use(Antd).mount('#app');
+app.component('headers',headers);
+app.component('footers',footers);
 //全局使用图标
 const  icons:any=Icons;
 for(const i in  icons){
