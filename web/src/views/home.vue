@@ -182,4 +182,8 @@ export default defineComponent({
   .middle{
     display: flex;
   }
+    .ant-avatar{
+      width: 160px;
+      height: 100px;;
+    }
 </style>
