@@ -221,14 +221,14 @@
       };
 
       const get30DayStatistic = () => {
-        // axios.get('/ebook-snapshot/get-30-statistic').then((response) => {
-        //   const data = response.data;
-        //   if (data.success) {
-        //     const statisticList = data.content;
-        //
-        //     init30DayEcharts(statisticList)
-        //   }
-        // });
+        axios.get('/ebook-snapshot/get-30-statistic').then((response) => {
+          const data = response.data;
+          if (data.success) {
+            const statisticList = data.content;
+
+            init30DayEcharts(statisticList)
+          }
+        });
       };
 
       const testEcharts = () => {
@@ -261,8 +261,8 @@
 
       onMounted(() => {
         getStatistic();
-        testEcharts();
-        // get30DayStatistic();
+        // testEcharts();
+        get30DayStatistic();
       });
 
       return {
