@@ -261,8 +261,8 @@
 
       onMounted(() => {
         getStatistic();
-        // testEcharts();
-        get30DayStatistic();
+        testEcharts();
+        // get30DayStatistic();
       });
 
       return {
