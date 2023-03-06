@@ -24,7 +24,7 @@
 //                        "/test/**",
 //                        "/redis/**",
 //                        "/user/login",
-//                        "/user/logout",
+////                        "/user/logout",
 //                        "/category/all",
 //                        "/ebook/list",
 //                        "/doc/all/**",

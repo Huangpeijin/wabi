@@ -6,6 +6,7 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import headers from "./components/the-header.vue"
 import footers from "./components/the-footer.vue"
+import welcome from "./components/the-welcome.vue"
 //把所有的图标库导入进来
 import * as Icons from '@ant-design/icons-vue';
 import axios from 'axios';
@@ -40,6 +41,7 @@ const app = createApp(App);
 app.use(store).use(router).use(Antd).mount('#app');
 app.component('headers',headers);
 app.component('footers',footers);
+app.component('welcomes',welcome);
 //全局使用图标
 const  icons:any=Icons;
 for(const i in  icons){

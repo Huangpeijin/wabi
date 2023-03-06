@@ -11,6 +11,7 @@
         <a-menu-item key="welcome">
           <MailOutlined />
           <span>简介</span>
+
         </a-menu-item>
         <a-sub-menu v-for="item in level1" :key="item.id">
           <template v-slot:title>
@@ -28,6 +29,7 @@
     <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
       <div class="welcome" v-show="isShowWelcome">
         <h1>欢迎来到知识库系统</h1>
+        <welcomes></welcomes>
       </div>
       <a-list item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks" v-show="!isShowWelcome">
         <template #renderItem="{ item }">
