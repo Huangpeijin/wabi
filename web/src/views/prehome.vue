@@ -3,11 +3,12 @@
     <div class="imgLogo">
       <img src="../assets/logo.png" alt="mzl-ui" />
     </div>
-    <h3 class="contentBox_h3">一套适合开发者使用的轻量级UI组件库，完美支持vue3</h3>
+    <h2 class="contentBox_h2">WaBi</h2>
+    <h3 class="contentBox_h3">基于Springboot+Vue3的计算机教学知识云平台</h3>
     <div class="tiBox">
-      <p>
-        完美支持vite+vue3版本，更小的体积，更快的响应，更强的拓展性，让我们一起向未来，拥抱这精彩的vue世界！
-      </p>
+<!--      <p>-->
+<!--        完美支持vite+vue3版本，更小的体积，更快的响应，更强的拓展性，让我们一起向未来，拥抱这精彩的vue世界！-->
+<!--      </p>-->
       <div class="buttonGroups">
         <a-button
                 @click="toComponents"
@@ -30,24 +31,24 @@
       </div>
       <div class="cardBox">
         <li>
-          <p>更小的体积</p>
-          <div>组件体积更小，灵活使用，按需使用。</div>
+          <p>面向企业就业</p>
+<!--          <div>组件体积更小，灵活使用，按需使用。</div>-->
         </li>
         <li>
-          <p>更快的响应</p>
-          <div>配合vue3的composition API，更快的相应。</div>
+          <p>在线开发环境</p>
+<!--          <div>配合vue3的composition API，更快的相应。</div>-->
         </li>
         <li>
-          <p>更强的拓展性</p>
-          <div>给开发者几乎所有的机会来自定义组件，满足一切项目使用场景。</div>
+          <p>参与项目开发</p>
+<!--          <div>给开发者几乎所有的机会来自定义组件，满足一切项目使用场景。</div>-->
         </li>
         <li>
-          <p>更完美的支持</p>
-          <div>专为vue3版本开发。</div>
+          <p>清晰的技术栈</p>
+<!--          <div>专为vue3版本开发。</div>-->
         </li>
         <li>
-          <p>更友好的渲染</p>
-          <div>极少的代码量，极简配置项。</div>
+          <p>友好的界面</p>
+<!--          <div>极少的代码量，极简配置项。</div>-->
         </li>
       </div>
       <div class="links">
@@ -100,20 +101,28 @@
     overflow: hidden;
     min-height: calc(100vh - 64px);
     background: rgba(9, 195, 190, 0.02);
+  .contentBox_h2{
+    text-align: center;
+    font-family: fantasy;
+    font-size: 2vw;
+    color: #4a5264;
+    margin: 25px 0 0 0;
+  }
   .contentBox_h3{
     text-align: center;
     font-size: 2vw;
     color: #4a5264;
-    margin: 50px 0 0 0;
+    margin: 25px 0 0 0;
   }
   .imgLogo {
     margin: 0 auto;
     display: block;
-    width: 12vw;
+    width: 15vw;
     margin-top: 60px;
     position: relative;
   img {
     width: 100%;
+    height: 13vw;
     display: block;
   }
   }
@@ -173,7 +182,7 @@
     margin-right: 1%;
     cursor: pointer;
     border-radius: 20px;
-    height: 300px;
+    height: 12vw;
   &:hover {
      background: rgba(9, 195, 190, 0.1);
    }
@@ -181,7 +190,8 @@
     font-size: 18px;
     color: #1f2f3d;
     font-weight: 400;
-    padding: 0 14px;
+    padding: 14px 14px;
+
   }
   div {
     font-size: 14px;
