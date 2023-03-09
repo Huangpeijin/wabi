@@ -4,7 +4,7 @@
         <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
             <h3 v-if="level1.length === 0">对不起，找不到相关文档！</h3>
             <a-row>
-                <a-col :span="6">
+                <a-col :span="3">
                     <a-tree
                             v-if="level1.length > 0"
                             :tree-data="level1"
@@ -15,7 +15,7 @@
                     >
                     </a-tree>
                 </a-col>
-                <a-col :span="18">
+                <a-col :span="21">
                     <div>
                         <h2>{{doc.name}}</h2>
                         <div>

@@ -54,12 +54,10 @@
             <a-menu-item key="4"  v-if="user.tokenTeacher">
                 <router-link to="/admin/category">分类管理</router-link>
             </a-menu-item>
-            <a-menu-item key="5">
-                <router-link to="/about">关于我们</router-link>
-            </a-menu-item>
+
             <a-sub-menu key="sub1" v-if="user.tokenAdmin">
                 <template #icon>
-                    <setting-outlined />
+<!--                    <setting-outlined />-->
                 </template>
                 <template #title>账号管理</template>
                     <a-menu-item key="setting:1">
@@ -72,6 +70,9 @@
                         <router-link to="/admin/student">学生</router-link>
                     </a-menu-item>
             </a-sub-menu>
+            <a-menu-item key="5">
+                <router-link to="/about">关于我们</router-link>
+            </a-menu-item>
 
         </a-menu>
                 <a-modal
@@ -373,6 +374,9 @@
         font-family: revert;
         line-height: 80px;
         font-size: 16px;
+    }
+    .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+        color: var(--wabi-font-color) !important;
     }
     .ant-layout-header {
         background: var(--wabi-domain-color) !important;
