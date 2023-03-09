@@ -91,13 +91,27 @@
                         <a-form-item>
                             <a-input v-model:value="doc.sort" placeholder="顺序"/>
                         </a-form-item>
+<!--                        <a-form-item>-->
+<!--                            <a-button type="primary" @click="handlePreviewContent()">-->
+<!--                                <EyeOutlined /> 内容预览-->
+<!--                            </a-button>-->
+<!--                        </a-form-item>-->
                         <a-form-item>
-                            <a-button type="primary" @click="handlePreviewContent()">
-                                <EyeOutlined /> 内容预览
-                            </a-button>
-                        </a-form-item>
-                        <a-form-item>
-                            <div id="content"></div>
+                            <div style="border: 1px solid #ccc">
+                                <Toolbar
+                                        style="border-bottom: 1px solid #ccc"
+                                        :editor="editorRef"
+                                        :defaultConfig="toolbarConfig"
+                                        :mode="mode"
+                                />
+                                <Editor
+                                        style="height: 500px; overflow-y: hidden;"
+                                        v-model="valueHtml"
+                                        :defaultConfig="editorConfig"
+                                        :mode="mode"
+                                        @onCreated="handleCreated"
+                                />
+                            </div>
                         </a-form-item>
                     </a-form>
                 </a-col>
@@ -122,13 +136,25 @@
     import {Tool} from "@/util/tool";
     import {useRoute} from "vue-router";
     import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
-    import E from 'wangeditor'
+    // import E from 'wangeditor'
     import store from "../../store";
+
+    import '@wangeditor/editor/dist/css/style.css' // 引入 css
+
+    import { onBeforeUnmount, shallowRef} from 'vue'
+    import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
 
     export default defineComponent({
         name: 'AdminDoc',
+        components: { Editor, Toolbar },
         setup() {
+            // 编辑器实例，必须用 shallowRef
+            const editorRef = shallowRef()
+
+            // 内容 HTML
+            const valueHtml = ref('<p>hello</p>')
+
             const route =useRoute()
             const param =ref();
             param.value={};
@@ -220,8 +246,8 @@
             doc.value={ebookId: route.query.ebookId};
             const modalVisible = ref(false);
             const modalLoading = ref(false);
-            const editor = new E('#content');//定义富文本
-            editor.config.zIndex=0;//让富文本不要遮住下拉框，因为富文本的Index设置的很高，默认是500，这个z-index就是覆盖的层级的大小
+            // const editor = new E('#content');//定义富文本
+            // editor.config.zIndex=0;//让富文本不要遮住下拉框，因为富文本的Index设置的很高，默认是500，这个z-index就是覆盖的层级的大小
             /**
              * 富文档保存
              */
@@ -229,7 +255,9 @@
                 modalLoading.value = true;
                 // doc.value={ebookId: route.query.ebookId};
                 console.log(doc.value.ebookId)
-                doc.value.content = editor.txt.html();//获得富文本的内容
+                doc.value.content = valueHtml.value //获取富文本的内容
+                console.log(doc.value.content)
+                // doc.value.content = editor.txt.html();//获得富文本的内容
                 axios.post("/doc/save", doc.value).then((response) => {
                     modalLoading.value=false;
                     console.log(doc.value);
@@ -293,7 +321,8 @@
                 axios.get("/doc/find-content/" + doc.value.id).then((response) => {
                     const data = response.data;
                     if (data.success) {
-                        editor.txt.html(data.content)
+                        valueHtml.value = data.content
+                        // editor.txt.html(data.content)
                     } else {
                         message.error(data.message);
                     }
@@ -303,8 +332,8 @@
              * 编辑
              */
             const edit = (record:any) => {
-                // 清空富文本框
-                editor.txt.html("");
+                valueHtml.value="" //清空富文本框
+                // editor.txt.html("");//清空富文本框
                 modalVisible.value = true;
                 doc.value=Tool.copy(record);
                 handleQueryContent();
@@ -316,7 +345,7 @@
                 // 为选择树添加一个"无",在数组的前面添加节点，push是往后面添加元素
                 treeSelectData.value.unshift({id: 0, name: '无'});
                 setTimeout(function () {
-                    editor.create();//创建富文本
+                    // editor.create();//创建富文本
                 },100);
             };
 
@@ -324,13 +353,11 @@
              * 新增
              */
             const add = () => {
-                // 清空富文本框
-                editor.txt.html("");
+                // valueHtml.value="";//清空富文本框
+                // editor.txt.html("");// 清空富文本框
                 modalVisible.value = true;
                 // handleQueryContent();
-
                 treeSelectData.value = Tool.copy(level1.value) || [];
-
                 // 为选择树添加一个"无"
                 treeSelectData.value.unshift({id: 0, name: '无'});
             };
@@ -451,8 +478,8 @@
             const drawerVisible = ref(false);
             const previewHtml = ref();
             const handlePreviewContent = () => {
-                const html = editor.txt.html();
-                previewHtml.value = html;
+                // const html = editor.txt.html();
+                // previewHtml.value = html;
                 drawerVisible.value = true;
             };
             const onDrawerClose = () => {
@@ -460,8 +487,26 @@
             };
             onMounted(() => {
                 handleQuery();
-                editor.create();//创建富文本
+                // editor.create();//创建富文本
+                // setTimeout(() => {
+                //     valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+                // }, 1500)
             });
+            const toolbarConfig = {}
+            const editorConfig = { placeholder: '请输入内容...' }
+
+            // 组件销毁时，也及时销毁编辑器
+            onBeforeUnmount(() => {
+                const editor = editorRef.value
+                if (editor == null) return
+                editor.destroy()
+            })
+
+            // // 编辑器回调函数
+            const handleCreated = (editor:any) => {
+                console.log('created', editor);
+                editorRef.value = editor; // 记录 editor 实例，重要！
+            };
             return {
                 param,
                 columns,
@@ -486,11 +531,20 @@
                 handlePreviewContent,
                 onDrawerClose,
 
-                user
+                user,
+
+                editorRef,
+                valueHtml,
+                mode: 'default', // 或 'simple'
+                toolbarConfig,
+                editorConfig,
+                handleCreated
             }
         }
     });
 </script>
+
+
 <style>
     /*img {*/
     /*    width: 50px;*/
