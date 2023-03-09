@@ -3,7 +3,7 @@
     <a-layout class="middle">
         <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
             <a-row :gutter="24">
-                <a-col :span="8">
+                <a-col :span="5">
                     <p>
                         <a-form layout="inline" :model="param">
                             <a-form-item>
@@ -50,7 +50,7 @@
                         </template>
                     </a-table>
                 </a-col>
-                <a-col :span="16">
+                <a-col :span="19">
                     <p>
                         <a-form layout="inline" :model="param">
                             <a-form-item>
@@ -491,9 +491,12 @@
         }
     });
 </script>
-<style scoped>
-    img {
-        width: 50px;
-        height: 50px;
+<style>
+    /*img {*/
+    /*    width: 50px;*/
+    /*    height: 50px;*/
+    /*}*/
+    .ant-table-container table > thead > tr:first-child th:last-child {
+        width: 30%;
     }
 </style>
