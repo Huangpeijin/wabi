@@ -345,9 +345,9 @@
                 console.log(id)
                 // ids.length = 0;
                 deleteNames.length = 0;
-                const idins = getDeleteIds(level1.value, idin);
-                const ids = getDeleteIds(level.value, id);
-                getDeleteIds(level1.value, id);
+                const idins = getDeIds(level1.value, idin);
+                const ids = getDeIds(level.value, id);
+                console.log(level.value)
                 //二次确认框
                 Modal.confirm({
                     title: '重要提醒',
@@ -364,7 +364,7 @@
                                 message.error(data.message);
                             }
                         });
-                        // // console.log(ids)
+                        console.log("ids的值",ids)
                         axios.delete("/doc/delete/" + ids.join(",")).then((response) => {
                             const data = response.data; // data = commonResp
                             if (data.success) {
@@ -411,36 +411,41 @@
              * 查找整根树枝,用来删除整颗树，把文档的id存起来
              */
             const deleteNames: Array<string> = [];//在二次确认框的时候可以显示子文档的名称
-            const getDeleteIds = (treeSelectData: any, id: any) => {
-                const ids: Array<string> = [];
-                // 遍历数组，即遍历某一层节点
-                for (let i = 0; i < treeSelectData.length; i++) {
-                    const node = treeSelectData[i];
-                    if (node.id === id) {
-                        // 如果当前节点就是目标节点
-                        console.log("delete", node);
-                        // 将目标ID放入结果集ids
-                        // node.disabled = true;
-                        ids.push(id);
-                        deleteNames.push(node.name);
 
-                        // 遍历所有子节点
-                        const children = node.children;
-                        if (Tool.isNotEmpty(children)) {
-                            for (let j = 0; j < children.length; j++) {
-                                getDeleteIds(children, children[j].id)
+            const getDeIds = (treeSelectData: any, id: any) => {
+                const ids: Array<string> = [];
+                const getDeleteIds = (treeSelectData: any, id: any) => {
+                    // 遍历数组，即遍历某一层节点
+                    for (let i = 0; i < treeSelectData.length; i++) {
+                        const node = treeSelectData[i];
+                        if (node.id === id) {
+                            // 如果当前节点就是目标节点
+                            console.log("delete", node);
+                            // 将目标ID放入结果集ids
+                            // node.disabled = true;
+                            ids.push(id);
+                            console.log("getdeledisds",ids);
+                            deleteNames.push(node.name);
+
+                            // 遍历所有子节点
+                            const children = node.children;
+                            if (Tool.isNotEmpty(children)) {
+                                for (let j = 0; j < children.length; j++) {
+                                    getDeleteIds(children, children[j].id)
+                                }
+                            }
+                        } else {
+                            // 如果当前节点不是目标节点，则到其子节点再找找看。
+                            const children = node.children;
+                            if (Tool.isNotEmpty(children)) {
+                                getDeleteIds(children, id);
                             }
                         }
-                    } else {
-                        // 如果当前节点不是目标节点，则到其子节点再找找看。
-                        const children = node.children;
-                        if (Tool.isNotEmpty(children)) {
-                            getDeleteIds(children, id);
-                        }
                     }
-                }
+                };
+                getDeleteIds(treeSelectData, id);
                 return ids;
-            };
+            }
 
             // ----------------富文本预览--------------
             const drawerVisible = ref(false);
