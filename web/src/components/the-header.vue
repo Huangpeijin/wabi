@@ -75,7 +75,7 @@
                 在线开发
             </a-menu-item>
             <a-menu-item key="6">
-                <router-link to="/about">参与贡献</router-link>
+                <router-link to="/contribute">项目参与</router-link>
             </a-menu-item>
             <a-menu-item key="7">
                 <router-link to="/about">关于我们</router-link>

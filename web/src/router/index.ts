@@ -3,6 +3,7 @@ import Home from '../views/home.vue'
 import Welcome from '../views/.vue'
 import PreHome from '../views/prehome.vue'
 import About from '../views/about.vue'
+import Contribute from '../views/contribute.vue'
 import Doc from '../views/doc.vue'
 import AdminUser from '../views/admin/admin-user.vue'
 import AdminTeacher from '../views/admin/admin-teacher.vue'
@@ -42,6 +43,11 @@ const routes: Array<RouteRecordRaw> = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
+  },
+  {
+    path: '/contribute',
+    name: 'Contribute',
+    component: Contribute
   },
   {
     path: '/admin/user',
