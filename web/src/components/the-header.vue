@@ -54,8 +54,8 @@
             <a-menu-item key="4"  v-if="user.tokenTeacher">
                 <router-link to="/admin/category">分类管理</router-link>
             </a-menu-item>
-
-            <a-sub-menu key="sub1" v-if="user.tokenAdmin">
+            <a-menu-item key="4" v-if="user.tokenAdmin">
+                 <a-sub-menu key="sub1" v-if="user.tokenAdmin">
                 <template #icon>
 <!--                    <setting-outlined />-->
                 </template>
@@ -70,7 +70,14 @@
                         <router-link to="/admin/student">学生</router-link>
                     </a-menu-item>
             </a-sub-menu>
-            <a-menu-item key="5">
+            </a-menu-item>
+            <a-menu-item key="5" @click="goWebide">
+                在线开发
+            </a-menu-item>
+            <a-menu-item key="6">
+                <router-link to="/about">参与贡献</router-link>
+            </a-menu-item>
+            <a-menu-item key="7">
                 <router-link to="/about">关于我们</router-link>
             </a-menu-item>
 
@@ -324,7 +331,9 @@
 
                 }
             };
-
+            const goWebide=()=>{
+                window.open("https://codesandbox.io/")
+            }
             return {
                 loginModalVisible,
                 loginModalLoading,
@@ -344,6 +353,8 @@
                 isShowStudentLogin,
 
                 selectedKeys: ref<string[]>(['']),
+
+                goWebide
 
             }
         }
@@ -374,6 +385,9 @@
         font-family: revert;
         line-height: 80px;
         font-size: 16px;
+    }
+    .ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a, .ant-menu-dark .ant-menu-item > span > a {
+        color: var(--wabi-font-color) !important;
     }
     .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
         color: var(--wabi-font-color) !important;
