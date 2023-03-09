@@ -194,8 +194,8 @@
             const user = computed(() => store.state.user);
             // 用来登录
             const loginUser = ref({
-                loginName: "",
-                password: ""
+                loginName: "test",
+                password: "123456"
             });
             const loginModalVisible = ref(false);
             const loginModalLoading = ref(false);

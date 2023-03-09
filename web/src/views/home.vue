@@ -9,26 +9,27 @@
               :openKeys="openKeys"
       >
         <a-menu-item key="welcome">
-          <MailOutlined />
+<!--          <MailOutlined />-->
           <span>简介</span>
-
         </a-menu-item>
         <a-sub-menu v-for="item in level1" :key="item.id">
           <template v-slot:title>
-            <span><user-outlined />{{item.name}}</span>
+<!--            <span><user-outlined />{{item.name}}</span>-->
+            <span>{{item.name}}</span>
           </template>
           <a-menu-item v-for="child in item.children" :key="child.id">
-            <MailOutlined /><span>{{child.name}}</span>
+<!--            <MailOutlined /><span>{{child.name}}</span>-->
+           <span>{{child.name}}</span>
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="tip">
-          <span>以上菜单在分类管理配置</span>
-        </a-menu-item>
+<!--        <a-menu-item key="tip">-->
+<!--          <span>以上菜单在分类管理配置</span>-->
+<!--        </a-menu-item>-->
       </a-menu>
     </a-layout-sider>
     <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">
       <div class="welcome" v-show="isShowWelcome">
-        <h1>欢迎来到知识库系统</h1>
+<!--        <h1>欢迎来到知识库系统</h1>-->
         <welcomes></welcomes>
       </div>
       <a-list item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks" v-show="!isShowWelcome">
