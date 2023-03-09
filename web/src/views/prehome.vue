@@ -182,7 +182,7 @@
     margin-right: 1%;
     cursor: pointer;
     border-radius: 20px;
-    height: 12vw;
+    height: 11vw;
   &:hover {
      background: rgba(9, 195, 190, 0.1);
    }
