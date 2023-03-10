@@ -4,7 +4,7 @@
         <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
             <h3 v-if="level1.length === 0">对不起，找不到相关文档！</h3>
             <a-row>
-                <a-col :span="3">
+                <a-col :span="4">
                     <a-tree
                             v-if="level1.length > 0"
                             :tree-data="level1"
@@ -15,7 +15,7 @@
                     >
                     </a-tree>
                 </a-col>
-                <a-col :span="21">
+                <a-col :span="20">
                     <div>
                         <h2>{{doc.name}}</h2>
                         <div>
@@ -256,5 +256,14 @@
     .ant-btn-icon-only > .anticon{
         display: inline-flex !important;
         justify-content: center;
+    }
+    .ant-col-20 {
+        padding: 60px;
+    }
+    .ant-tree-list-holder-inner {
+        overflow: scroll;
+    }
+    .ant-tree .ant-tree-treenode {
+        padding: 10px 0px 5px 10px !important;
     }
 </style>

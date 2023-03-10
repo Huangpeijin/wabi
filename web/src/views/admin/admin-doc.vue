@@ -353,7 +353,7 @@
              * 新增
              */
             const add = () => {
-                // valueHtml.value="";//清空富文本框
+                valueHtml.value="";//清空富文本框
                 // editor.txt.html("");// 清空富文本框
                 modalVisible.value = true;
                 // handleQueryContent();
