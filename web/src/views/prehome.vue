@@ -4,7 +4,7 @@
       <img src="../assets/logo.png" alt="mzl-ui" />
     </div>
     <h2 class="contentBox_h2">WaBi</h2>
-    <h3 class="contentBox_h3">基于Springboot+Vue3的计算机教学知识云平台</h3>
+    <h3 class="contentBox_h3">基于SpringBoot+Vue3的计算机教学知识云平台</h3>
     <div class="tiBox">
 <!--      <p>-->
 <!--        完美支持vite+vue3版本，更小的体积，更快的响应，更强的拓展性，让我们一起向未来，拥抱这精彩的vue世界！-->
