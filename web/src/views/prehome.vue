@@ -4,7 +4,7 @@
       <img src="../assets/logo.png" alt="mzl-ui" />
     </div>
     <h2 class="contentBox_h2">WaBi</h2>
-    <h3 class="contentBox_h3">基于SpringBoot+Vue3的计算机教学知识云平台</h3>
+    <h3 class="contentBox_h3">欢迎来到计算机在线学习平台</h3>
     <div class="tiBox">
 <!--      <p>-->
 <!--        完美支持vite+vue3版本，更小的体积，更快的响应，更强的拓展性，让我们一起向未来，拥抱这精彩的vue世界！-->
@@ -16,18 +16,16 @@
                 size="large"
                 class="btn_start"
         >
-          立即上手
-        </a-button
-        >
-        <a-button
-                shape="round"
-                @click="goGuthub"
-                size="large"
-                class="btn_github"
-        >
-          Github
-        </a-button
-        >
+          开始学习
+        </a-button>
+<!--        <a-button-->
+<!--                shape="round"-->
+<!--                @click="goGuthub"-->
+<!--                size="large"-->
+<!--                class="btn_github"-->
+<!--        >-->
+<!--          Github-->
+<!--        </a-button>-->
       </div>
       <div class="cardBox">
         <li>
@@ -70,6 +68,7 @@
     </div>
   </div>
   <RouterView></RouterView>
+  <footers></footers>
 </template>
 <script lang="ts" setup >
   import { useRouter } from "vue-router";
@@ -157,7 +156,7 @@
       /*margin-right: 90px;*/
     }
     .btn_start{
-      margin-right: 45px;
+      /*margin-right: 45px;*/
     }
     .btn_github{
       margin-left: 45px;

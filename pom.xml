@@ -59,15 +59,15 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.9.6</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.70</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-aop</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.alibaba</groupId>-->
+<!--			<artifactId>fastjson</artifactId>-->
+<!--			<version>1.2.70</version>-->
+<!--		</dependency>-->
 		<!-- 分页插件pagehelper -->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
@@ -102,7 +102,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>/dist/${artifactId}</finalName>
+		<finalName>/dist/${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -10,7 +10,7 @@
       >
         <a-menu-item key="welcome">
 <!--          <MailOutlined />-->
-          <span>简介</span>
+          <span>数据统计</span>
         </a-menu-item>
         <a-sub-menu v-for="item in level1" :key="item.id">
           <template v-slot:title>
@@ -22,9 +22,6 @@
            <span>{{child.name}}</span>
           </a-menu-item>
         </a-sub-menu>
-<!--        <a-menu-item key="tip">-->
-<!--          <span>以上菜单在分类管理配置</span>-->
-<!--        </a-menu-item>-->
       </a-menu>
     </a-layout-sider>
     <a-layout-content :style="{background:'#fff', padding: '24px', minHeight: '280px' }">

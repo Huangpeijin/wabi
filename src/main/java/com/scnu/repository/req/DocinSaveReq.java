@@ -23,7 +23,6 @@ public class DocinSaveReq {
 
     private Integer voteCount;
 
-    @NotNull(message = "【内容】不能为空")
     private String content;
 
     public Long getId() {

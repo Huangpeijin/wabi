@@ -1,6 +1,8 @@
 <template>
     <a-layout-footer style="text-align: center">
-        计算机教学知识云平台<span v-show="user.id">，欢迎：{{user.name}}</span>
+        计算机在线学习平台<span v-show="user.id">，欢迎：{{user.name}}</span><br/>
+        <a href="https://beian.miit.gov.cn/" target="_blank">备案号:</a>
+        <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2023025396号</a>
     </a-layout-footer>
 </template>
 <script lang="ts">
