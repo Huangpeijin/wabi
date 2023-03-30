@@ -3,6 +3,7 @@ import Home from '../views/home.vue'
 import Welcome from '../views/.vue'
 import PreHome from '../views/prehome.vue'
 import About from '../views/about.vue'
+import Text from '../views/text.vue'
 import Contribute from '../views/contribute.vue'
 import Doc from '../views/doc.vue'
 import AdminUser from '../views/admin/admin-user.vue'
@@ -11,6 +12,7 @@ import AdminStudent from '../views/admin/admin-student.vue'
 import StudentAdmin from '../views/admin/student-admin.vue'
 import TeacherAdmin from '../views/admin/teacher-admin.vue'
 import AdminEbook from '../views/admin/admin-ebook.vue'
+import AdminProject from '../views/admin/admin-project.vue'
 import AdminCategory from '../views/admin/admin-category.vue'
 import AdminDoc from '../views/admin/admin-doc.vue'
 import {Tool} from "@/util/tool";
@@ -45,9 +47,22 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
   },
   {
+    path: '/text',
+    name: 'Text',
+    component: Text
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+  },
+  {
     path: '/contribute',
     name: 'Contribute',
     component: Contribute
+  },
+  {
+    path: '/admin_project',
+    name: 'AdminProject',
+    component: AdminProject
   },
   {
     path: '/admin/user',

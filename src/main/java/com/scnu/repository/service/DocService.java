@@ -35,6 +35,9 @@ public class DocService {
     @Resource
     private DocMapper docMapper;
 
+//    @Resource
+//    private DocMapper docinMapper;
+
     @Resource
     private ContentMapper contentMapper;
 
@@ -98,17 +101,17 @@ public class DocService {
      * 保存，支持新增和更新，如果id有值说明是更新，如果id没值说明是新增
      **/
     @Transactional
-     public void save(DocSaveReq req){
+     public Doc save(DocSaveReq req){
          Doc doc=CopyUtil.copy(req,Doc.class);
          Content content=CopyUtil.copy(req, Content.class);//复制前端传来的内容
          if (ObjectUtils.isEmpty(req.getId())){
              //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
-             doc.setId(snowFlake.nextId());//在domain里的doc用雪花算法生成一个id
+             Long id = snowFlake.nextId();
+             doc.setId(id);//在domain里的doc用雪花算法生成一个id
              //初始的时候，阅读数和点赞数都为0
              doc.setViewCount(0);
              doc.setVoteCount(0);
              docMapper.insert(doc);//在文档数据库插入文档的内容，这时的id是long类型，就是这里丢失的精度。
-//             System.out.println(doc.getId());
              content.setId(doc.getId());//设置content的id跟doc的id一样
              contentMapper.insert(content);//在文档内容数据库插入文档内容的内容
          }else {
@@ -120,6 +123,7 @@ public class DocService {
                  contentMapper.insert(content);
              }
          }
+        return doc;
      }
 
     /**
@@ -146,7 +150,7 @@ public class DocService {
      }
 
     /**
-     * 富文本内容查询
+     * 文本html内容查询
      **/
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
@@ -156,6 +160,17 @@ public class DocService {
             return "";
         } else {
             return content.getContent();
+        }
+    }
+    /**
+     * 文本md内容查询
+     **/
+    public String findTextvalue(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if (ObjectUtils.isEmpty(content)) {
+            return "";
+        } else {
+            return content.getTextvalue();
         }
     }
     /**
