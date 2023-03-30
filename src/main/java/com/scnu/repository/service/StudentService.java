@@ -58,14 +58,19 @@ public class StudentService {
 //        pageResp.setList(list);
 //        return  pageResp;
 //    }
-    public PageResp<StudentQueryResp> liststu(StudentQueryReq req,String login_name){
+    public PageResp<StudentQueryResp> liststu(StudentQueryReq req){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         StudentExample studentExample = new StudentExample();
         StudentExample.Criteria criteria = studentExample.createCriteria();
-        if(!ObjectUtils.isEmpty(login_name)){
-            criteria.andLoginNameEqualTo(login_name);
-//            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
+//        if(!ObjectUtils.isEmpty(login_name)){
+//            criteria.andLoginNameEqualTo(login_name);
+////            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
+//        }
+        if(!ObjectUtils.isEmpty(req.getLoginName())){
+//            criteria.andLoginNameEqualTo("%"+req.getLoginName()+"%");
+            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
         }
+
 
         PageHelper.startPage(req.getPage(),req.getSize());
         List<Student> studentList = studentMapper.selectByExample(studentExample);
