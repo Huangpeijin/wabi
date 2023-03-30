@@ -79,38 +79,38 @@ public class UserController {
         resp.setContent(userLoginResp);
         return resp;
     }
-    @PostMapping("/loginTeacher")
-    public CommonResp loginTeacher(@Valid @RequestBody UserLoginReq req) {
-        //将密码进行加密并放入到请求参数
-        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
-        CommonResp<UserLoginResp> resp = new CommonResp<>();
-
-        UserLoginResp userLoginResp = userService.loginTeacher(req);
-        Long tokenTeacher = snowFlake.nextId();//token随着用户信息需要返回给前端，所以需要在resp去定义token变量
-        LOG.info("生成单点登录tokenTeacher：{}，并放入redis中", tokenTeacher);
-        //将tokenTeacher的值放入到 userLoginResp中
-        userLoginResp.setTokenTeacher(tokenTeacher.toString());
-        redisTemplate.opsForValue().set(tokenTeacher.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
-
-        resp.setContent(userLoginResp);
-        return resp;
-    }
-    @PostMapping("/loginStudent")
-    public CommonResp loginStudent(@Valid @RequestBody UserLoginReq req) {
-        //将密码进行加密并放入到请求参数
-        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
-        CommonResp<UserLoginResp> resp = new CommonResp<>();
-
-        UserLoginResp userLoginResp = userService.loginTeacher(req);
-        Long tokenStudent = snowFlake.nextId();//token随着用户信息需要返回给前端，所以需要在resp去定义token变量
-        LOG.info("生成单点登录tokenStudent：{}，并放入redis中", tokenStudent);
-        //将tokenTeacher的值放入到 userLoginResp中
-        userLoginResp.setTokenStudent(tokenStudent.toString());
-        redisTemplate.opsForValue().set(tokenStudent.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
-
-        resp.setContent(userLoginResp);
-        return resp;
-    }
+//    @PostMapping("/loginTeacher")
+//    public CommonResp loginTeacher(@Valid @RequestBody UserLoginReq req) {
+//        //将密码进行加密并放入到请求参数
+//        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+//        CommonResp<UserLoginResp> resp = new CommonResp<>();
+//
+//        UserLoginResp userLoginResp = userService.loginTeacher(req);
+//        Long tokenTeacher = snowFlake.nextId();//token随着用户信息需要返回给前端，所以需要在resp去定义token变量
+//        LOG.info("生成单点登录tokenTeacher：{}，并放入redis中", tokenTeacher);
+//        //将tokenTeacher的值放入到 userLoginResp中
+//        userLoginResp.setTokenTeacher(tokenTeacher.toString());
+//        redisTemplate.opsForValue().set(tokenTeacher.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
+//
+//        resp.setContent(userLoginResp);
+//        return resp;
+//    }
+//    @PostMapping("/loginStudent")
+//    public CommonResp loginStudent(@Valid @RequestBody UserLoginReq req) {
+//        //将密码进行加密并放入到请求参数
+//        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+//        CommonResp<UserLoginResp> resp = new CommonResp<>();
+//
+//        UserLoginResp userLoginResp = userService.loginTeacher(req);
+//        Long tokenStudent = snowFlake.nextId();//token随着用户信息需要返回给前端，所以需要在resp去定义token变量
+//        LOG.info("生成单点登录tokenStudent：{}，并放入redis中", tokenStudent);
+//        //将tokenTeacher的值放入到 userLoginResp中
+//        userLoginResp.setTokenStudent(tokenStudent.toString());
+//        redisTemplate.opsForValue().set(tokenStudent.toString(), JSONObject.toJSONString(userLoginResp), 3600 * 24, TimeUnit.SECONDS);
+//
+//        resp.setContent(userLoginResp);
+//        return resp;
+//    }
 
     @GetMapping("/logout/{tokenAdmin}")
     public CommonResp logout(@PathVariable String tokenAdmin) {

@@ -95,29 +95,18 @@ public class DocinService {
      * 保存，支持新增和更新，如果id有值说明是更新，如果id没值说明是新增
      **/
     @Transactional
-     public void save(DocinSaveReq req){
-         Docin docin=CopyUtil.copy(req,Docin.class);
-         Content content=CopyUtil.copy(req, Content.class);//复制前端传来的内容
-         if (ObjectUtils.isEmpty(req.getId())){
-             //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
-             docin.setId(snowFlake.nextId());//在domain里的docin用雪花算法生成一个id
-             //初始的时候，阅读数和点赞数都为0
-             docin.setViewCount(0);
-             docin.setVoteCount(0);
-             docinMapper.insert(docin);//在文档数据库插入文档的内容，这时的id是long类型，就是这里丢失的精度。
-//             System.out.println(docin.getId());
-             content.setId(docin.getId());//设置content的id跟docin的id一样
-             contentMapper.insert(content);//在文档内容数据库插入文档内容的内容
-         }else {
-             //编辑保存（更新）
-             docinMapper.updateByPrimaryKey(docin);
-             int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
-             //如果在数据库没有这个条数，则插入一条。
-             if (count==0){
-                 contentMapper.insert(content);
-             }
-         }
-     }
+    public void save(DocinSaveReq req){
+        Docin docin=CopyUtil.copy(req,Docin.class);
+        // 使用selectByPrimaryKey方法查询id是否存在
+        Docin oldDocin = docinMapper.selectByPrimaryKey(docin.getId());
+        if(oldDocin == null){
+            // 如果不存在，使用insertSelective方法插入
+            docinMapper.insertSelective(docin);
+        }else{
+            // 如果存在，使用updateByPrimaryKeySelective方法更新
+            docinMapper.updateByPrimaryKeySelective(docin);
+        }
+    }
 
     /**
      * 删除
@@ -132,21 +121,17 @@ public class DocinService {
      public void delete(List<String> ids){
          //创建条件
          DocinExample docinExample = new DocinExample();
-         ContentExample contentExample =new ContentExample();
          DocinExample.Criteria criteria = docinExample.createCriteria();
-         ContentExample.Criteria content =contentExample.createCriteria();
          criteria.andIdIn(ids);
-         content.andIdIn(ids);
          //根据条件进行删除，这样的话就只需要执行一个SQL就可以实行批量删除
          docinMapper.deleteByExample(docinExample);
-         contentMapper.deleteByExample(contentExample);
      }
     /**
-     * 富文本内容查询
+     * 内容查询
      **/
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
-        // 文档阅读数+1
+        // 文章阅读数+1
         docinMapperCust.increaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";
@@ -158,9 +143,6 @@ public class DocinService {
      * 点赞
      */
     public void vote(Long id) {
-//         docinMapperCust.increaseVoteCount(id);
-        //如果项目有会员体系，远程IP可以替换为会员ID
-        // 远程IP+docin.id作为key，24小时内不能重复
         String ip = RequestContext.getRemoteAddr();
         //第一次点赞就会校验key是否存在，根据docin.id和IP，第一次校验肯定不存在，不存在就会把key放入redis里去
         if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 5000)) {
@@ -168,16 +150,9 @@ public class DocinService {
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
-        // 推送消息
-//       Docin docinDb = docinMapper.selectByPrimaryKey(id);
-//        webSocketServer.sendInfo("【" + docinDb.getName() + "】被点赞！");
-//       String logId = MDC.get("LOG_ID");
-//        wsService.sendInfo("【" + docinDb.getName() + "】被点赞！",logId);
-        // rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docinDb.getName() + "】被点赞！");
     }
 
-        public void updateEbookInfo(){
+    public void updateEbookInfo(){
             docinMapperCust.updateEbookInfo();
     }
-
 }

@@ -70,6 +70,9 @@ public class EbookService {
          if (ObjectUtils.isEmpty(req.getId())){
              //新增保存，需要自己去生成一个id，id有几种算法，一种最简单的自增、一种uid，一种是下面的雪花算法
              ebook.setId(snowFlake.nextId());
+             ebook.setDocCount(0);
+             ebook.setViewCount(0);
+             ebook.setVoteCount(0);
              ebookMapper.insert(ebook);
          }else {
              //编辑保存（更新）

@@ -9,12 +9,12 @@
                        </a-input>
                    </a-form-item>
                    <a-form-item>
-                       <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+                       <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})" shape="round">
                            查询
                        </a-button>
                    </a-form-item>
                    <a-form-item>
-                       <a-button type="primary" @click="add()">
+                       <a-button type="primary" @click="add()" shape="round">
                            新增
                        </a-button>
                    </a-form-item>
@@ -37,11 +37,11 @@
                 <template v-slot:action="{text,record}">
                     <a-space size="small">
                         <router-link :to="'/admin/doc?ebookId=' + record.id">
-                            <a-button type="primary">
-                                文档管理
+                            <a-button type="primary" shape="round">
+                                课件管理
                             </a-button>
                         </router-link>
-                        <a-button type="primary" @click="edit(record)">
+                        <a-button type="primary" @click="edit(record)" shape="round">
                             编辑
                         </a-button>
                         <a-popconfirm
@@ -50,7 +50,7 @@
                                 cancel-text="否"
                                 @confirm="handleDelete(record.id)"
                         >
-                            <a-button type="danger">
+                            <a-button type="danger" shape="round">
                                 删除
                             </a-button>
                         </a-popconfirm>
@@ -60,7 +60,7 @@
         </a-layout-content>
     </a-layout>
     <a-modal
-            title="电子书表单"
+            title="知识表单"
             v-model:visible="modalVisible"
             :confirm-loading="modalLoading"
             @ok="handleModalOk"
@@ -84,9 +84,9 @@
                     </div>
                 </a-upload>
             </a-form-item>
-            <a-form-item label="封面">
-                <a-input v-model:value="ebook.cover" />
-            </a-form-item>
+<!--            <a-form-item label="封面">-->
+<!--                <a-input v-model:value="ebook.cover" />-->
+<!--            </a-form-item>-->
             <a-form-item label="名称">
                 <a-input v-model:value="ebook.name" />
             </a-form-item>
@@ -103,6 +103,7 @@
             </a-form-item>
         </a-form>
     </a-modal>
+    <footers></footers>
 </template>
 <script lang="ts">
     import { defineComponent, onMounted, ref } from 'vue';

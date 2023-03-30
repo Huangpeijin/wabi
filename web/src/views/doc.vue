@@ -34,6 +34,7 @@
             </a-row>
         </a-layout-content>
     </a-layout>
+    <footers></footers>
 </template>
 
 <script lang="ts">
@@ -131,21 +132,35 @@
              * 内容查询,跟文档管理是一样的
              **/
             const handleQueryContent = (id: number) => {
-                axios.get("/doc/find-content/" + id).then((response) => {
-                    const data = response.data;
-                    if (data.success) {
-                        // console.log(data.content);
-                        html.value = data.content;
-                        // test.value=doc.value.name;
-                        // console.log(html.value);
-                    } else {
-                        message.error(data.message);
-                    }
-                });
+                if(user.value.id){
+                    axios.get("/docin/find-content/" + id).then((response) => {
+                        const datain = response.data;
+                        if (datain.success) {
+                            console.log(datain)
+                        } else {
+                            message.error(datain.message);
+                        }
+                    });
+                }else {
+                    axios.get("/doc/find-content/" + id).then((response) => {
+                        const data = response.data;
+                        if (data.success) {
+                            // console.log(data.content);
+                            html.value = data.content;
+                            // test.value=doc.value.name;
+                            // console.log(html.value);
+                        } else {
+                            message.error(data.message);
+                        }
+                    });
+                }
+
+
             };
             const onSelect = (selectedKeys: any, info: any) => {
                 if (Tool.isNotEmpty(selectedKeys)) {
                     // 选中某一节点时，加载该节点的文档信息
+                    console.log(info)
                     doc.value = info.selectedNodes[0];
                     // 加载内容
                     handleQueryContent(selectedKeys[0]);
@@ -159,6 +174,14 @@
                         doc.value.voteCount++;
                     } else {
                         message.error(data.message);
+                    }
+                });
+                axios.get('/docin/vote/' + doc.value.id).then((response) => {
+                    const datain = response.data;
+                    if (datain.success) {
+                        console.log(datain)
+                    } else {
+                        // message.error(datain.message);
                     }
                 });
             };
@@ -240,6 +263,11 @@
     .vote-div {
         padding: 15px;
         text-align: center;
+    }
+
+    .ant-btn-primary {
+        background: #8b96a2 !important;
+        border-color: #b0bac3 !important;
     }
 
     /* 图片自适应 */

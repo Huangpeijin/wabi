@@ -8,13 +8,13 @@
 <!--                       <a-input v-model:value="param.name" placeholder="名称">-->
 <!--                       </a-input>-->
 <!--                   </a-form-item>-->
+<!--                   <a-form-item>-->
+<!--                       <a-button type="primary" @click="handleQuery()">-->
+<!--                           查询-->
+<!--                       </a-button>-->
+<!--                   </a-form-item>-->
                    <a-form-item>
-                       <a-button type="primary" @click="handleQuery()">
-                           查询
-                       </a-button>
-                   </a-form-item>
-                   <a-form-item>
-                       <a-button type="primary" @click="add()">
+                       <a-button type="primary" @click="add()" shape="round">
                            新增
                        </a-button>
                    </a-form-item>
@@ -36,7 +36,7 @@
                 </template>
                 <template v-slot:action="{text,record}">
                     <a-space size="small">
-                        <a-button type="primary" @click="edit(record)">
+                        <a-button type="primary" @click="edit(record)" shape="round">
                             编辑
                         </a-button>
                         <a-popconfirm
@@ -45,7 +45,7 @@
                                 cancel-text="否"
                                 @confirm="handleDelete(record.id)"
                         >
-                            <a-button type="danger">
+                            <a-button type="danger" shape="round">
                                 删除
                             </a-button>
                         </a-popconfirm>
@@ -82,12 +82,14 @@
 
         </a-form>
     </a-modal>
+    <footers></footers>
 </template>
 <script lang="ts">
-    import { defineComponent, onMounted, ref } from 'vue';
+    import { createVNode,defineComponent, onMounted, ref } from 'vue';
     import axios from 'axios';
-    import {message} from 'ant-design-vue';
+    import {message,Modal} from 'ant-design-vue';
     import {Tool} from "@/util/tool";
+    import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
     export default defineComponent({
         name: 'AdminCategory',
@@ -195,14 +197,43 @@
              * 删除
              */
             const handleDelete = (id:number) => {
-                axios.delete("/category/delete/"+id).then((response) => {
-                    const data = response.data;//data=commonResp
-                    if (data.success){
-                        //调用handleQuery函数，并传入一个对象参数，重新加载列表
-                        handleQuery();
-                    }else {
-                        message.error(data.message);
-                    }
+                //二次确认框
+                Modal.confirm({
+                    title: '重要提醒',
+                    icon: createVNode(ExclamationCircleOutlined),
+                    // content: '将删除：【' + deleteNames.join("，") + "】删除后不可恢复，确认删除？",
+                    content:  "删除后不可恢复，确认删除？",
+                    onOk() {
+                        axios.delete("/category/delete/"+id).then((response) => {
+                            const data = response.data;//data=commonResp
+                            if (data.success){
+                                //调用handleQuery函数，并传入一个对象参数，重新加载列表
+                                handleQuery();
+                            }else {
+                                message.error(data.message);
+                            }
+                        });
+                        // // console.log(ids)
+                        // axios.delete("/docin/delete/" + idins.join(",")).then((response) => {
+                        //     const data = response.data; // data = commonResp
+                        //     if (data.success) {
+                        //         // 重新加载列表
+                        //         handleQuery();
+                        //     } else {
+                        //         message.error(data.message);
+                        //     }
+                        // });
+                        // console.log("ids的值",ids)
+                        // axios.delete("/doc/delete/" + ids.join(",")).then((response) => {
+                        //     const data = response.data; // data = commonResp
+                        //     if (data.success) {
+                        //         // 重新加载列表
+                        //         handleQuery();
+                        //     } else {
+                        //         message.error(data.message);
+                        //     }
+                        // });
+                    },
                 });
             };
             const getParentName = (id:number) => {
