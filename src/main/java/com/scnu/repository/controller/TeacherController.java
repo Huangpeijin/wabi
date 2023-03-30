@@ -2,14 +2,8 @@ package com.scnu.repository.controller;
 
 import ch.qos.logback.classic.Logger;
 import com.alibaba.fastjson.JSONObject;
-import com.scnu.repository.req.TeacherLoginReq;
-import com.scnu.repository.req.TeacherQueryReq;
-import com.scnu.repository.req.TeacherResetPasswordReq;
-import com.scnu.repository.req.TeacherSaveReq;
-import com.scnu.repository.resp.CommonResp;
-import com.scnu.repository.resp.PageResp;
-import com.scnu.repository.resp.TeacherLoginResp;
-import com.scnu.repository.resp.TeacherQueryResp;
+import com.scnu.repository.req.*;
+import com.scnu.repository.resp.*;
 import com.scnu.repository.service.TeacherService;
 import com.scnu.repository.util.SnowFlake;
 import org.slf4j.LoggerFactory;
@@ -36,13 +30,20 @@ public class TeacherController {
     @Resource
     private SnowFlake snowFlake;
 
-    @GetMapping("/list/{login_name}")
-    public CommonResp list(@Valid TeacherQueryReq req, @PathVariable String login_name){
+    @GetMapping("/list")
+    public CommonResp list(@Valid TeacherQueryReq req){
         CommonResp<PageResp<TeacherQueryResp>> resp = new CommonResp<>();
-        PageResp<TeacherQueryResp> list =  teacherService.list(req,login_name);
+        PageResp<TeacherQueryResp> list =  teacherService.list(req);
         resp.setContent(list);
         return resp;
     }
+//    @GetMapping("/list")
+//    public CommonResp list(@Valid UserQueryReq req){
+//        CommonResp<PageResp<UserQueryResp>> resp = new CommonResp<>();
+//        PageResp<UserQueryResp> list =  userService.list(req);
+//        resp.setContent(list);
+//        return resp;
+//    }
     @PostMapping("/save") //保存接口名字
     public CommonResp save(@Valid @RequestBody TeacherSaveReq req){
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));

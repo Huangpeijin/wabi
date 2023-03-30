@@ -36,13 +36,14 @@ public class TeacherService {
     @Resource
     private SnowFlake snowFlake;
 
-    public PageResp<TeacherQueryResp> list(TeacherQueryReq req,String login_name){
+    public PageResp<TeacherQueryResp> list(TeacherQueryReq req){
         //在这个列表接口设置支持分页,两个参数，查第一页，每页查三条，现在这个查询就支持分页了。
         TeacherExample teacherExample = new TeacherExample();
         TeacherExample.Criteria criteria = teacherExample.createCriteria();
-        if(!ObjectUtils.isEmpty(login_name)){
-            criteria.andLoginNameEqualTo(login_name);
-//            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
+//        LOG.info("登录名是否为空：{}", req.getLoginName());
+        if(!ObjectUtils.isEmpty(req.getLoginName())){
+//            criteria.andLoginNameEqualTo("%"+req.getLoginName()+"%");
+            criteria.andLoginNameLike("%"+req.getLoginName()+"%");
         }
 
         PageHelper.startPage(req.getPage(),req.getSize());
