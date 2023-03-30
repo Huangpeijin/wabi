@@ -1,4 +1,4 @@
-# wabi
+# WaBi
 🎉 A Computer online learning platform base on SpringBoot2+Vue3  
  http://wabi.kimaiit.top/
 
