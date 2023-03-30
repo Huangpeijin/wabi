@@ -33,9 +33,9 @@
             <a-menu-item key="1">
                 <router-link to="/">首页</router-link>
             </a-menu-item>
-            <a-menu-item key="2"  v-if="user.tokenAdmin">
-                <router-link to="/admin/user">用户管理</router-link>
-            </a-menu-item>
+<!--            <a-menu-item key="2"  v-if="user.tokenAdmin">-->
+<!--                <router-link to="/admin/user">用户管理</router-link>-->
+<!--            </a-menu-item>-->
             <a-menu-item key="2"  v-if="user.tokenTeacher">
                 <router-link to="/teacher/admin">账号管理</router-link>
             </a-menu-item>
@@ -43,18 +43,18 @@
                 <router-link to="/student/admin">账号管理</router-link>
             </a-menu-item>
             <a-menu-item key="3" v-if="user.tokenAdmin">
-                <router-link to="/admin/ebook">电子书管理</router-link>
+                <router-link to="/admin/ebook">课程管理</router-link>
             </a-menu-item>
             <a-menu-item key="4" v-if="user.tokenAdmin">
                 <router-link to="/admin/category">分类管理</router-link>
             </a-menu-item>
             <a-menu-item key="3" v-if="user.tokenTeacher">
-                <router-link to="/admin/ebook">电子书管理</router-link>
+                <router-link to="/admin/ebook">课程管理</router-link>
             </a-menu-item>
             <a-menu-item key="4"  v-if="user.tokenTeacher">
                 <router-link to="/admin/category">分类管理</router-link>
             </a-menu-item>
-            <a-menu-item key="4" v-if="user.tokenAdmin">
+            <a-menu-item key="5" v-if="user.tokenAdmin">
                  <a-sub-menu key="sub1" v-if="user.tokenAdmin">
                 <template #icon>
 <!--                    <setting-outlined />-->
@@ -71,14 +71,21 @@
                     </a-menu-item>
             </a-sub-menu>
             </a-menu-item>
-            <a-menu-item key="5" @click="goWebide">
+            <a-menu-item key="6" @click="goWebide">
                 在线开发
             </a-menu-item>
-            <a-menu-item key="6">
+            <a-menu-item key="15">
                 <router-link to="/contribute">参与项目</router-link>
             </a-menu-item>
-            <a-menu-item key="7">
-                <router-link to="/about">关于我们</router-link>
+<!--            <a-menu-item key="8">-->
+<!--                <router-link to="/admin_project">项目管理</router-link>-->
+<!--            </a-menu-item>-->
+            <a-menu-item key="9">
+                <router-link to="/about">问题反馈</router-link>
+            </a-menu-item>
+
+            <a-menu-item key="10">
+                <router-link to="/text">在线答疑</router-link>
             </a-menu-item>
 
         </a-menu>
@@ -174,8 +181,8 @@
                         >
                             <a-radio-group v-model:value="loginType">
                                 <a-radio :value="1" @change="selectAdmin">管理员</a-radio>
-                                <a-radio :value="2" @change="selectTeacher">教师端</a-radio>
-                                <a-radio :value="3" @change="selectStudent">学生端</a-radio>
+                                <a-radio :value="2" @change="selectTeacher">教师</a-radio>
+                                <a-radio :value="3" @change="selectStudent">学生</a-radio>
                             </a-radio-group>
                         </a-form-item>
                     </a-form>

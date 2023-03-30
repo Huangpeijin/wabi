@@ -85,6 +85,7 @@
       </a-form-item>
     </a-form>
   </a-modal>
+  <footers></footers>
 </template>
 
 <script lang="ts">
@@ -117,10 +118,10 @@
           title: '名称',
           dataIndex: 'name'
         },
-        {
-          title: '密码',
-          dataIndex: 'password'
-        },
+        // {
+        //   title: '密码',
+        //   dataIndex: 'password'
+        // },
         {
           title: 'Action',
           key: 'action',
@@ -263,7 +264,8 @@
         handleQuery({
           page: 1,
           size: pagination.value.pageSize,
-        });
+        }
+        );
       });
 
       return {

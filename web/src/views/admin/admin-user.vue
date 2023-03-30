@@ -33,7 +33,7 @@
         <template v-slot:action="{ text, record }">
           <a-space size="small">
             <a-button type="primary" @click="resetPassword(record)">
-              重置密码
+              修改密码
             </a-button>
             <a-button type="primary" @click="edit(record)">
               编辑
@@ -55,7 +55,7 @@
   </a-layout>
 
   <a-modal
-    title="用户表单"
+    title="账号信息"
     v-model:visible="modalVisible"
     :confirm-loading="modalLoading"
     @ok="handleModalOk"
@@ -70,14 +70,14 @@
       <a-form-item label="密码" v-show="!user.id">
         <a-input v-model:value="user.password" type="password"/>
       </a-form-item>
-      <a-form-item label="权限码" v-show="!user.id&&isShowLimitCode" >
-        <a-input v-model:value="user.limitCode" type="password"/>
-      </a-form-item>
+<!--      <a-form-item label="权限码" v-show="!user.id&&isShowLimitCode" >-->
+<!--        <a-input v-model:value="user.limitCode" type="password"/>-->
+<!--      </a-form-item>-->
     </a-form>
   </a-modal>
 
   <a-modal
-    title="重置密码"
+    title="修改密码"
     v-model:visible="resetModalVisible"
     :confirm-loading="resetModalLoading"
     @ok="handleResetModalOk"
@@ -88,6 +88,7 @@
       </a-form-item>
     </a-form>
   </a-modal>
+  <footers></footers>
 </template>
 
 <script lang="ts">
@@ -120,10 +121,10 @@
           title: '名称',
           dataIndex: 'name'
         },
-        {
-          title: '密码',
-          dataIndex: 'password'
-        },
+        // {
+        //   title: '密码',
+        //   dataIndex: 'password'
+        // },
         {
           title: 'Action',
           key: 'action',
@@ -195,7 +196,7 @@
       const handleModalOk = () => {
         modalLoading.value = true;
         user.value.password = hexMd5(user.value.password + KEY);
-        console.log(user.value.limitCode)
+        // console.log(user.value.limitCode)
         axios.post("/user/save", user.value).then((response) => {
           modalLoading.value = false;
           const data = response.data; // data = commonResp
@@ -233,9 +234,7 @@
       const resetModalLoading = ref(false);
       const handleResetModalOk = () => {
         resetModalLoading.value = true;
-
         user.value.password = hexMd5(user.value.password + KEY);
-
         axios.post("/user/reset-password", user.value).then((response) => {
           resetModalLoading.value = false;
           const data = response.data; // data = commonResp
